@@ -1,0 +1,49 @@
+/**
+ * CSS for the presentation application.
+ *
+ * Curran Kelleher 3/7/2014.
+ */
+
+/* Remove margin and padding, make body full height. */
+html, body {
+  height: 100%;
+  margin: 0px;
+  padding: 0px;
+}
+
+
+/* apply a natural box layout model to all elements */
+/* See http://www.paulirish.com/2012/box-sizing-border-box-ftw/ */
+*, *:before, *:after {
+  -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box;
+}
+
+/* Split the page vertically into two parts. */
+/* See http://stackoverflow.com/questions/13530741/css-fill-horizonal-space */
+.split {
+  width: 100%;
+  height: 100%;
+}
+
+/* The navigation part with the outline of slides */
+.split-left {
+  float: left; 
+  height: 100%;
+  width: 150px;
+  background-color: lightgray;
+  padding: 5px;
+}
+
+/* The slide content outer container */
+.split-right {
+  height: 100%;
+  width: auto;
+  overflow: auto; 
+  padding: 5px;
+  background-color: gray;
+}
+
+/* The current slide listing on the left is "active" */
+.active{
+  color: red;
+}
