@@ -35,7 +35,7 @@
       <!-- The navigation part with the outline of slides -->
       <div class="split-left">
         <div ng-repeat="slide in slides">
-          <a href="#/{{slide.name}}" ng-class="{active: slide === currentSlide()}">
+          <a href="#/{{slide.name}}" ng-class="{currentSlide: slide === currentSlide()}">
             {{slide.title}}
           </a>
         </div>

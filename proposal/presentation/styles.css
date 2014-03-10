@@ -35,22 +35,22 @@ html, body {
 }
 
 /* Style the entries in the list of slides */
-.split-left a:link, a:visited {
+.split-left a {
   /* Remove underlines */
   text-decoration: none;
 
   /* Make the non-active slides fade into the background. */
-  color: lightgray;
+  color: silver;
+}
+
+/* Make the active slide pop out. */
+.split-left .currentSlide {
+  color: black;
 }
 
 .split-left a:hover {
   /* Add underline only on hover (as a clickability affordance)*/
   text-decoration: underline;
-}
-
-/* Make the active slide pop out. */
-.split-left .active {
-  color: black;
 }
 
 /* The slide content outer container */
@@ -68,6 +68,7 @@ html, body {
 /* The div inside the split-right div containing slide content. */
 .slide {
   font-size: 2em;
+  height: 100%;
 }
 
 /* The title of each slide. */
@@ -77,10 +78,16 @@ html, body {
   padding: 0px;
 }
 
-/* Remove unnecessary spacing around p elements */
-.slide p {
+/* The subtitle lines for the first slide. */
+.slide h3 {
+  text-align: center;
   margin: 0px;
   padding: 0px;
+}
+
+/* Remove unnecessary spacing. */
+.slide p, ul {
+  margin: 0px;
 }
 
 /* Style images to fit on the screen. */
