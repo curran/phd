@@ -32,7 +32,7 @@ app.controller('PresentationCtrl', function($scope, $http, $document, $location)
   var LEFT = 37, RIGHT = 39;
 
   // Get the presentation configuration that lives in "presentation.json".
-  $http.get('/presentation.json').success(function(presentation){
+  $http.get('presentation.json').success(function(presentation){
 
     // Make a local var for concise reference later.
     var slides = presentation.slides;
