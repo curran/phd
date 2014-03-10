@@ -12,18 +12,19 @@
     <link rel="stylesheet" type="text/css" href="styles.css">
 
     <!-- Angular framework -->
-    <script src="angular.min.js"></script>
-    <script src="angular-route.min.js"></script>
+    <script src="libs/angular.min.js"></script>
+    <script src="libs/angular-route.min.js"></script>
 
     <!-- Underscore -->
-    <script src="underscore-min.js"></script>
+    <script src="libs/underscore-min.js"></script>
 
     <!-- Marked markdown parser -->
-    <script src="marked.min.js"></script>
+    <script src="libs/marked.min.js"></script>
 
     <!-- Our Angular app -->
-    <script src="main.js"></script>
+    <script src="app.js"></script>
 
+    <!-- The presentation title, drawn from presentation.json -->
     <title>{{title}}</title>
   </head>
   <body ng-controller="PresentationCtrl" ng-keydown="changeSlide($event.keyCode)">
