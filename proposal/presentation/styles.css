@@ -9,6 +9,7 @@ html, body {
   height: 100%;
   margin: 0px;
   padding: 0px;
+  font-family: Sans-Serif;
 }
 
 
@@ -30,8 +31,26 @@ html, body {
   float: left; 
   height: 100%;
   width: 150px;
-  background-color: lightgray;
   padding: 5px;
+}
+
+/* Style the entries in the list of slides */
+.split-left a:link, a:visited {
+  /* Remove underlines */
+  text-decoration: none;
+
+  /* Make the non-active slides fade into the background. */
+  color: lightgray;
+}
+
+.split-left a:hover {
+  /* Add underline only on hover (as a clickability affordance)*/
+  text-decoration: underline;
+}
+
+/* Make the active slide pop out. */
+.split-left .active {
+  color: black;
 }
 
 /* The slide content outer container */
@@ -39,11 +58,38 @@ html, body {
   height: 100%;
   width: auto;
   overflow: auto; 
-  padding: 5px;
-  background-color: gray;
 }
 
 /* The current slide listing on the left is "active" */
-.active{
+.active {
   color: red;
+}
+
+/* The div inside the split-right div containing slide content. */
+.slide {
+  font-size: 2em;
+}
+
+/* The title of each slide. */
+.slide h1 {
+  text-align: center;
+  margin: 0px;
+  padding: 0px;
+}
+
+/* Remove unnecessary spacing around p elements */
+.slide p {
+  margin: 0px;
+  padding: 0px;
+}
+
+/* Style images to fit on the screen. */
+.slide img {
+  max-width: 100%;
+
+  /* Using 100% here caused quirky behavior where
+   * a scroll bar would appear. */
+  max-height: 95%;
+  margin: auto;
+  overflow: auto;
 }

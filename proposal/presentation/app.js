@@ -13,7 +13,7 @@ app.config(function($routeProvider){
   $routeProvider.
     when('/:slideName', {
       // `slideHTML` is compiled from the Markdown file for each slide.
-      template: '<div ng-bind-html="slideHTML" class="split-right"></div>',
+      template: '<div ng-bind-html="slideHTML" class="slide"></div>',
       controller: 'SlideCtrl'
     }).
     otherwise({ redirectTo: '/firstSlide' });
@@ -32,8 +32,10 @@ app.controller('PresentationCtrl', function($scope, $http, $document, $location)
   // Get the presentation configuration that lives in "presentation.json".
   $http.get('/presentation.json').success(function(presentation){
 
+    var slides = presentation.slides;
+
     // Add indices to the slides for use in nextSlide() and previousSlide().
-    presentation.slides.forEach(function(slide, index){
+    slides.forEach(function(slide, index){
       slide.index = index;
     });
 
@@ -41,7 +43,7 @@ app.controller('PresentationCtrl', function($scope, $http, $document, $location)
     $scope.title = presentation.title;
 
     // Used for creating the list of slides on the left.
-    $scope.slides = presentation.slides;
+    $scope.slides = slides;
 
     // Used to determine which slide entry should be styled as "active".
     $scope.currentSlide = currentSlide;
@@ -49,32 +51,13 @@ app.controller('PresentationCtrl', function($scope, $http, $document, $location)
     // Navigates to the previous or next slide.
     // Called on key down event of the <body> element.
     $scope.changeSlide = changeSlide;
-    
+
     function changeSlide(arrow) {
       if(arrow === RIGHT){
         navigateTo(nextSlide());
       } else if(arrow === LEFT){
         navigateTo(previousSlide());
       }      
-    };
-
-    // Returns the current slide based on the URL hash.
-    function currentSlide(){
-      return _.findWhere(presentation.slides, {
-        name: $location.path().substr(1)
-      });
-    };
-
-    function nextSlide(){
-      // TODO bounds check
-      var i = currentSlide().index + 1;
-      return $scope.slides[i];
-    }
-
-    function previousSlide(){
-      // TODO bounds check
-      var i = currentSlide().index - 1;
-      return $scope.slides[i];
     }
 
     // Navigates to the given slide
@@ -83,6 +66,23 @@ app.controller('PresentationCtrl', function($scope, $http, $document, $location)
       $location.path('/' + slide.name);
     }
 
+    function nextSlide(){
+      var i = currentSlide().index;
+      return slides[i < slides.length - 1 ? i + 1 : i];
+    }
+
+    function previousSlide(){
+      var i = currentSlide().index;
+      return slides[i > 0 ? i - 1 : i];
+    }
+
+    // Returns the current slide based on the
+    // current URL hash fragment.
+    function currentSlide(){
+      return _.findWhere(slides, {
+        name: $location.path().substr(1)
+      });
+    }
   });
 });
 

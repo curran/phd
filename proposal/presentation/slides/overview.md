@@ -1,5 +1,1 @@
-Second Slide
-
- * A
- * B
- * c
+<img src="images/blsTableauVis.png">
