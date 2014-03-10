@@ -1,9 +1,11 @@
-// A simple presentation framework using Angular.js.
+// A presentation framework using Angular.js.
 //
-// Curran Kelleher 2/26/2014
+// Slides are authored in Markdown.
 //
-// Draws from Angular screencast:
-// https://www.youtube.com/watch?v=8ILQOFAgaXE
+// Presentation configuration resides in `presentation.json`,
+// which specifies the presentation title and the ordering of slides.
+//
+// Curran Kelleher 3/10/2014
 
 // Declare the Angular app.
 var app = angular.module('app', ['ngRoute']);
@@ -32,6 +34,7 @@ app.controller('PresentationCtrl', function($scope, $http, $document, $location)
   // Get the presentation configuration that lives in "presentation.json".
   $http.get('/presentation.json').success(function(presentation){
 
+    // Make a local var for concise reference later.
     var slides = presentation.slides;
 
     // Add indices to the slides for use in nextSlide() and previousSlide().
@@ -86,19 +89,19 @@ app.controller('PresentationCtrl', function($scope, $http, $document, $location)
   });
 });
 
-// Used by the router.
-// Loads each slide in response to URL changes.
+// Used by the router for rendering slide content.
+// Loads and renders each slide in response to URL changes.
 app.controller('SlideCtrl', function($scope, $routeParams, $http, $sce){
 
   // Compute the path of the markdown file from the slide name.
   var markdownFile = 'slides/' + $routeParams.slideName + '.md';
 
   // Fetch the Markdown file that contains the content for the current slide.
-  $http.get(markdownFile).success(function(md){
+  $http.get(markdownFile).success(function(markdownText){
 
     // Compile the markdown text using the marked.js library.
     // See https://github.com/chjj/marked
-    var slideHTML = marked(md);
+    var slideHTML = marked(markdownText);
 
     // Use of $sce is required because ng-bind-html is used in the template.
     // For more info, see:
