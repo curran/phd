@@ -15,46 +15,74 @@ app.config(function($routeProvider){
   $routeProvider.
     when('/:slideName', {
       // `slideHTML` is compiled from the Markdown file for each slide.
-      template: '<div ng-bind-html="slideHTML" class="slide"></div>',
+      template: '<div ng-if="slideHTML" ng-bind-html="slideHTML" class="slide"></div><div class="slide"  ng-if="image"><img ng-src="images/{{image}}"></div>',
       controller: 'SlideCtrl'
     }).
     otherwise({ redirectTo: '/firstSlide' });
 });
 
+// This service is responsible for loading and querying `presentation.json`
+app.factory('presentation', function($http){
+
+  var cachedConfig;
+
+  function getConfig(callback){
+    if(cachedConfig) {
+      callback(cachedConfig);
+    } else {
+      $http.get('presentation.json').success(function(config){
+
+        // Add indices to the slides for use in nextSlide() and previousSlide().
+        config.slides.forEach(function(slide, index){
+          slide.index = index;
+        });
+
+        cachedConfig = config;
+        callback(config);
+      });
+    }
+  }
+
+  return {
+    // Returns the JSON data from `presentation.json`
+    getConfig: getConfig,
+
+    // Returns the slide entry in the JSON file by slide name.
+    getSlideInfo: function(name, callback){
+      getConfig(function(config) {
+        callback(config.slides.filter(function(slide){
+          return slide.name === name;
+        })[0]);
+      });
+    }
+  };
+});
 // This controller is attached to the top-level html element, and deals with:
 //
 //  * loading the presentation metadata from `slides.json`
 //  * handling the arrow keys to change slides
 //  * exposing the `currentSlide` function used for styling the active slide
 //  * exposing the presentation title to the template, which becomes the HTML <title>
-app.controller('PresentationCtrl', function($scope, $http, $document, $location){
+app.run(function($rootScope, $document, $location, presentation){
 
   // Key codes for arrow keys.
   var LEFT = 37, RIGHT = 39;
 
   // Get the presentation configuration that lives in "presentation.json".
-  $http.get('presentation.json').success(function(presentation){
+  presentation.getConfig(function(config){
 
     // Make a local var for concise reference later.
-    var slides = presentation.slides;
-
-    // Add indices to the slides for use in nextSlide() and previousSlide().
-    slides.forEach(function(slide, index){
-      slide.index = index;
-    });
+    var slides = config.slides;
 
     // Used to set the <title> of the page.
-    $scope.title = presentation.title;
+    $rootScope.title = config.title;
 
     // Used for creating the list of slides on the left.
-    $scope.slides = slides;
-
-    // Used to determine which slide entry should be styled as "active".
-    $scope.currentSlide = currentSlide;
+    $rootScope.slides = slides;
 
     // Navigates to the previous or next slide.
     // Called on key down event of the <body> element.
-    $scope.changeSlide = changeSlide;
+    $rootScope.changeSlide = changeSlide;
 
     function changeSlide(arrow) {
       if(arrow === RIGHT){
@@ -71,43 +99,51 @@ app.controller('PresentationCtrl', function($scope, $http, $document, $location)
     }
 
     function nextSlide(){
-      var i = currentSlide().index;
+      var i = $rootScope.currentSlide.index;
       return slides[i < slides.length - 1 ? i + 1 : i];
     }
 
     function previousSlide(){
-      var i = currentSlide().index;
+      var i = $rootScope.currentSlide.index;
       return slides[i > 0 ? i - 1 : i];
-    }
-
-    // Returns the current slide based on the
-    // current URL hash fragment.
-    function currentSlide(){
-      return _.findWhere(slides, {
-        name: $location.path().substr(1)
-      });
     }
   });
 });
 
 // Used by the router for rendering slide content.
 // Loads and renders each slide in response to URL changes.
-app.controller('SlideCtrl', function($scope, $routeParams, $http, $sce){
+app.controller('SlideCtrl', function($rootScope, $scope, $routeParams, $http, $sce, presentation){
 
-  // Compute the path of the markdown file from the slide name.
-  var markdownFile = 'slides/' + $routeParams.slideName + '.md';
+  presentation.getSlideInfo($routeParams.slideName, function(slideInfo){
 
-  // Fetch the Markdown file that contains the content for the current slide.
-  $http.get(markdownFile).success(function(markdownText){
+    // Used for determining which slide entry should be styled as "active".
+    $rootScope.currentSlide = slideInfo;
 
-    // Compile the markdown text using the marked.js library.
-    // See https://github.com/chjj/marked
-    var slideHTML = marked(markdownText);
 
-    // Use of $sce is required because ng-bind-html is used in the template.
-    // For more info, see:
-    //   http://docs.angularjs.org/api/ng/directive/ngBindHtml
-    //   http://docs.angularjs.org/api/ng/service/$sce
-    $scope.slideHTML = $sce.trustAsHtml(slideHTML);
+    // If an image is defined on the slide info,
+    // then display a slide that is just that image full screen.
+    if(slideInfo.image) {
+      $scope.image = slideInfo.image;
+
+      // Otherwise, load and render the markdown file for the slide.
+    } else {
+
+      // Compute the path of the markdown file from the slide name.
+      var markdownFile = 'slides/' + $routeParams.slideName + '.md';
+
+      // Fetch the Markdown file that contains the content for the current slide.
+      $http.get(markdownFile).success(function(markdownText){
+
+        // Compile the markdown text using the marked.js library.
+        // See https://github.com/chjj/marked
+        var slideHTML = marked(markdownText);
+
+        // Use of $sce is required because ng-bind-html is used in the template.
+        // For more info, see:
+        //   http://docs.angularjs.org/api/ng/directive/ngBindHtml
+        //   http://docs.angularjs.org/api/ng/service/$sce
+        $scope.slideHTML = $sce.trustAsHtml(slideHTML);
+      });
+    }
   });
 });

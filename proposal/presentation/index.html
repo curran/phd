@@ -4,7 +4,7 @@
   Curran Kelleher 2/26/2014
 -->
 <!DOCTYPE html>
-<html ng-app="app" ng-controller="PresentationCtrl" >
+<html ng-app="app">
   <head>
     <meta charset="utf-8">
 
@@ -35,7 +35,7 @@
       <!-- The navigation part with the outline of slides -->
       <div class="split-left">
         <div ng-repeat="slide in slides">
-          <a href="#/{{slide.name}}" ng-class="{currentSlide: slide === currentSlide()}">
+          <a href="#/{{slide.name}}" ng-class="{currentSlide: slide.name === currentSlide.name}">
             {{slide.title}}
           </a>
         </div>

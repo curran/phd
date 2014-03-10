@@ -3,6 +3,11 @@
   "slides": [
     {"title": "Welcome",    "name": "firstSlide"},
     {"title": "Overview",   "name": "overview"},
-    {"title": "Background", "name": "bkg"}
+    {"title": "Background", "name": "bkg"},
+    {"title": "Pay by Industry", "name": "blsTableauVisBarsByIndustry", "image": "blsTableauVisBarsByIndustry.png"},
+    {"title": "Pay by State", "name": "blsTableauVisBarsByState", "image": "blsTableauVisBarsByState.png"},
+    {"title": "Data Cube with Time", "name": "blsCubeConcept", "image": "blsCubeConcept.png"},
+    {"title": "4D Data Cube", "name": "blsCubeConcept2", "image": "blsCubeConcept2.png"},
+    {"title": "Wage Visualization", "name": "blsTableauVis", "image": "blsTableauVis.png"}
   ]
 }

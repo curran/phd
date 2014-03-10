@@ -30,7 +30,7 @@ html, body {
 .split-left {
   float: left; 
   height: 100%;
-  width: 150px;
+  width: 200px;
   padding: 5px;
 }
 
