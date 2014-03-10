@@ -21,11 +21,12 @@ app.config(function($routeProvider){
     otherwise({ redirectTo: '/firstSlide' });
 });
 
-// This controller is attached to the <body>, and deals with:
+// This controller is attached to the top-level html element, and deals with:
 //
 //  * loading the presentation metadata from `slides.json`
 //  * handling the arrow keys to change slides
 //  * exposing the `currentSlide` function used for styling the active slide
+//  * exposing the presentation title to the template, which becomes the HTML <title>
 app.controller('PresentationCtrl', function($scope, $http, $document, $location){
 
   // Key codes for arrow keys.
