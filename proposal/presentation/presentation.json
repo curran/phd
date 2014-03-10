@@ -1,5 +1,5 @@
 {
-  "title": "Data Cube Integration and Visualization",
+  "title": "Integrating and Visualizing Heterogeneous Data Cubes",
   "slides": [
     {"title": "Welcome",    "name": "firstSlide"},
     {"title": "Overview",   "name": "overview"},

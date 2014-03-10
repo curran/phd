@@ -4,7 +4,7 @@
   Curran Kelleher 2/26/2014
 -->
 <!DOCTYPE html>
-<html ng-app="app">
+<html ng-app="app" ng-controller="PresentationCtrl" >
   <head>
     <meta charset="utf-8">
 
@@ -27,7 +27,7 @@
     <!-- The presentation title, drawn from presentation.json -->
     <title>{{title}}</title>
   </head>
-  <body ng-controller="PresentationCtrl" ng-keydown="changeSlide($event.keyCode)">
+  <body ng-keydown="changeSlide($event.keyCode)">
     
     <!-- Split the page vertically into two parts. -->
     <div class="split">
