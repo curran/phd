@@ -4,14 +4,11 @@
 
 ## Presentation Framework
 
-This presentation was created using [Angular.js](http://angularjs.org/).
+ * Uses [Angular.js](http://angularjs.org/)
+ * Slides authored in [Markdown](http://en.wikipedia.org/wiki/Markdown), in the `slides` directory
+ * `presentation.json` specifies the presentation title and the ordering of slides
+ * Main Angular app resides in [`app.js`](https://github.com/curran/phd/blob/gh-pages/proposal/presentation/js/app.js).
 
-Slides are authored in [Markdown](http://en.wikipedia.org/wiki/Markdown).
-
-Presentation configuration resides in `presentation.json`, which specifies the presentation title and the ordering of slides.
-
-The main Angular app resides in [`app.js`](https://github.com/curran/phd/blob/gh-pages/proposal/presentation/app.js).
-
-Feel free to use and modify for your own presentations.
+Feel free to use and modify for your own presentations!
 
 Curran Kelleher 3/10/2014

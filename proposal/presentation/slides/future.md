@@ -10,3 +10,4 @@
  * Collaboration
    * Synchronous ([Firebase](https://www.firebase.com/)?)
    * Asynchronous (view sharing)
+ * Crowdsourcing data
