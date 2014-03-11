@@ -48,6 +48,11 @@ html, body {
   color: black;
 }
 
+/* Indent slides that are configured to be indented. */
+.split-left .indented {
+  margin-left: 10px;
+}
+
 .split-left a:hover {
   /* Add underline only on hover (as a clickability affordance)*/
   text-decoration: underline;
@@ -71,11 +76,11 @@ html, body {
   height: 100%;
 }
 
-/* The title of each slide. */
-.slide h1 {
+/* The slide titles. */
+.slide h1, h2 {
   text-align: center;
+  padding-top: 30px;
   margin: 0px;
-  padding: 0px;
 }
 
 /* The subtitle lines for the first slide. */
@@ -85,9 +90,9 @@ html, body {
   padding: 0px;
 }
 
-/* Remove unnecessary spacing. */
-.slide p, ul {
-  margin: 0px;
+/* Spread apart list entries. */
+.slide li {
+  padding-top: 10px;
 }
 
 /* Style images to fit on the screen. */
