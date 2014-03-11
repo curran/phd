@@ -95,13 +95,25 @@ html, body {
   padding-top: 10px;
 }
 
+.img-container {
+  text-align: center;
+}
+
 /* Style images to fit on the screen. */
-.slide img {
+.img-container img {
   max-width: 100%;
 
   /* Using 100% here caused quirky behavior where
    * a scroll bar would appear. */
-  max-height: 95%;
+  max-height: 100%;
   margin: auto;
   overflow: auto;
+  vertical-align: middle;
+}
+.slide iframe {
+  width: 100%;
+  height: 100%;
+  border: 0px;
+  margin: 0px;
+  padding: 0px;
 }

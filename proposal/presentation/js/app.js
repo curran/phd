@@ -14,16 +14,23 @@ var app = angular.module('app', ['ngRoute']);
 app.config(function($routeProvider){
   $routeProvider.
     when('/:slideName', {
-      // This template handles two different kinds of slides:
+
+      // This template handles different kinds of slides:
       template: [
+
+        // If "slideHTML" is present, the slide has been compiled from the Markdown file found in 
+        // the "slides" directory, corresponding to the "name" property on the slide config (in presentation.json).
+        '<div ng-if="slideHTML" class="slide" ng-bind-html="slideHTML"></div>',
 
         // If an "image" property is specified in the slide config (in presentation.json),
         // then this part of the template becomes active, rendering the image to fill the slide space.
-        '<div ng-if="image"     class="slide"><img ng-src="images/{{image}}"></div>',
+        '<div ng-if="image" class="img-container">',
+          '<a ng-if="link" href="{{link}}" target="_blank"><img ng-src="images/{{image}}"></a>',
+          '<img ng-if="!link" ng-src="images/{{image}}">',
+        '</div>',
 
-        // Otherwise, `slideHTML` is compiled from the Markdown file found in the "slides" directory,
-        // corresponding to the "name" property on the slide config (in presentation.json).
-        '<div ng-if="slideHTML" class="slide" ng-bind-html="slideHTML"></div>'
+        // If "iFrameSrc" is present, the slide has been configured to load another page in an iFrame.
+        '<div ng-if="iFrameSrc" class="slide"><iframe ng-src="{{iFrameSrc}}"></div>'
 
       ].join(''),
       controller: 'SlideCtrl'

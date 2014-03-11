@@ -14,6 +14,13 @@ app.controller('SlideCtrl', function($rootScope, $scope, $routeParams, $http, $s
       // then display a slide that is just that image full screen.
       $scope.image = slide.image;
 
+      // Add a link for the image from the configuration.
+      $scope.link = slide.link;
+
+    // Likewise for iFrames
+    } else if(slide.iFrameSrc) {
+      $scope.iFrameSrc = $sce.trustAsResourceUrl(slide.iFrameSrc);
+
       // Otherwise, load and render the markdown file for the slide.
     } else {
 
