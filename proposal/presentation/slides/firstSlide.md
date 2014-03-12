@@ -1,4 +1,4 @@
-<div style="height: 20%"></div>
+<div style="height: 10%"></div>
 
 # Integrating and Visualizing Heterogeneous Data Cubes
 
@@ -7,3 +7,7 @@
 ### Curran Kelleher
 ### Doctoral Dissertation Proposal Defense
 ### March 13, 2014
+
+<div style="height: 10%"></div>
+
+###[github.com/curran/phd](https://github.com/curran/phd)
