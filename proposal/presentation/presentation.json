@@ -35,7 +35,7 @@
       { "title": "Linked Views", "name": "mortality_linked", "image": "mortalityVisV4.png",
         "link": "http://curran.github.io/visualizations/mortality/v4/", "indent": true },
 
-      { "title": "Dashboard Scaffold", "name": "dashboardscaffold", "image": "dashboardscaffold.png",
+      { "title": "Dashboard Scaffold", "name": "dashboardscaffold", "image": "dashboardScaffold.png",
         "link": "http://curran.github.io/dashboardScaffoldExample/v0.1.0/index.html", "indent": true },
 
     { "title": "Plan of Action", "name": "action" },
