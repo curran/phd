@@ -8,6 +8,7 @@
       { "title": "Data Representation", "name": "dataRepresentation", "indent": true },
       { "title": "Data Integration", "name": "dataIntegration", "indent": true },
       { "title": "Data Visualization", "name": "dataVisualization", "indent": true },
+      { "title": "Web Graphics", "name": "webGraphics", "indent": true },
 
     { "title": "Vision", "name": "vision", "image": "telescope.jpg",
       "link": "http://pixabay.com/en/telescope-by-looking-view-122960/" },
@@ -40,6 +41,7 @@
 
     { "title": "Plan of Action", "name": "action" },
     { "title": "Future Work", "name": "future" },
+    { "title": "Acknowledgements", "name": "acknowledgements" },
     { "title": "The End", "name": "lastSlide" }
   ],
   "unusedSlides": [
