@@ -40,7 +40,7 @@ html, body {
   text-decoration: none;
 
   /* Make the non-active slides fade into the background. */
-  color: gray;
+  color: darkgray;
 
   font-size: 1.2em;
 }

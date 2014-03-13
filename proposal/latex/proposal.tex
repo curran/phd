@@ -369,6 +369,39 @@ The proposed work involves precise characterization of the above mentioned visua
 \end{figure}
 We introduce a taxonomy of visualization techniques based on the data cube structures they are capable of representing, as shown in the table in figure \ref{fig:visTax}. In the ``Data Cube Structure'' column, ``D'' stands for Dimension and ``M'' stands for Measure. The number preceding ``D'' or ``M'' is the number of Dimensions or Measures that the visualization technique is capable of representing. When ``n'' is used instead of a number, it means an arbitrary number of Dimensions or Measures can be represented by the visualization. ``Small Multiples'' is considered here as a special case that can be applied to any existing visualization by replicating the visualization while changing the slice in 
 
+\subsection{Data Set Index}
+
+\begin{figure}[h!]
+  \centering
+  \begin{tabular}{ | l | l | l | l | }
+  \hline
+  Data Set & Dimensions & Measures \\ \hline
+  UN Population &        \vtop{\hbox{\strut Space (Countries)}\hbox{\strut Time (Years)}} & Population \\ \hline
+  US Census Population&      \vtop{\hbox{\strut Space (US States, US Counties)}\hbox{\strut Time (Years)}} & Population \\ \hline
+  \vtop{\hbox{\strut UN Millenium}
+        \hbox{\strut Development Goals}}& \vtop{\hbox{\strut Space (Countries)}\hbox{\strut Time (Years)}} & 
+                                   \vtop{\hbox{\strut Employment}
+                                         \hbox{\strut Literacy}
+                                         \hbox{\strut Infant mortality}
+                                         \hbox{\strut ... many more}}  \\ \hline
+  \vtop{\hbox{\strut CIA World}
+        \hbox{\strut Factbook}}&   \vtop{\hbox{\strut Space (Countries)}\hbox{\strut Time (Years)}} & 
+                                   \vtop{\hbox{\strut Life Expectancy}
+                                         \hbox{\strut Median Age}
+                                         \hbox{\strut GDP Per Capita}
+                                         \hbox{\strut ... many more}}  \\ \hline
+  CDC Causes of Death &            \vtop{\hbox{\strut Causes of Death (Hierarchy)}\hbox{\strut Time (Years)}} & Percentage of Deaths \\ \hline
+  \vtop{\hbox{\strut PEW Global}
+        \hbox{\strut Religious Landscape}}& \vtop{\hbox{\strut Space (Countries)}
+                                                  \hbox{\strut Time (Years)}
+                                                  \hbox{\strut Religion}} & Population\\ \hline
+  \end{tabular}
+  \caption[Data Set Index]
+   {A preliminary index of public data sets characterizing their data cube structure in terms of dimension and measure coverage. }
+  \label{fig:dataTax}
+\end{figure}
+
+We introduce an index of public data sets characterizing their data cube structure in terms of dimension and measure coverage. Figure \ref{fig:dataTax} shows a preliminary index of public data sets showing data cube structure only in terms of dimensions, levels, and measures. Once data sets are imported into our framework, the construction of this index can be automated. Additional detail will be included such as the members covered for each dimension. This index can be used in conjunction with our visualization taxonomy to match data sets (and combinations thereof) with approproate visual representations.
 
 \subsection{Prototypes}
 

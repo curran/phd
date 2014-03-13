@@ -8,6 +8,8 @@
       { "title": "Data Representation", "name": "dataRepresentation", "indent": true },
       { "title": "Data Integration", "name": "dataIntegration", "indent": true },
       { "title": "Data Visualization", "name": "dataVisualization", "indent": true },
+      { "title": "Data Cube Example", "name": "cube_example", "image": "cubes.png",
+        "link":"https://graphics.stanford.edu/papers/pan_zoom/paper.pdf", "indent": true },
       { "title": "Web Graphics", "name": "webGraphics", "indent": true },
 
     { "title": "Vision", "name": "vision", "image": "telescope.jpg",
@@ -19,6 +21,7 @@
     { "title": "Expected Contributions", "name": "contributions" },
       { "title": "Data Model", "name": "data_model", "image": "UDCModel.png", "indent": true },
       { "title": "Visualization Taxonomy", "name": "taxonomy", "image": "visTaxonomy.png", "indent": true},
+      { "title": "Public Data Index", "name": "dataset_taxonomy", "image": "dataSetTaxonomy.png", "indent": true},
 
     { "title": "Prototypes", "name": "prototypes" },
 
