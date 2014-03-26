@@ -1,0 +1,13 @@
+{
+  "name": "static-file-server",
+  "preferGlobal": true,
+  "version": "0.0.1",
+  "author": "Curran Kelleher <curran.kelleher@gmail.com>",
+  "description": "A static file server for development use.",
+  "bin": {
+    "server": "./server"
+  },
+  "dependencies" : {
+    "express":  "*"
+  }
+}

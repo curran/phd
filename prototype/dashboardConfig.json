@@ -1,0 +1,43 @@
+{
+  "layout": {
+    "tree": {
+      "orientation": "vertical",
+      "children": [
+        {
+          "orientation": "horizontal",
+          "size": 1,
+          "children": [
+            { "name": "vis1", "size": 1 },
+            { "name": "vis2", "size": 1 }
+          ]
+        },
+        { "name": "vis3", "size": 1 }
+      ]
+    }
+  },
+  "links": {
+    "bindings": [
+      {
+        "source": "vis1.lineWidth",
+        "destination": "vis2.lineWidth"
+      }
+    ]
+  },
+  "data": {},
+  "vis1": {
+    "module": "dummyVis",
+    "bkgColor": "#AC1A65",
+    "lineWidth": 22,
+    "lineColor": "#47FF00"
+  },
+  "vis2": {
+    "module": "dummyVis",
+    "bkgColor": "#69FFED",
+    "lineColor": "#F5F5F5",
+    "labelText": "Hello dashboardConfig!"
+  },
+  "vis3": {
+    "module": "dummyVis",
+    "bkgColor": "#FFB802"
+  }
+}

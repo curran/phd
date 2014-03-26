@@ -1,0 +1,19 @@
+/**
+ * CSS for the positioning of the dashboard container div.
+ *
+ * By Curran Kelleher 3/26/2014
+ */
+#dashboard {
+
+  /**
+   * Position the dashboard in the center of the page
+   * with percent based margins.
+   */
+  position: fixed;
+  top: 20%;
+  bottom: 20%;
+  left: 20%;
+  right: 20%;
+
+  color: red;
+}
