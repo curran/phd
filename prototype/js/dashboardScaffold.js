@@ -36,12 +36,6 @@ define([], function () {
             // The 'module' option is used for fetching the
             // AMD module that provides the component factory.
             module = options.module;
-        
-        // If no 'module' property is specified,
-        // use the alias as the module name.
-        if(!module) {
-          module = alias;
-        }
 
         // Use require.js to dynamically fetch the module.
         require([module], function (createComponent) {

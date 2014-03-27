@@ -1,5 +1,6 @@
 {
   "layout": {
+    "module": "layout",
     "tree": {
       "orientation": "vertical",
       "children": [
@@ -30,13 +31,21 @@
       ]
     }
   },
-  "links": [
-    {
-      "source": "vis1.lineWidth",
-      "destination": "vis2.lineWidth"
-    }
-  ],
-  "data": {},
+  "links": {
+    "module": "links",
+    "bindings": [
+      {
+        "source": "vis1.lineWidth",
+        "destination": "vis2.lineWidth"
+      }
+    ]
+  },
+  "data": {
+    "module": "data",
+    "sources": [
+      "unPopulation"
+    ]
+  },
   "vis1": {
     "module": "dummyVis",
     "bkgColor": "#AC1A65",
