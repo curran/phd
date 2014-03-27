@@ -9,41 +9,37 @@ define(['wire'], function (wire) {
   // The constructor function.
   return function (dashboard) {
 
-    var model = new Backbone.Model({
-      tree: {}
-    });
+    var model = new Backbone.Model();
 
     // Call once to initialize
-    // TODO refactor
-    updateLayout();
+    setBoxFromDiv();
 
     // Call whenever the browser window changes size
-    // TODO refactor
-    window.addEventListener('resize', updateLayout);
+    window.addEventListener('resize', setBoxFromDiv);
 
-    // Call whenever the layout tree is set on the model.
-    wire(['tree'], updateLayout, model);
+    function setBoxFromDiv(){
+      var div = dashboard.div.node();
+      model.set('box', {
+        x: 0,
+        y: 0,
+        width: div.clientWidth,
+        height: div.clientHeight
+      });
+    }
 
     // Computes the layout based on the dashboard div size
     // and the configured layout tree.
-    // Sets the 'box' property on each visualization model
-    // to an object with (x, y, width, height) in pixels.
-    function updateLayout(){
-      var div = dashboard.div.node(),
-          box = {
-            x: 0,
-            y: 0,
-            width: div.clientWidth,
-            height: div.clientHeight
-          },
-          layout = computeLayout(model.get('tree'), box);
+    wire(['tree', 'box'], function (tree, box) {
+      var layout = computeLayout(tree, box);
 
+      // Set the 'box' property on each visualization model
+      // to an object with (x, y, width, height) in pixels.
       layout.forEach(function (layoutElement) {
         dashboard.getComponent(layoutElement.name, function (component) {
           component.set('box', layoutElement.box);
         });
       });
-    }
+    }, model);
 
     return model;
   }
@@ -88,16 +84,12 @@ define(['wire'], function (wire) {
       if (child.children) {
         return layoutElements.concat(computeLayout(child, childBox));
       } else {
-        return layoutElements.concat({
-          name: child.name,
-          box: childBox
-        });
+        return layoutElements.concat({ name: child.name, box: childBox });
       }
     }, []);
   }
 
-  // Sums property values in an array.
-  // See http://underscorejs.org/#reduce
+  // Sums property values in an array. See http://underscorejs.org/#reduce
   function sum(arr, property) {
     return _.reduce(arr, function(memo, item){
       return memo + item[property];
