@@ -4,17 +4,25 @@
 *
 * Curran Kelleher 3/27/2014
 */
-define([], function () {
+define(['wire'], function (wire) {
 
   // The constructor function.
-  // TODO don't pass options here.
-  return function (options, dashboard) {
+  return function (dashboard) {
+
+    var model = new Backbone.Model({
+      tree: {}
+    });
 
     // Call once to initialize
+    // TODO refactor
     updateLayout();
 
     // Call whenever the browser window changes size
+    // TODO refactor
     window.addEventListener('resize', updateLayout);
+
+    // Call whenever the layout tree is set on the model.
+    wire(['tree'], updateLayout, model);
 
     // Computes the layout based on the dashboard div size
     // and the configured layout tree.
@@ -28,8 +36,7 @@ define([], function () {
             width: div.clientWidth,
             height: div.clientHeight
           },
-          // TODO 'options' is not a clear variable name here
-          layout = computeLayout(options, box);
+          layout = computeLayout(model.get('tree'), box);
 
       layout.forEach(function (layoutElement) {
         dashboard.getComponent(layoutElement.name, function (component) {
@@ -37,6 +44,8 @@ define([], function () {
         });
       });
     }
+
+    return model;
   }
 
   // Computes the layout of the visualizations in the dashboard.

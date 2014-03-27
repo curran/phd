@@ -7,7 +7,7 @@
 define(['wire'], function (wire) {
 
   // The constructor function.
-  return function (options, dashboard) {
+  return function (dashboard) {
     var model = new Backbone.Model({
           bkgColor: 'white',
 
@@ -25,8 +25,6 @@ define(['wire'], function (wire) {
         rect = svg.append('rect')
           .attr('x', 0)
           .attr('y', 0);
-
-    model.set(options);
 
     wire(['bkgColor'], function (bkgColor) {
       rect.attr('fill', bkgColor);

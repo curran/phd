@@ -7,5 +7,7 @@
 define([], function () {
 
   // The constructor function.
-  return function (options) {}
+  return function () {
+    return new Backbone.Model();
+  }
 });

@@ -46,14 +46,15 @@ define([], function () {
         // Use require.js to dynamically fetch the module.
         require([module], function (createComponent) {
 
-          // Assuming the module is a factory function 
-          // that takes a properties object as a first argument,
-          // and the dashboard public API as a second argument,
+          // Assuming the module provides a factory function 
+          // that takes the dashboard public API as an argument,
+          // and returns a Backbone model,
           // create and store the runtime component.
-          //
-          // TODO don't pass in options here,
-          // handle creation and configuration separately
-          components[alias] = createComponent(options, dashboard);
+          var model = createComponent(dashboard);
+          components[alias] = model;
+
+          // Pass configuration options into the model.
+          model.set(options);
         });
       });
     }
