@@ -3,7 +3,7 @@
  *
  * Curran Kelleher 3/26/2014
  */
-define([], function () {
+define(['configDiff'], function (configDiff) {
 
   // Constructor function for dashboards.
   return function DashboardScaffold(dashboardDivId){
@@ -20,42 +20,17 @@ define([], function () {
           setConfig: setConfig,
           getComponent: getComponent,
           div: d3.select('#' + dashboardDivId)
-        };
+        },
+
+        // The previously set configuration object,
+        // used for computing diffs between subsequent calls to setConfig().
+        oldConfig = {};
 
     // Sets the configuration for the dashboard.
-    function setConfig(config){
-      var actions = [];
-      function create(alias) {
-        actions.push({
-          method: 'create',
-          alias: alias
-        });
-      }
-      function set(alias, property, value) {
-        actions.push({
-          method: 'set',
-          alias: alias,
-          property: property,
-          value: value
-        });
-      }
-     
+    function setConfig(newConfig){
       // TODO handle config diffs only.
       // TODO handle multiple calls to setConfig
-      
-      // Each key in the config object
-      // corresponds to a component alias.
-      _.keys(config).forEach(function (alias) {
-        var options = config[alias];
-
-        create(alias);
-
-        _.keys(options).forEach(function (property) {
-          var value = options[property];
-          set(alias, property, value);
-        });
-
-      });
+      var actions = configDiff(oldConfig, newConfig);
 
       // Process actions
       var createdComponents = {},
@@ -75,6 +50,7 @@ define([], function () {
         methods[a.method](a.alias, a.property, a.value);
       });
 
+      // Process newly created components
       _.keys(createdComponents).forEach(function (alias) {
         var options = createdComponents[alias];
 
