@@ -24,6 +24,21 @@ define([], function () {
 
     // Sets the configuration for the dashboard.
     function setConfig(config){
+      var actions = [];
+      function create(alias) {
+        actions.push({
+          method: 'create',
+          alias: alias
+        });
+      }
+      function set(alias, property, value) {
+        actions.push({
+          method: 'set',
+          alias: alias,
+          property: property,
+          value: value
+        });
+      }
      
       // TODO handle config diffs only.
       // TODO handle multiple calls to setConfig
@@ -31,14 +46,40 @@ define([], function () {
       // Each key in the config object
       // corresponds to a component alias.
       _.keys(config).forEach(function (alias) {
-        var options = config[alias],
+        var options = config[alias];
 
-            // The 'module' option is used for fetching the
-            // AMD module that provides the component factory.
-            module = options.module;
+        create(alias);
+
+        _.keys(options).forEach(function (property) {
+          var value = options[property];
+          set(alias, property, value);
+        });
+
+      });
+
+      // Process actions
+      var createdComponents = {},
+          methods = {
+            'create': function (alias) {
+              createdComponents[alias] = {};
+            },
+            'set': function (alias, property, value) {
+              // TODO if(createdComponents[alias]) {
+              createdComponents[alias][property] = value;
+              // } else {
+              //   components[alias].set('property', value);
+              // }
+            }
+          };
+      actions.forEach(function (a) {
+        methods[a.method](a.alias, a.property, a.value);
+      });
+
+      _.keys(createdComponents).forEach(function (alias) {
+        var options = createdComponents[alias];
 
         // Use require.js to dynamically fetch the module.
-        require([module], function (createComponent) {
+        require([options.module], function (createComponent) {
 
           // Assuming the module provides a factory function 
           // that takes the dashboard public API as an argument,
@@ -47,7 +88,7 @@ define([], function () {
           var model = createComponent(dashboard);
           components[alias] = model;
 
-          // Pass configuration options into the model.
+          // Pass initial configuration options into the model.
           model.set(options);
         });
       });
