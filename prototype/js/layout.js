@@ -2,11 +2,12 @@
 * This module implements nested box layout
 * for visualizations within a dashboard.
 *
-* Curran Kelleher 3/26/2014
+* Curran Kelleher 3/27/2014
 */
 define([], function () {
 
   // The constructor function.
+  // TODO don't pass options here.
   return function (options, dashboard) {
 
     // Call once to initialize
@@ -21,59 +22,76 @@ define([], function () {
     // to an object with (x, y, width, height) in pixels.
     function updateLayout(){
       var div = dashboard.div.node(),
-          width = div.clientWidth,
-          height = div.clientHeight,
-          layout = computeLayout(options, 0, 0, width, height, []);
+          box = {
+            x: 0,
+            y: 0,
+            width: div.clientWidth,
+            height: div.clientHeight
+          },
+          // TODO 'options' is not a clear variable name here
+          layout = computeLayout(options, box);
 
-      layout.forEach(function (box) {
-        dashboard.getComponent(box.name, function (vis) {
-          // TODO vis.set('box', box);
-          vis.set('box', {
-            x: box.x,
-            y: box.y,
-            width: box.dx,
-            height: box.dy
-          });
+      layout.forEach(function (layoutElement) {
+        dashboard.getComponent(layoutElement.name, function (component) {
+          component.set('box', layoutElement.box);
         });
       });
     }
   }
 
   // Computes the layout of the visualizations in the dashboard.
-  // TODO clean this up
-  function computeLayout(node, x, y, dx, dy, layout) {
-    var totalSize = 0,
-        childX, childY, childDx, childDy;
-    node.children.forEach(function (child) {
-      totalSize += child.size;
-    });
-    node.children.forEach(function (child) {
+  //
+  // Arguments:
+  //
+  // 'node' - either a non-leaf node or a leaf node object.
+  //
+  //   If 'node' is a non-leaf node, it is expected to have the following properties:
+  //
+  //    * 'orientation' - either 'vertical' or 'horizontal'
+  //    * 'children' - an array of child node objects
+  //
+  //   If 'node' is a leaf node, it is expected to have the following properties:
+  //
+  //    * 'name' - the alias of the visualization in the dashboard configuration
+  //    * 'size' - a number that determines the size of this node within its parent
+  //      * Nodes are sized based on the ratio of their 'size' property
+  //        relative to the sum of all 'size' properties of sibling nodes.
+  //
+  // 'box' - the bounding box of the node in pixels, having (x, y, width, height) properties.
+  //
+  // Returns an array of layout elements, one for each leaf node of the input layout tree.
+  // Each layout element has the following properties:
+  //
+  //  * 'name' - the alias of the visualization in the dashboard configuration
+  //  * 'box' - the bounding box of the visualization in pixels computed by the layout,
+  //            having (x, y, width, height) properties.
+  function computeLayout(node, box) {
+    var totalSize = sum(node.children, 'size');
+    return _.reduce(node.children, function (layoutElements, child) {
+      var childBox = _.clone(box);
       if (node.orientation === 'horizontal') {
-        childDx = dx * child.size / totalSize;
-        childX = x;
-        childY = y;
-        childDy = dy;
-        x += childDx;
+        childBox.width = box.width * child.size / totalSize;
+        box.x += childBox.width;
       } else if (node.orientation === 'vertical') {
-        childDy = dy * child.size / totalSize;
-        childX = x;
-        childY = y;
-        childDx = dx;
-        y += childDy;
+        childBox.height = box.height * child.size / totalSize;
+        box.y += childBox.height;
       }
-
       if (child.children) {
-        computeLayout(child, childX, childY, childDx, childDy, layout);
+        return layoutElements.concat(computeLayout(child, childBox));
       } else {
-        layout.push({
+        return layoutElements.concat({
           name: child.name,
-          x: childX,
-          y: childY,
-          dx: childDx,
-          dy: childDy
+          box: childBox
         });
       }
-    });
-    return layout;
+    }, []);
+  }
+
+  // Sums property values in an array.
+  // See http://underscorejs.org/#reduce
+  function sum(arr, property) {
+    return _.reduce(arr, function(memo, item){
+      return memo + item[property];
+    }, 0);
   }
 });

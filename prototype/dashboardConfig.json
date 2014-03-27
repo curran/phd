@@ -10,7 +10,22 @@
             { "name": "vis2", "size": 1 }
           ]
         },
-        { "name": "vis3", "size": 1 }
+        {
+          "orientation": "vertical",
+          "size": 1,
+          "children": [
+            { "name": "vis3", "size": 1 },
+            {
+              "orientation": "horizontal",
+              "size": 1,
+              "children": [
+                { "name": "vis4", "size": 1 },
+                { "name": "vis5", "size": 1 },
+                { "name": "vis6", "size": 1 }
+              ]
+            }
+          ]
+        }
       ]
   },
   "links": [
@@ -35,5 +50,17 @@
   "vis3": {
     "module": "dummyVis",
     "bkgColor": "#FFB802"
+  },
+  "vis4": {
+    "module": "dummyVis",
+    "bkgColor": "red"
+  },
+  "vis5": {
+    "module": "dummyVis",
+    "bkgColor": "green"
+  },
+  "vis6": {
+    "module": "dummyVis",
+    "bkgColor": "blue"
   }
 }
