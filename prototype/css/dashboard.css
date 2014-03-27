@@ -6,14 +6,12 @@
 #dashboard {
 
   /**
-   * Position the dashboard in the center of the page
-   * with percent based margins.
+   * Position the dashboard in the center of the page with margins.
    */
   position: fixed;
-  top: 20%;
-  bottom: 20%;
-  left: 20%;
-  right: 20%;
+  top:    15px;
+  bottom: 15px;
+  left:   15px;
+  right:  15px;
 
-  color: red;
 }

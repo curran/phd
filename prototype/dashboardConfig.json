@@ -1,6 +1,5 @@
 {
   "layout": {
-    "tree": {
       "orientation": "vertical",
       "children": [
         {
@@ -13,16 +12,13 @@
         },
         { "name": "vis3", "size": 1 }
       ]
+  },
+  "links": [
+    {
+      "source": "vis1.lineWidth",
+      "destination": "vis2.lineWidth"
     }
-  },
-  "links": {
-    "bindings": [
-      {
-        "source": "vis1.lineWidth",
-        "destination": "vis2.lineWidth"
-      }
-    ]
-  },
+  ],
   "data": {},
   "vis1": {
     "module": "dummyVis",
