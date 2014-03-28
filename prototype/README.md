@@ -2,6 +2,7 @@ A proof-of-concept implementation of the Universal Data Cube Visualization Frame
 
  * [Run the prototype](http://curran.github.io/phd/prototype/)
  * [Run the unit tests](http://curran.github.io/phd/prototype/SpecRunner.html)
+ * [View the documentation](http://curran.github.io/phd/prototype/docs/main.html)
 
 Depends on the following JavaScript libraries:
 
