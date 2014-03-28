@@ -1,9 +1,7 @@
-/**
- * Computes the difference between two dashboard configuration objects
- * and returns the difference as a sequence of actions to be executed.
- *
- * Curran Kelleher 3/27/2014
- */
+// Computes the difference between two dashboard configuration objects
+// and returns the difference as a sequence of actions to be executed.
+//
+// Curran Kelleher 3/27/2014
 define([], function () {
 
   return function (oldConfig, newConfig){

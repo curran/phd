@@ -1,20 +1,19 @@
-/**
- * The dashboard configuration engine.
- *
- * Curran Kelleher 3/26/2014
- */
+// The dashboard configuration engine.
+// 
+// Curran Kelleher 3/26/2014
 define(['configDiff'], function (configDiff) {
 
   // Constructor function for dashboards.
+  //  * The `dashboardDivId` argument provides the id of
+  //    an existing div that the dashboard will be injected into.
   return function DashboardScaffold(dashboardDivId){
 
     // The runtime components within the dashboard.
-    // Keys: component aliases
-    // Values: Backbone models for each component
+    //  * Keys: component aliases
+    //  * Values: Backbone models for each component
     var components = {},
 
-        // The public API object.
-        // This is returned by the dashboard constructor function,
+        // The public API object returned by the dashboard constructor function,
         // and also passed into component module constructors.
         dashboard = {
           setConfig: setConfig,
@@ -28,11 +27,16 @@ define(['configDiff'], function (configDiff) {
 
     // Sets the configuration for the dashboard.
     function setConfig(newConfig){
-      // TODO handle config diffs only.
-      // TODO handle multiple calls to setConfig
+
+      // Convert the configuration changes into a
+      // sequence of actions using `configDiff()`.
       var actions = configDiff(oldConfig, newConfig);
 
+      oldConfig = newConfig;
+
       // Process actions
+      // TODO refactor detection of "module" property
+      // into a separate module
       var createdComponents = {},
           methods = {
             'create': function (alias) {

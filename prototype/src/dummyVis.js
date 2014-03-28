@@ -1,24 +1,14 @@
-/**
- * This module implements a dummy visualization
- * for testing the visualization dashboard framework.
- *
- * Curran Kelleher 3/26/2014
- */
+// This module implements a dummy visualization
+// for testing the visualization dashboard framework.
+//
+// Curran Kelleher 3/26/2014
 define(['wire'], function (wire) {
 
   // The constructor function.
   return function (dashboard) {
     var model = new Backbone.Model({
           bkgColor: 'white',
-
-          // (x, y, width, height) properties
-          // are in pixels
-          box: {
-            x: 0,
-            y: 0,
-            width: 10,
-            height: 10
-          }
+          box: { x: 0, y: 0, width: 10, height: 10 }
         }),
         svg = dashboard.div.append('svg')
           .style('position', 'absolute'),

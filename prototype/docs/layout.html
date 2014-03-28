@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>layout.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+      <ul id="jump_to">
+        <li>
+          <a class="large" href="javascript:void(0);">Jump To &hellip;</a>
+          <a class="small" href="javascript:void(0);">+</a>
+          <div id="jump_wrapper">
+          <div id="jump_page">
+            
+              
+              <a class="source" href="configDiff.html">
+                configDiff.js
+              </a>
+            
+              
+              <a class="source" href="dashboardScaffold.html">
+                dashboardScaffold.js
+              </a>
+            
+              
+              <a class="source" href="data.html">
+                data.js
+              </a>
+            
+              
+              <a class="source" href="dummyVis.html">
+                dummyVis.js
+              </a>
+            
+              
+              <a class="source" href="layout.html">
+                layout.js
+              </a>
+            
+              
+              <a class="source" href="links.html">
+                links.js
+              </a>
+            
+              
+              <a class="source" href="main.html">
+                main.js
+              </a>
+            
+              
+              <a class="source" href="wire.html">
+                wire.js
+              </a>
+            
+          </div>
+        </li>
+      </ul>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>layout.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              <p>This module implements nested box layout for visualization dashboards.</p>
+<p>Curran Kelleher 3/27/2014</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>define([<span class="hljs-string">'wire'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(wire)</span> {</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p>The constructor function.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(dashboard)</span> {</span>
+
+    <span class="hljs-keyword">var</span> model = <span class="hljs-keyword">new</span> Backbone.Model();</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p>Call once to initialize</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    setBoxFromDiv();</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p>Call whenever the browser window changes size</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    window.addEventListener(<span class="hljs-string">'resize'</span>, setBoxFromDiv);
+
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">setBoxFromDiv</span><span class="hljs-params">()</span>{</span>
+      <span class="hljs-keyword">var</span> div = dashboard.div.node();
+      model.set(<span class="hljs-string">'box'</span>, {
+        x: <span class="hljs-number">0</span>,
+        y: <span class="hljs-number">0</span>,
+        width: div.clientWidth,
+        height: div.clientHeight
+      });
+    }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p>Computes the layout based on the dashboard div size
+and the configured layout tree.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    wire([<span class="hljs-string">'tree'</span>, <span class="hljs-string">'box'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(tree, box)</span> {</span>
+      <span class="hljs-keyword">var</span> layout = computeLayout(tree, box);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p>Set the <code>box</code> property on each visualization model
+to an object with (x, y, width, height) in pixels.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      layout.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(layoutElement)</span> {</span>
+        dashboard.getComponent(layoutElement.name, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(component)</span> {</span>
+          component.set(<span class="hljs-string">'box'</span>, layoutElement.box);
+        });
+      });
+    }, model);
+
+    <span class="hljs-keyword">return</span> model;
+  }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <p>Computes the layout of the visualizations in the dashboard.</p>
+<p>Arguments:</p>
+<ul>
+<li><p><code>node</code> - either a non-leaf node or a leaf node object.</p>
+<p>  If <code>node</code> is a non-leaf node, it is expected to have the following properties:</p>
+<ul>
+<li><code>orientation</code> - either <code>vertical</code> or <code>horizontal</code></li>
+<li><p><code>children</code> - an array of child node objects</p>
+<p>If <code>node</code> is a leaf node, it is expected to have the following properties:</p>
+</li>
+<li><p><code>name</code> - the alias of the visualization in the dashboard configuration</p>
+</li>
+<li><code>size</code> - a number that determines the size of this node within its parent<ul>
+<li>Nodes are sized based on the ratio of their <code>size</code> property
+relative to the sum of all <code>size</code> properties of sibling nodes.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><code>box</code> - the bounding box of the node in pixels, having (x, y, width, height) properties.</p>
+<p>Returns an array of layout elements, one for each leaf node of the input layout tree.
+Each layout element has the following properties:</p>
+<ul>
+<li><code>name</code> - the alias of the visualization in the dashboard configuration</li>
+<li><code>box</code> - the bounding box of the visualization in pixels computed by the layout,
+having (x, y, width, height) properties.</li>
+</ul>
+</li>
+</ul>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">computeLayout</span><span class="hljs-params">(node, box)</span> {</span>
+    <span class="hljs-keyword">var</span> totalSize = sum(node.children, <span class="hljs-string">'size'</span>);
+    <span class="hljs-keyword">return</span> _.reduce(node.children, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(layoutElements, child)</span> {</span>
+      <span class="hljs-keyword">var</span> childBox = _.clone(box);
+      <span class="hljs-keyword">if</span> (node.orientation === <span class="hljs-string">'horizontal'</span>) {
+        childBox.width = box.width * child.size / totalSize;
+        box.x += childBox.width;
+      } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (node.orientation === <span class="hljs-string">'vertical'</span>) {
+        childBox.height = box.height * child.size / totalSize;
+        box.y += childBox.height;
+      }
+      <span class="hljs-keyword">if</span> (child.children) {
+        <span class="hljs-keyword">return</span> layoutElements.concat(computeLayout(child, childBox));
+      } <span class="hljs-keyword">else</span> {
+        <span class="hljs-keyword">return</span> layoutElements.concat({ name: child.name, box: childBox });
+      }
+    }, []);
+  }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <p>Sums property values in an array. See <a href="http://underscorejs.org/#reduce">http://underscorejs.org/#reduce</a></p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">sum</span><span class="hljs-params">(arr, property)</span> {</span>
+    <span class="hljs-keyword">return</span> _.reduce(arr, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(memo, item)</span>{</span>
+      <span class="hljs-keyword">return</span> memo + item[property];
+    }, <span class="hljs-number">0</span>);
+  }
+});</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

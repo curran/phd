@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>dashboardScaffold.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+      <ul id="jump_to">
+        <li>
+          <a class="large" href="javascript:void(0);">Jump To &hellip;</a>
+          <a class="small" href="javascript:void(0);">+</a>
+          <div id="jump_wrapper">
+          <div id="jump_page">
+            
+              
+              <a class="source" href="configDiff.html">
+                configDiff.js
+              </a>
+            
+              
+              <a class="source" href="dashboardScaffold.html">
+                dashboardScaffold.js
+              </a>
+            
+              
+              <a class="source" href="data.html">
+                data.js
+              </a>
+            
+              
+              <a class="source" href="dummyVis.html">
+                dummyVis.js
+              </a>
+            
+              
+              <a class="source" href="layout.html">
+                layout.js
+              </a>
+            
+              
+              <a class="source" href="links.html">
+                links.js
+              </a>
+            
+              
+              <a class="source" href="main.html">
+                main.js
+              </a>
+            
+              
+              <a class="source" href="wire.html">
+                wire.js
+              </a>
+            
+          </div>
+        </li>
+      </ul>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>dashboardScaffold.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              <p>The dashboard configuration engine.</p>
+<p>Curran Kelleher 3/26/2014</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>define([<span class="hljs-string">'configDiff'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(configDiff)</span> {</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p>Constructor function for dashboards.</p>
+<ul>
+<li>The <code>dashboardDivId</code> argument provides the id of
+an existing div that the dashboard will be injected into.</li>
+</ul>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">DashboardScaffold</span><span class="hljs-params">(dashboardDivId)</span>{</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p>The runtime components within the dashboard.</p>
+<ul>
+<li>Keys: component aliases</li>
+<li>Values: Backbone models for each component</li>
+</ul>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">var</span> components = {},</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p>The public API object returned by the dashboard constructor function,
+and also passed into component module constructors.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        dashboard = {
+          setConfig: setConfig,
+          getComponent: getComponent,
+          div: d3.select(<span class="hljs-string">'#'</span> + dashboardDivId)
+        },</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p>The previously set configuration object,
+used for computing diffs between subsequent calls to setConfig().</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        oldConfig = {};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p>Sets the configuration for the dashboard.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">setConfig</span><span class="hljs-params">(newConfig)</span>{</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <p>Convert the configuration changes into a
+sequence of actions using <code>configDiff()</code>.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">var</span> actions = configDiff(oldConfig, newConfig);
+
+      oldConfig = newConfig;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <p>Process actions
+TODO refactor detection of “module” property
+into a separate module</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">var</span> createdComponents = {},
+          methods = {
+            <span class="hljs-string">'create'</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(alias)</span> {</span>
+              createdComponents[alias] = {};
+            },
+            <span class="hljs-string">'set'</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(alias, property, value)</span> {</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              <p>TODO if(createdComponents[alias]) {</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>              createdComponents[alias][property] = value;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-10">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-10">&#182;</a>
+              </div>
+              <p>} else {
+  components[alias].set(‘property’, value);
+}</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>            }
+          };
+      actions.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(a)</span> {</span>
+        methods[a.method](a.alias, a.property, a.value);
+      });</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-11">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-11">&#182;</a>
+              </div>
+              <p>Process newly created components</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      _.keys(createdComponents).forEach(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(alias)</span> {</span>
+        <span class="hljs-keyword">var</span> options = createdComponents[alias];</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-12">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-12">&#182;</a>
+              </div>
+              <p>Use require.js to dynamically fetch the module.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        <span class="hljs-built_in">require</span>([options.module], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(createComponent)</span> {</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-13">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-13">&#182;</a>
+              </div>
+              <p>Assuming the module provides a factory function 
+that takes the dashboard public API as an argument,
+and returns a Backbone model,
+create and store the runtime component.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>          <span class="hljs-keyword">var</span> model = createComponent(dashboard);
+          components[alias] = model;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-14">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-14">&#182;</a>
+              </div>
+              <p>Pass initial configuration options into the model.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>          model.set(options);
+        });
+      });
+    }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-15">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-15">&#182;</a>
+              </div>
+              <p>Gets a runtime dashboard component by name.
+Calls the callback with the component object.
+If the component has not yet loaded,
+waits for the component to load.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getComponent</span><span class="hljs-params">(alias, callback)</span> {</span>
+      <span class="hljs-keyword">var</span> component = components[alias];</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-16">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-16">&#182;</a>
+              </div>
+              <p>If the component is already loaded,</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">if</span>(component){</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-17">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-17">&#182;</a>
+              </div>
+              <p>call the callback immediately,</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        callback(component);
+      } <span class="hljs-keyword">else</span> {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-18">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-18">&#182;</a>
+              </div>
+              <p>otherwise, wait until the component has loaded
+by polling every 10 ms.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+          getComponent(alias, callback)
+        }, <span class="hljs-number">10</span>);
+      }
+    }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-19">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-19">&#182;</a>
+              </div>
+              <p>Return the public API.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">return</span> dashboard;
+  }
+});</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>
