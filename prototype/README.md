@@ -1,5 +1,8 @@
 A proof-of-concept implementation of the Universal Data Cube Visualization Framework.
 
+ * [Run the prototype](http://curran.github.io/phd/prototype/)
+ * [Run the unit tests](http://curran.github.io/phd/prototype/SpecRunner.html)
+
 Depends on the following JavaScript libraries:
 
  * [Require](http://requirejs.org/)
