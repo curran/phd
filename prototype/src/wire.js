@@ -53,12 +53,13 @@ define([], function () {
   //
   // Note also that sequential changes to multiple dependency properties
   // result in only a single invocation of `fn`.
-  return function wire(dependencies, fn, model){
+  function wire(dependencies, fn, model){
 
     // Make `model.wire = wire; model.wire(demendencies, fn)` possible
     if(!model) {
       model = this;
     }
+//    else { throw Error;}
 
     // `callFn()` will invoke `fn` with values of dependency properties
     // on the next tick of the JavaScript event loop.
@@ -78,4 +79,12 @@ define([], function () {
       model.on('change:' + property, callFn);
     });
   }
+
+  // Make `model.wire(demendencies, fn)` possible
+  // for any Backbone model
+  if(Backbone && Backbone.Model) {
+    Backbone.Model.prototype.wire = wire;
+  }
+
+  return wire;
 });
