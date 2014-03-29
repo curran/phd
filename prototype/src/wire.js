@@ -33,6 +33,10 @@ define([], function () {
 
   // `wire(dependencies, fn, model)`
   //
+  // or
+  //
+  // `model.wire = wire; model.wire(dependencies, fn)`
+  //
   //  * `dependencies` An array of dependency properties.
   //    These are property names in the Backbone model `model`
   //    passed as the last argument.
@@ -50,6 +54,11 @@ define([], function () {
   // Note also that sequential changes to multiple dependency properties
   // result in only a single invocation of `fn`.
   return function wire(dependencies, fn, model){
+
+    // Make `model.wire = wire; model.wire(demendencies, fn)` possible
+    if(!model) {
+      model = this;
+    }
 
     // `callFn()` will invoke `fn` with values of dependency properties
     // on the next tick of the JavaScript event loop.

@@ -151,4 +151,16 @@ describe('wire', function() {
     });
   });
 
+  it('should work as Model.wire()', function () {
+
+    var model = new Backbone.Model({ x: 5 });
+
+    model.wire = wire;
+
+    model.wire(['x'], function (x) {
+      expect(x).toBe(5);
+      done();
+    });
+  });
+
 });
