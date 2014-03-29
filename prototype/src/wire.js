@@ -59,7 +59,7 @@ define([], function () {
     if(!model) {
       model = this;
     }
-//    else { throw Error;}
+    else { throw Error;}
 
     // `callFn()` will invoke `fn` with values of dependency properties
     // on the next tick of the JavaScript event loop.

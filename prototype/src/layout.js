@@ -26,7 +26,7 @@ define(['wire', 'computeLayout'], function (wire, computeLayout) {
 
     // Computes the layout based on the dashboard div size
     // and the configured layout tree.
-    wire(['tree', 'box'], function (tree, box) {
+    model.wire(['tree', 'box'], function (tree, box) {
       var layout = computeLayout(tree, box);
 
       // Set the `box` property on each visualization model
@@ -36,7 +36,7 @@ define(['wire', 'computeLayout'], function (wire, computeLayout) {
           component.set('box', layoutElement.box);
         });
       });
-    }, model);
+    });
 
     return model;
   }

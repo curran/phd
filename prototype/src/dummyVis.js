@@ -33,15 +33,15 @@ define(['wire'], function (wire) {
             });
         }());
 
-    wire(['color'], function (color) {
+    model.wire(['color'], function (color) {
       rect.attr('fill', color);
-    }, model);
+    });
 
-    wire(['text'], function (newText) {
+    model.wire(['text'], function (newText) {
       text.text(newText);
-    }, model);
+    });
 
-    wire(['box'], function (box) {
+    model.wire(['box'], function (box) {
       svg
         .style('left', box.x + 'px')
         .style('top', box.y + 'px')
@@ -53,9 +53,9 @@ define(['wire'], function (wire) {
       text
         .attr('x', box.width / 2)
         .attr('y', box.height / 2);
-    }, model);
+    });
 
-    wire(['box', 'lineWidth'], function (box, lineWidth) {
+    model.wire(['box', 'lineWidth'], function (box, lineWidth) {
       var w = box.width,
           h = box.height,
           lines = svg.selectAll('line').data([
@@ -74,7 +74,7 @@ define(['wire'], function (wire) {
         .style('stroke', 'black')
         .call(lineDrag);
 
-    }, model);
+    });
 
     return model;
   }

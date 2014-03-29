@@ -10,19 +10,19 @@ define(['wire'], function (wire) {
       bindings: []
     });
 
-    wire(['bindings'], function (bindings) {
+    model.wire(['bindings'], function (bindings) {
       bindings.forEach(function (binding) {
         var source = parse(binding.source),
             destination = parse(binding.destination);
         dashboard.getComponent(destination.alias, function (destinationModel) {
           dashboard.getComponent(source.alias, function (sourceModel) {
-            wire([source.property], function (value) {
+            sourceModel.wire([source.property], function (value) {
               destinationModel.set(destination.property, value);
-            }, sourceModel);
+            });
           });
         });
       });
-    }, model);
+    });
 
     function parse(bindingStr){
       var arr = bindingStr.split('.');
