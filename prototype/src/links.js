@@ -1,7 +1,7 @@
-// This module will implement a data flow network
+// This module implements links in a data flow network
 // supporting multiple linked views in a visualization dashboard.
 //
-// Curran Kelleher 3/26/2014
+// Curran Kelleher 3/28/2014
 define(['wire'], function (wire) {
 
   // The constructor function.
@@ -14,8 +14,8 @@ define(['wire'], function (wire) {
       bindings.forEach(function (binding) {
         var source = parse(binding.source),
             destination = parse(binding.destination);
-        dashboard.getComponent(source.alias, function (sourceModel) {
-          dashboard.getComponent(destination.alias, function (destinationModel) {
+        dashboard.getComponent(destination.alias, function (destinationModel) {
+          dashboard.getComponent(source.alias, function (sourceModel) {
             wire([source.property], function (value) {
               destinationModel.set(destination.property, value);
             }, sourceModel);
