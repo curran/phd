@@ -19,6 +19,11 @@
           <div id="jump_page">
             
               
+              <a class="source" href="computeLayout.html">
+                computeLayout.js
+              </a>
+            
+              
               <a class="source" href="configDiff.html">
                 configDiff.js
               </a>
@@ -101,17 +106,23 @@ for testing the visualization dashboard framework.</p>
             
             <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(dashboard)</span> {</span>
     <span class="hljs-keyword">var</span> model = <span class="hljs-keyword">new</span> Backbone.Model({
-          bkgColor: <span class="hljs-string">'white'</span>,
-          box: { x: <span class="hljs-number">0</span>, y: <span class="hljs-number">0</span>, width: <span class="hljs-number">10</span>, height: <span class="hljs-number">10</span> }
+          color: <span class="hljs-string">'white'</span>,
+          box: { x: <span class="hljs-number">0</span>, y: <span class="hljs-number">0</span>, width: <span class="hljs-number">0</span>, height: <span class="hljs-number">0</span> },
+          text: <span class="hljs-string">''</span>
         }),
         svg = dashboard.div.append(<span class="hljs-string">'svg'</span>)
           .style(<span class="hljs-string">'position'</span>, <span class="hljs-string">'absolute'</span>),
         rect = svg.append(<span class="hljs-string">'rect'</span>)
           .attr(<span class="hljs-string">'x'</span>, <span class="hljs-number">0</span>)
-          .attr(<span class="hljs-string">'y'</span>, <span class="hljs-number">0</span>);
+          .attr(<span class="hljs-string">'y'</span>, <span class="hljs-number">0</span>),
+        text = svg.append(<span class="hljs-string">'text'</span>);
 
-    wire([<span class="hljs-string">'bkgColor'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(bkgColor)</span> {</span>
-      rect.attr(<span class="hljs-string">'fill'</span>, bkgColor);
+    wire([<span class="hljs-string">'color'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(color)</span> {</span>
+      rect.attr(<span class="hljs-string">'fill'</span>, color);
+    }, model);
+
+    wire([<span class="hljs-string">'text'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(newText)</span> {</span>
+      text.text(newText);
     }, model);
 
     wire([<span class="hljs-string">'box'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(box)</span> {</span>
@@ -123,6 +134,9 @@ for testing the visualization dashboard framework.</p>
       rect
         .attr(<span class="hljs-string">'width'</span>, box.width)
         .attr(<span class="hljs-string">'height'</span>, box.height);
+      text
+        .attr(<span class="hljs-string">'x'</span>, box.width / <span class="hljs-number">2</span>)
+        .attr(<span class="hljs-string">'y'</span>, box.height / <span class="hljs-number">2</span>);
     }, model);
 
     <span class="hljs-keyword">return</span> model;

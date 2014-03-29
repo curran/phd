@@ -6,7 +6,11 @@
 //
 //     If `node` is a non-leaf node, it is expected to have the following properties:
 //
-//      * `orientation` - either `vertical` or `horizontal`
+//      * `orientation` - either
+//        * `vertical`, meaning this node is subdivided by vertical splits
+//          with children spreading from left to right, or
+//        * `horizontal`, meaning this node is subdivided by horizontal splits
+//          with children spreading from top to bottom
 //      * `children` - an array of child node objects
 //
 //     If `node` is a leaf node, it is expected to have the following properties:
@@ -26,29 +30,39 @@
 //      having (x, y, width, height) properties.
 define([], function () {
   function computeLayout(node, box) {
-    var totalSize = sum(node.children, 'size');
-    return _.reduce(node.children, function (layoutElements, child) {
-      var childBox = _.clone(box);
-      if (node.orientation === 'horizontal') {
-        childBox.width = box.width * child.size / totalSize;
-        box.x += childBox.width;
-      } else if (node.orientation === 'vertical') {
-        childBox.height = box.height * child.size / totalSize;
-        box.y += childBox.height;
-      }
-      if (child.children) {
+    var totalSize,
+        x = box.x,
+        y = box.y;
+    if(node.children) {
+      totalSize = sum(node.children, size);
+      return _.reduce(node.children, function (layoutElements, child) {
+        var childBox = {x: x, y: y};
+        if (node.orientation === 'vertical') {
+          childBox.width = box.width * size(child) / totalSize;
+          childBox.height = box.height;
+          x += childBox.width;
+        } else if (node.orientation === 'horizontal') {
+          childBox.width = box.width;
+          childBox.height = box.height * size(child) / totalSize;
+          y += childBox.height;
+        }
         return layoutElements.concat(computeLayout(child, childBox));
-      } else {
-        return layoutElements.concat({ name: child.name, box: childBox });
-      }
-    }, []);
+      }, []);
+    } else {
+      return [{ name: node.name, box: box }];
+    }
   }
 
-  // Sums property values in an array. See http://underscorejs.org/#reduce
-  function sum(arr, property) {
+  function sum(arr, fn) {
     return _.reduce(arr, function(memo, item){
-      return memo + item[property];
+      return memo + fn(item);
     }, 0);
+  }
+
+  // Evaluates the size of a node.
+  // Size defaults to 1 when not provided.
+  function size(node) {
+    return node.size ? node.size : 1;
   }
 
   return computeLayout;

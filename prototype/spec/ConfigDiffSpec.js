@@ -69,7 +69,7 @@ describe('computeDiff', function() {
     expect(actions.length).toBe(1);
   });
 
-  it('should handle several added aliases', function() {
+  it('should handle several removed aliases', function() {
     var actions = diff(
       { baz: { a: 5 }, foo: { x: 50 }, bar: { y: 40 } },
       { baz: { a: 5 } }
