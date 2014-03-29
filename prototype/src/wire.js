@@ -1,6 +1,14 @@
 // A function for wiring up properties on Backbone models
 // to functions that depend on them.
 //
+// One of the most common patterns when using Backbone is the following:
+//
+//  * make a function that depends on several things in a Backbone model
+//  * call the function once for initialization
+//  * add change listeners for properties in the model so the function is called when those properties change
+//
+// The `wire` function provides a clean API for this pattern.
+//
 // Inspired by
 //
 //  * [Ember's computed properties](http://emberjs.com/guides/object-model/computed-properties/)
