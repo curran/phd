@@ -37,8 +37,8 @@
     "module": "links",
     "bindings": [
       {
-        "source": "vis1.lineWidth",
-        "destination": "vis2.lineWidth"
+        "source": "a.lineWidth",
+        "destination": "b.lineWidth"
       }
     ]
   },
