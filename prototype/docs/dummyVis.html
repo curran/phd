@@ -59,6 +59,11 @@
               </a>
             
               
+              <a class="source" href="processActions.html">
+                processActions.js
+              </a>
+            
+              
               <a class="source" href="wire.html">
                 wire.js
               </a>
@@ -108,24 +113,39 @@ for testing the visualization dashboard framework.</p>
     <span class="hljs-keyword">var</span> model = <span class="hljs-keyword">new</span> Backbone.Model({
           color: <span class="hljs-string">'white'</span>,
           box: { x: <span class="hljs-number">0</span>, y: <span class="hljs-number">0</span>, width: <span class="hljs-number">0</span>, height: <span class="hljs-number">0</span> },
-          text: <span class="hljs-string">''</span>
+          text: <span class="hljs-string">''</span>,
+          lineWidth: <span class="hljs-number">8</span>
         }),
         svg = dashboard.div.append(<span class="hljs-string">'svg'</span>)
           .style(<span class="hljs-string">'position'</span>, <span class="hljs-string">'absolute'</span>),
         rect = svg.append(<span class="hljs-string">'rect'</span>)
           .attr(<span class="hljs-string">'x'</span>, <span class="hljs-number">0</span>)
           .attr(<span class="hljs-string">'y'</span>, <span class="hljs-number">0</span>),
-        text = svg.append(<span class="hljs-string">'text'</span>);
+        text = svg.append(<span class="hljs-string">'text'</span>),
+        lineDrag = (<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+          <span class="hljs-keyword">var</span> x1, x2;
+          <span class="hljs-keyword">return</span> d3.behavior.drag()
+            .on(<span class="hljs-string">'dragstart'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(d)</span> {</span>
+              x1 = d3.event.sourceEvent.pageX;
+            })
+            .on(<span class="hljs-string">'drag'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(d)</span> {</span>
+              <span class="hljs-keyword">var</span> x2 = d3.event.sourceEvent.pageX,
+                  newLineWidth = model.get(<span class="hljs-string">'lineWidth'</span>) + x2 - x1;
+              newLineWidth = newLineWidth &lt; <span class="hljs-number">1</span> ? <span class="hljs-number">1</span> : newLineWidth;
+              model.set(<span class="hljs-string">'lineWidth'</span>, newLineWidth);
+              x1 = x2;
+            });
+        }());
 
-    wire([<span class="hljs-string">'color'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(color)</span> {</span>
+    model.wire([<span class="hljs-string">'color'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(color)</span> {</span>
       rect.attr(<span class="hljs-string">'fill'</span>, color);
-    }, model);
+    });
 
-    wire([<span class="hljs-string">'text'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(newText)</span> {</span>
+    model.wire([<span class="hljs-string">'text'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(newText)</span> {</span>
       text.text(newText);
-    }, model);
+    });
 
-    wire([<span class="hljs-string">'box'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(box)</span> {</span>
+    model.wire([<span class="hljs-string">'box'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(box)</span> {</span>
       svg
         .style(<span class="hljs-string">'left'</span>, box.x + <span class="hljs-string">'px'</span>)
         .style(<span class="hljs-string">'top'</span>, box.y + <span class="hljs-string">'px'</span>)
@@ -137,7 +157,28 @@ for testing the visualization dashboard framework.</p>
       text
         .attr(<span class="hljs-string">'x'</span>, box.width / <span class="hljs-number">2</span>)
         .attr(<span class="hljs-string">'y'</span>, box.height / <span class="hljs-number">2</span>);
-    }, model);
+    });
+
+    model.wire([<span class="hljs-string">'box'</span>, <span class="hljs-string">'lineWidth'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(box, lineWidth)</span> {</span>
+      <span class="hljs-keyword">var</span> w = box.width,
+          h = box.height,
+          lines = svg.selectAll(<span class="hljs-string">'line'</span>).data([
+            {x1: <span class="hljs-number">0</span>, y1: <span class="hljs-number">0</span>, x2: w, y2: h},
+            {x1: <span class="hljs-number">0</span>, y1: h, x2: w, y2: <span class="hljs-number">0</span>}
+          ]);
+      lines.enter().append(<span class="hljs-string">'line'</span>);
+
+      lines
+        .attr(<span class="hljs-string">'x1'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(d)</span> {</span> <span class="hljs-keyword">return</span> d.x1; })
+        .attr(<span class="hljs-string">'y1'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(d)</span> {</span> <span class="hljs-keyword">return</span> d.y1; })
+        .attr(<span class="hljs-string">'x2'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(d)</span> {</span> <span class="hljs-keyword">return</span> d.x2; })
+        .attr(<span class="hljs-string">'y2'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(d)</span> {</span> <span class="hljs-keyword">return</span> d.y2; })
+        .style(<span class="hljs-string">'stroke-width'</span>, lineWidth)
+        .style(<span class="hljs-string">'stroke-opacity'</span>, <span class="hljs-number">0.2</span>)
+        .style(<span class="hljs-string">'stroke'</span>, <span class="hljs-string">'black'</span>)
+        .call(lineDrag);
+
+    });
 
     <span class="hljs-keyword">return</span> model;
   }

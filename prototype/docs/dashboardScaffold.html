@@ -59,6 +59,11 @@
               </a>
             
               
+              <a class="source" href="processActions.html">
+                processActions.js
+              </a>
+            
+              
               <a class="source" href="wire.html">
                 wire.js
               </a>
@@ -88,7 +93,7 @@
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>define([<span class="hljs-string">'configDiff'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(configDiff)</span> {</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>define([<span class="hljs-string">'configDiff'</span>, <span class="hljs-string">'processActions'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(configDiff, ProcessActions)</span> {</span></pre></div></div>
             
         </li>
         
@@ -162,7 +167,7 @@ used for computing diffs between subsequent calls to setConfig().</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>        oldConfig = {};</pre></div></div>
+            <div class="content"><div class='highlight'><pre>        oldConfig = {},</pre></div></div>
             
         </li>
         
@@ -173,11 +178,12 @@ used for computing diffs between subsequent calls to setConfig().</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-6">&#182;</a>
               </div>
-              <p>Sets the configuration for the dashboard.</p>
+              <p>The stateful function that preprocesses actions
+for this particular dashboard.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">setConfig</span><span class="hljs-params">(newConfig)</span>{</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>        processActions = ProcessActions();</pre></div></div>
             
         </li>
         
@@ -188,14 +194,11 @@ used for computing diffs between subsequent calls to setConfig().</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-7">&#182;</a>
               </div>
-              <p>Convert the configuration changes into a
-sequence of actions using <code>configDiff()</code>.</p>
+              <p>Sets the configuration for the dashboard.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">var</span> actions = configDiff(oldConfig, newConfig);
-
-      oldConfig = newConfig;</pre></div></div>
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">setConfig</span><span class="hljs-params">(newConfig)</span>{</span></pre></div></div>
             
         </li>
         
@@ -206,18 +209,11 @@ sequence of actions using <code>configDiff()</code>.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-8">&#182;</a>
               </div>
-              <p>Process actions
-TODO refactor detection of “module” property
-into a separate module</p>
+              <p>Convert the configuration changes into a sequence of actions </p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">var</span> createdComponents = {},
-          methods = {
-            <span class="hljs-string">'create'</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(alias)</span> {</span>
-              createdComponents[alias] = {};
-            },
-            <span class="hljs-string">'set'</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(alias, property, value)</span> {</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">var</span> changes = processActions(configDiff(oldConfig, newConfig));</pre></div></div>
             
         </li>
         
@@ -228,11 +224,14 @@ into a separate module</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-9">&#182;</a>
               </div>
-              <p>TODO if(createdComponents[alias]) {</p>
+              <p>TODO changes.deletedComponents.forEach(function (deletedComponent) {
+ // delete deletedComponent
+});</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>              createdComponents[alias][property] = value;</pre></div></div>
+            <div class="content"><div class='highlight'><pre>
+      changes.createdComponents.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(component)</span> {</span></pre></div></div>
             
         </li>
         
@@ -243,17 +242,11 @@ into a separate module</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-10">&#182;</a>
               </div>
-              <p>} else {
-  components[alias].set(‘property’, value);
-}</p>
+              <p>Use require.js to dynamically fetch the module.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>            }
-          };
-      actions.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(a)</span> {</span>
-        methods[a.method](a.alias, a.property, a.value);
-      });</pre></div></div>
+            <div class="content"><div class='highlight'><pre>        <span class="hljs-built_in">require</span>([component.module], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(createModel)</span> {</span></pre></div></div>
             
         </li>
         
@@ -264,12 +257,26 @@ into a separate module</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-11">&#182;</a>
               </div>
-              <p>Process newly created components</p>
+              <p>Assuming the module provides a factory function 
+that takes the dashboard public API as an argument,
+and returns a Backbone model,
+create and store the runtime component.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>      _.keys(createdComponents).forEach(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(alias)</span> {</span>
-        <span class="hljs-keyword">var</span> options = createdComponents[alias];</pre></div></div>
+            <div class="content"><div class='highlight'><pre>          components[component.alias] = createModel(dashboard);
+        });
+      });
+
+      changes.updatedComponents.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(component)</span> {</span>
+        getComponent(component.alias, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(model)</span> {</span>
+          model.set(component.options);
+        });
+      });
+
+      oldConfig = newConfig;
+
+    }</pre></div></div>
             
         </li>
         
@@ -279,58 +286,6 @@ into a separate module</p>
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-12">&#182;</a>
-              </div>
-              <p>Use require.js to dynamically fetch the module.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>        <span class="hljs-built_in">require</span>([options.module], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(createComponent)</span> {</span></pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-13">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-13">&#182;</a>
-              </div>
-              <p>Assuming the module provides a factory function 
-that takes the dashboard public API as an argument,
-and returns a Backbone model,
-create and store the runtime component.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>          <span class="hljs-keyword">var</span> model = createComponent(dashboard);
-          components[alias] = model;</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-14">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-14">&#182;</a>
-              </div>
-              <p>Pass initial configuration options into the model.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>          model.set(options);
-        });
-      });
-    }</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-15">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-15">&#182;</a>
               </div>
               <p>Gets a runtime dashboard component by name.
 Calls the callback with the component object.
@@ -345,11 +300,11 @@ waits for the component to load.</p>
         </li>
         
         
-        <li id="section-16">
+        <li id="section-13">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-16">&#182;</a>
+                <a class="pilcrow" href="#section-13">&#182;</a>
               </div>
               <p>If the component is already loaded,</p>
 
@@ -360,11 +315,11 @@ waits for the component to load.</p>
         </li>
         
         
-        <li id="section-17">
+        <li id="section-14">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-17">&#182;</a>
+                <a class="pilcrow" href="#section-14">&#182;</a>
               </div>
               <p>call the callback immediately,</p>
 
@@ -376,11 +331,11 @@ waits for the component to load.</p>
         </li>
         
         
-        <li id="section-18">
+        <li id="section-15">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-18">&#182;</a>
+                <a class="pilcrow" href="#section-15">&#182;</a>
               </div>
               <p>otherwise, wait until the component has loaded
 by polling every 10 ms.</p>
@@ -396,11 +351,11 @@ by polling every 10 ms.</p>
         </li>
         
         
-        <li id="section-19">
+        <li id="section-16">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-19">&#182;</a>
+                <a class="pilcrow" href="#section-16">&#182;</a>
               </div>
               <p>Return the public API.</p>
 

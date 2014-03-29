@@ -1,7 +1,7 @@
 // The dashboard configuration engine.
 // 
 // Curran Kelleher 3/26/2014
-define(['configDiff'], function (configDiff) {
+define(['configDiff', 'processActions'], function (configDiff, ProcessActions) {
 
   // Constructor function for dashboards.
   //  * The `dashboardDivId` argument provides the id of
@@ -23,55 +23,42 @@ define(['configDiff'], function (configDiff) {
 
         // The previously set configuration object,
         // used for computing diffs between subsequent calls to setConfig().
-        oldConfig = {};
+        oldConfig = {},
+
+        // The stateful function that preprocesses actions
+        // for this particular dashboard.
+        processActions = ProcessActions();
 
     // Sets the configuration for the dashboard.
     function setConfig(newConfig){
 
-      // Convert the configuration changes into a
-      // sequence of actions using `configDiff()`.
-      var actions = configDiff(oldConfig, newConfig);
+      // Convert the configuration changes into a sequence of actions 
+      var changes = processActions(configDiff(oldConfig, newConfig));
 
-      oldConfig = newConfig;
+      //TODO changes.deletedComponents.forEach(function (deletedComponent) {
+      //  // delete deletedComponent
+      //});
 
-      // Process actions
-      // TODO refactor detection of "module" property
-      // into a separate module
-      var createdComponents = {},
-          methods = {
-            'create': function (alias) {
-              createdComponents[alias] = {};
-            },
-            'set': function (alias, property, value) {
-              // TODO if(createdComponents[alias]) {
-              createdComponents[alias][property] = value;
-              // } else {
-              //   components[alias].set('property', value);
-              // }
-            }
-          };
-      actions.forEach(function (a) {
-        methods[a.method](a.alias, a.property, a.value);
-      });
-
-      // Process newly created components
-      _.keys(createdComponents).forEach(function (alias) {
-        var options = createdComponents[alias];
-
+      changes.createdComponents.forEach(function (component) {
         // Use require.js to dynamically fetch the module.
-        require([options.module], function (createComponent) {
+        require([component.module], function (createModel) {
 
           // Assuming the module provides a factory function 
           // that takes the dashboard public API as an argument,
           // and returns a Backbone model,
           // create and store the runtime component.
-          var model = createComponent(dashboard);
-          components[alias] = model;
-
-          // Pass initial configuration options into the model.
-          model.set(options);
+          components[component.alias] = createModel(dashboard);
         });
       });
+
+      changes.updatedComponents.forEach(function (component) {
+        getComponent(component.alias, function (model) {
+          model.set(component.options);
+        });
+      });
+
+      oldConfig = newConfig;
+
     }
 
     // Gets a runtime dashboard component by name.

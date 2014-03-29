@@ -59,6 +59,11 @@
               </a>
             
               
+              <a class="source" href="processActions.html">
+                processActions.js
+              </a>
+            
+              
               <a class="source" href="wire.html">
                 wire.js
               </a>
@@ -83,13 +88,13 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-1">&#182;</a>
               </div>
-              <p>This module will implement a data flow network
+              <p>This module implements links in a data flow network
 supporting multiple linked views in a visualization dashboard.</p>
-<p>Curran Kelleher 3/26/2014</p>
+<p>Curran Kelleher 3/28/2014</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>define([], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>define([<span class="hljs-string">'wire'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(wire)</span> {</span></pre></div></div>
             
         </li>
         
@@ -104,8 +109,34 @@ supporting multiple linked views in a visualization dashboard.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
-    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> Backbone.Model();
+            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(dashboard)</span> {</span>
+    <span class="hljs-keyword">var</span> model = <span class="hljs-keyword">new</span> Backbone.Model({
+      bindings: []
+    });
+
+    model.wire([<span class="hljs-string">'bindings'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(bindings)</span> {</span>
+      bindings.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(binding)</span> {</span>
+        <span class="hljs-keyword">var</span> source = parse(binding.source),
+            destination = parse(binding.destination);
+        dashboard.getComponent(destination.alias, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(destinationModel)</span> {</span>
+          dashboard.getComponent(source.alias, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(sourceModel)</span> {</span>
+            sourceModel.wire([source.property], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(value)</span> {</span>
+              destinationModel.set(destination.property, value);
+            });
+          });
+        });
+      });
+    });
+
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">parse</span><span class="hljs-params">(bindingStr)</span>{</span>
+      <span class="hljs-keyword">var</span> arr = bindingStr.split(<span class="hljs-string">'.'</span>);
+      <span class="hljs-keyword">return</span> {
+        alias: arr[<span class="hljs-number">0</span>],
+        property: arr[<span class="hljs-number">1</span>]
+      };
+    }
+
+    <span class="hljs-keyword">return</span> model;
   }
 });</pre></div></div>
             

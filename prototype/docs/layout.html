@@ -59,6 +59,11 @@
               </a>
             
               
+              <a class="source" href="processActions.html">
+                processActions.js
+              </a>
+            
+              
               <a class="source" href="wire.html">
                 wire.js
               </a>
@@ -161,8 +166,9 @@ and the configured layout tree.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    wire([<span class="hljs-string">'tree'</span>, <span class="hljs-string">'box'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(tree, box)</span> {</span>
-      <span class="hljs-keyword">var</span> layout = computeLayout(tree, box);</pre></div></div>
+            <div class="content"><div class='highlight'><pre>    model.wire([<span class="hljs-string">'tree'</span>, <span class="hljs-string">'box'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(tree, box)</span> {</span>
+      <span class="hljs-keyword">if</span>(tree) {
+        <span class="hljs-keyword">var</span> layout = computeLayout(tree, box);</pre></div></div>
             
         </li>
         
@@ -178,12 +184,13 @@ to an object with (x, y, width, height) in pixels.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>      layout.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(layoutElement)</span> {</span>
-        dashboard.getComponent(layoutElement.name, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(component)</span> {</span>
-          component.set(<span class="hljs-string">'box'</span>, layoutElement.box);
+            <div class="content"><div class='highlight'><pre>        layout.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(layoutElement)</span> {</span>
+          dashboard.getComponent(layoutElement.name, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(component)</span> {</span>
+            component.set(<span class="hljs-string">'box'</span>, layoutElement.box);
+          });
         });
-      });
-    }, model);
+      }
+    });
 
     <span class="hljs-keyword">return</span> model;
   }
