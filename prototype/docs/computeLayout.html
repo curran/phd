@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>computeLayout.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+      <ul id="jump_to">
+        <li>
+          <a class="large" href="javascript:void(0);">Jump To &hellip;</a>
+          <a class="small" href="javascript:void(0);">+</a>
+          <div id="jump_wrapper">
+          <div id="jump_page">
+            
+              
+              <a class="source" href="computeLayout.html">
+                computeLayout.js
+              </a>
+            
+              
+              <a class="source" href="configDiff.html">
+                configDiff.js
+              </a>
+            
+              
+              <a class="source" href="dashboardScaffold.html">
+                dashboardScaffold.js
+              </a>
+            
+              
+              <a class="source" href="data.html">
+                data.js
+              </a>
+            
+              
+              <a class="source" href="dummyVis.html">
+                dummyVis.js
+              </a>
+            
+              
+              <a class="source" href="layout.html">
+                layout.js
+              </a>
+            
+              
+              <a class="source" href="links.html">
+                links.js
+              </a>
+            
+              
+              <a class="source" href="main.html">
+                main.js
+              </a>
+            
+              
+              <a class="source" href="wire.html">
+                wire.js
+              </a>
+            
+          </div>
+        </li>
+      </ul>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>computeLayout.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              <p>Computes the layout of the visualizations in the dashboard.</p>
+<p>Arguments:</p>
+<ul>
+<li><p><code>node</code> - either a non-leaf node or a leaf node object.</p>
+<p>  If <code>node</code> is a non-leaf node, it is expected to have the following properties:</p>
+<ul>
+<li><code>orientation</code> - either<ul>
+<li><code>vertical</code>, meaning this node is subdivided by vertical splits
+with children spreading from left to right, or</li>
+<li><code>horizontal</code>, meaning this node is subdivided by horizontal splits
+with children spreading from top to bottom</li>
+</ul>
+</li>
+<li><p><code>children</code> - an array of child node objects</p>
+<p>If <code>node</code> is a leaf node, it is expected to have the following properties:</p>
+</li>
+<li><p><code>name</code> - the alias of the visualization in the dashboard configuration</p>
+</li>
+<li><code>size</code> - a number that determines the size of this node within its parent<ul>
+<li>Nodes are sized based on the ratio of their <code>size</code> property
+relative to the sum of all <code>size</code> properties of sibling nodes.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><code>box</code> - the bounding box of the node in pixels, having (x, y, width, height) properties.</p>
+<p>Returns an array of layout elements, one for each leaf node of the input layout tree.
+Each layout element has the following properties:</p>
+<ul>
+<li><code>name</code> - the alias of the visualization in the dashboard configuration</li>
+<li><code>box</code> - the bounding box of the visualization in pixels computed by the layout,
+having (x, y, width, height) properties.</li>
+</ul>
+</li>
+</ul>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>define([], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">computeLayout</span><span class="hljs-params">(node, box)</span> {</span>
+    <span class="hljs-keyword">var</span> totalSize,
+        x = box.x,
+        y = box.y;
+    <span class="hljs-keyword">if</span>(node.children) {
+      totalSize = sum(node.children, size);
+      <span class="hljs-keyword">return</span> _.reduce(node.children, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(layoutElements, child)</span> {</span>
+        <span class="hljs-keyword">var</span> childBox = {x: x, y: y};
+        <span class="hljs-keyword">if</span> (node.orientation === <span class="hljs-string">'vertical'</span>) {
+          childBox.width = box.width * size(child) / totalSize;
+          childBox.height = box.height;
+          x += childBox.width;
+        } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (node.orientation === <span class="hljs-string">'horizontal'</span>) {
+          childBox.width = box.width;
+          childBox.height = box.height * size(child) / totalSize;
+          y += childBox.height;
+        }
+        <span class="hljs-keyword">return</span> layoutElements.concat(computeLayout(child, childBox));
+      }, []);
+    } <span class="hljs-keyword">else</span> {
+      <span class="hljs-keyword">return</span> [{ name: node.name, box: box }];
+    }
+  }
+
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">sum</span><span class="hljs-params">(arr, fn)</span> {</span>
+    <span class="hljs-keyword">return</span> _.reduce(arr, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(memo, item)</span>{</span>
+      <span class="hljs-keyword">return</span> memo + fn(item);
+    }, <span class="hljs-number">0</span>);
+  }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p>Evaluates the size of a node.
+Size defaults to 1 when not provided.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">size</span><span class="hljs-params">(node)</span> {</span>
+    <span class="hljs-keyword">return</span> node.size ? node.size : <span class="hljs-number">1</span>;
+  }
+
+  <span class="hljs-keyword">return</span> computeLayout;
+});</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>
