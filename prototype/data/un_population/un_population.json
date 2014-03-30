@@ -1,16 +1,21 @@
 {
-  "name": "Concordance Table between Country Codes and Names",
+  "type": "dataSet",
+  "name": "Population Estimates",
   "source": "United Nations",
-  "dimensions": [
-    {
-      "column": "countryCode",
-      "dimension": "Space",
-      "codeList": "UN M.49"
+  "dimensions": {
+    "Time": {
+      "column": "year",
+      "codeList": "years"
     },
-    {
-      "column": "countryName",
-      "dimension": "Space",
-      "codeList": "UN Country Names"
+    "Space": {
+      "column": "countryCode",
+      "codeList": "UN M.49"
     }
-  ]
+  },
+  "measures":{
+    "Population": {
+      "column": "population",
+      "scale": 1000
+    }
+  }
 }

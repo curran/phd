@@ -1,16 +1,10 @@
 {
-  "name": "Concordance Table between Country Codes and Names",
+  "type": "concordanceTable",
+  "name": "Country Codes and Names",
   "source": "United Nations",
-  "dimensions": [
-    {
-      "column": "countryCode",
-      "dimension": "Space",
-      "codeList": "UN M.49"
-    },
-    {
-      "column": "countryName",
-      "dimension": "Space",
-      "codeList": "UN Country Names"
-    }
-  ]
+  "dimension": "Space",
+  "codeLists": {
+    "countryCode": "UN M.49",
+    "countryName": "UN Country Names"
+  }
 }
