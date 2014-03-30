@@ -29,6 +29,11 @@
               </a>
             
               
+              <a class="source" href="dashboardMirror.html">
+                dashboardMirror.js
+              </a>
+            
+              
               <a class="source" href="dashboardScaffold.html">
                 dashboardScaffold.js
               </a>
@@ -88,50 +93,12 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-1">&#182;</a>
               </div>
-              <p>This module provides a stateful function that
-processes configuration change actions into a
-<code>change</code> object with the following properties:</p>
-<ul>
-<li><p><code>deletedComponents</code> an array of alias Strings
-for deleted components</p>
-</li>
-<li><p><code>createdComponents</code> an array of objects with:</p>
-<ul>
-<li><code>alias</code> the alias of the created component</li>
-<li><code>module</code> the module property of the created component</li>
-</ul>
-</li>
-<li><p><code>updatedComponents</code> an array of objects with:</p>
-<ul>
-<li><code>alias</code> the alias of the updated component
-(could also be a newly created component)</li>
-<li><code>options</code> an options object containing the 
-properties that have changed and their new values</li>
-</ul>
-</li>
-<li><p>Any <code>create</code> input action will not propagate
-to the output <code>changes</code> object until its <code>module</code>
-property has been set.</p>
-<p>This is so runtime components can be instantiated 
-before any options are set on them.</p>
-</li>
-<li><p>Any <code>set</code> input action that changes the <code>module</code> property
-on any component is transformed into a <code>change</code> object that:</p>
-<ol>
-<li>deletes the existing component</li>
-<li>creates a new component with the same alias as
-the existing component</li>
-<li>sets the <code>module</code> property to the new module value</li>
-<li>sets the properties that were on the existing
-component on the new component</li>
-</ol>
-</li>
-</ul>
+              <p>This module helps processes configuration change actions.</p>
 <p>Curran Kelleher 3/30/2014</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>define([], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>define([<span class="hljs-string">'dashboardMirror'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(DashboardMirror)</span> {</span></pre></div></div>
             
         </li>
         
@@ -142,9 +109,8 @@ component on the new component</li>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-2">&#182;</a>
               </div>
-              <p>This function produces a stateful function.
-This design was chosen because it avoids having a singleton,
-allowing multiple independent dashboards to exist on one page.</p>
+              <p>Creates a stateful function for processing actions.
+Usage: <code>var processActions = ProcessActions(); processActions(actions);</code></p>
 
             </div>
             
@@ -163,8 +129,7 @@ allowing multiple independent dashboards to exist on one page.</p>
 but have not yet had their <code>module</code> property set.</p>
 <ul>
 <li>Keys are aliases</li>
-<li>Values are options objects containing properties set
-before the module property has been set</li>
+<li>Values are options objects</li>
 </ul>
 
             </div>
@@ -180,16 +145,11 @@ before the module property has been set</li>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-4">&#182;</a>
               </div>
-              <p>Keeps track of the entire dashboard model
-as a simple JavaScript object.</p>
-<ul>
-<li>Keys are component aliases</li>
-<li>Values are component option objects</li>
-</ul>
+              <p>The stateful mirror of the dashboard model</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>        existingComponents = {};</pre></div></div>
+            <div class="content"><div class='highlight'><pre>        mirror = DashboardMirror();</pre></div></div>
             
         </li>
         
@@ -200,12 +160,43 @@ as a simple JavaScript object.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-5">&#182;</a>
               </div>
-              <p>TODO split this into a separate module.
-Name ideas: dashboardModel, dummyDashboard, componentModel, runtimeModel</p>
+              <p><code>processActions(actions)</code> takes as input an array of
+configuration change actions and yields as output a
+<code>change</code> object with the following properties:</p>
+<ul>
+<li><code>deletedComponents</code> an array of deleted aliases</li>
+<li><code>createdComponents</code> an array of objects with properties:<ul>
+<li><code>alias</code> the alias of the created component</li>
+<li><code>module</code> the module property of the created component</li>
+</ul>
+</li>
+<li><code>updatedComponents</code> an array of objects with properties:<ul>
+<li><code>alias</code> the alias of the updated component</li>
+<li><code>options</code> an options object containing the 
+properties that have changed and their new values</li>
+</ul>
+</li>
+<li>Any <code>create</code> input action (and subsequent <code>set</code> actions) 
+will not propagate to the output <code>change</code> object 
+until the <code>module</code> property has been set on the component.</li>
+<li>Any <code>set</code> input action that changes the <code>module</code> property
+is transformed into a <code>change</code> object that:<ol>
+<li>deletes the existing component</li>
+<li>creates a new component with the same alias as</li>
+<li>sets the <code>module</code> property to the new module value</li>
+<li>sets the properties from the existing component</li>
+</ol>
+</li>
+</ul>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">updateExistingComponents</span><span class="hljs-params">(change)</span>{</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">processActions</span><span class="hljs-params">(actions)</span>{</span>
+      <span class="hljs-keyword">var</span> change = { createdComponents: [], updatedComponents: [], deletedComponents: [] },
+          methods = {
+            <span class="hljs-string">'create'</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(alias)</span> {</span> createdAliases[alias] = {}; },
+            <span class="hljs-string">'delete'</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(alias)</span> {</span> change.deletedComponents.push(alias); },
+            <span class="hljs-string">'set'</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(alias, property, value)</span> {</span></pre></div></div>
             
         </li>
         
@@ -216,35 +207,12 @@ Name ideas: dashboardModel, dummyDashboard, componentModel, runtimeModel</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-6">&#182;</a>
               </div>
-              <p>change.deletedComponents.forEach(function (alias) {
- // TODO test this codepath
- delete existingComponents[alias];
-});</p>
+              <p>Error when a property is set on a component that doesn’t exist.
+A component “exists” when</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>      change.createdComponents.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(component)</span> {</span>
-        existingComponents[component.alias] = { module: component.module };
-      });
-      change.updatedComponents.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(component)</span> {</span>
-        _.extend(existingComponents[component.alias], component.options);
-      });
-    }
-
-    <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">processActions</span><span class="hljs-params">(actions)</span>{</span>
-      <span class="hljs-keyword">var</span> change = {
-            createdComponents: [],
-            updatedComponents: [],
-            deletedComponents: []
-          },
-          methods = {
-            <span class="hljs-string">'create'</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(alias)</span> {</span>
-              createdAliases[alias] = {};
-            },
-            <span class="hljs-string">'delete'</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(alias)</span> {</span>
-              change.deletedComponents.push(alias);
-            },
-            <span class="hljs-string">'set'</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(alias, property, value)</span> {</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>              <span class="hljs-keyword">var</span> componentExists = (</pre></div></div>
             
         </li>
         
@@ -255,11 +223,11 @@ Name ideas: dashboardModel, dummyDashboard, componentModel, runtimeModel</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-7">&#182;</a>
               </div>
-              <p>Detect and throw an error when a property is set
-on a component that doesn’t exist
-or is awaiting its ‘module’ property</p>
+              <p>it has been set up completely, or</p>
 
             </div>
+            
+            <div class="content"><div class='highlight'><pre>                mirror.get(alias) ||</pre></div></div>
             
         </li>
         
@@ -270,11 +238,11 @@ or is awaiting its ‘module’ property</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-8">&#182;</a>
               </div>
-              <p>A component “exists” when</p>
+              <p>its creation is pending, awaiting the module property, or</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>              <span class="hljs-keyword">var</span> componentExists = (</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                createdAliases[alias] ||</pre></div></div>
             
         </li>
         
@@ -285,11 +253,18 @@ or is awaiting its ‘module’ property</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-9">&#182;</a>
               </div>
-              <p>it has been set up completely, or</p>
+              <p>it was created in the current action sequence.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                existingComponents[alias] ||</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                _.findWhere(change.createdComponents, { alias: alias })
+              );
+              <span class="hljs-keyword">if</span>(!componentExists){
+                <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Error</span>([ <span class="hljs-string">"Attempted to set property '"</span>, property,<span class="hljs-string">" = "</span>, value,
+                  <span class="hljs-string">"' on a component with alias '"</span>, alias, <span class="hljs-string">"' that hasn't been created yet."</span>
+                ].join(<span class="hljs-string">''</span>));
+              }
+              <span class="hljs-keyword">if</span>(property == <span class="hljs-string">'module'</span>) {</pre></div></div>
             
         </li>
         
@@ -300,11 +275,11 @@ or is awaiting its ‘module’ property</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-10">&#182;</a>
               </div>
-              <p>its creation is pending, awaiting the module property, or</p>
+              <p>If the module is being set on a newly created component,</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                createdAliases[alias] ||</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                <span class="hljs-keyword">if</span>(createdAliases[alias]) {</pre></div></div>
             
         </li>
         
@@ -315,22 +290,12 @@ or is awaiting its ‘module’ property</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-11">&#182;</a>
               </div>
-              <p>it was created in the current action sequence</p>
+              <p>transfer properties set before the module property</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                _.findWhere(change.createdComponents, { alias: alias })
-              );
-              <span class="hljs-keyword">if</span>(!componentExists){
-                <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Error</span>([
-                  <span class="hljs-string">"Attempted to set property '"</span>, property,<span class="hljs-string">" = "</span>, value,
-                  <span class="hljs-string">"' on a component with alias '"</span>, alias, <span class="hljs-string">"' that hasn't been created yet."</span>
-                ].join(<span class="hljs-string">''</span>));
-              }
-
-              <span class="hljs-keyword">if</span>(property == <span class="hljs-string">'module'</span>) {
-                handleModuleChange(change, alias, value);
-              } <span class="hljs-keyword">else</span> {</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                  getUpdatedComponent(alias).options = createdAliases[alias];
+                  <span class="hljs-keyword">delete</span> createdAliases[alias];</pre></div></div>
             
         </li>
         
@@ -341,14 +306,11 @@ or is awaiting its ‘module’ property</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-12">&#182;</a>
               </div>
-              <p>Queue property changes that are set
-after creation but before setting the module</p>
+              <p>If the module property changes from one value to another,</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                <span class="hljs-keyword">if</span>(createdAliases[alias]){
-                  createdAliases[alias][property] = value;
-                } <span class="hljs-keyword">else</span> {</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                } <span class="hljs-keyword">else</span> {</pre></div></div>
             
         </li>
         
@@ -359,17 +321,11 @@ after creation but before setting the module</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-13">&#182;</a>
               </div>
-              <p>If the component exists, update it</p>
+              <p>delete the existing component, then</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                  getUpdatedComponent(alias).options[property] = value;
-                }
-              }
-            }
-          };
-
-      <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">handleModuleChange</span><span class="hljs-params">(change, alias, module)</span>{</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>                  change.deletedComponents.push(alias);</pre></div></div>
             
         </li>
         
@@ -380,11 +336,12 @@ after creation but before setting the module</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-14">&#182;</a>
               </div>
-              <p>If the module is being set on a newly created component,</p>
+              <p>set values from existing component.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>        <span class="hljs-keyword">if</span>(createdAliases[alias]) {</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                  getUpdatedComponent(alias).options = mirror.get(alias);
+                }</pre></div></div>
             
         </li>
         
@@ -395,11 +352,12 @@ after creation but before setting the module</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-15">&#182;</a>
               </div>
-              <p>transfer properties set before the module property</p>
+              <p>create or recreate the component</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>          getUpdatedComponent(alias).options = createdAliases[alias];</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                change.createdComponents.push({ alias: alias, module: value });
+              } <span class="hljs-keyword">else</span> {</pre></div></div>
             
         </li>
         
@@ -410,74 +368,18 @@ after creation but before setting the module</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-16">&#182;</a>
               </div>
-              <p>remove the alias from <code>createdAliases</code></p>
+              <p>Queue property changes that are set before the module</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>          <span class="hljs-keyword">delete</span> createdAliases[alias];</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-17">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-17">&#182;</a>
-              </div>
-              <p>If the module property changes from one value to another,</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>        } <span class="hljs-keyword">else</span> {</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-18">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-18">&#182;</a>
-              </div>
-              <p>delete the existing component, then</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>          change.deletedComponents.push(alias);</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-19">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-19">&#182;</a>
-              </div>
-              <p>set values from existing component.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>          getUpdatedComponent(alias).options = existingComponents[alias];
-        }</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-20">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-20">&#182;</a>
-              </div>
-              <p>create or recreate the component</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>        change.createdComponents.push({ alias: alias, module: module });
-
-      }
+            <div class="content"><div class='highlight'><pre>                <span class="hljs-keyword">if</span>(createdAliases[alias]){
+                  createdAliases[alias][property] = value;
+                } <span class="hljs-keyword">else</span> {
+                  getUpdatedComponent(alias).options[property] = value;
+                }
+              }
+            }
+          };
       <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getUpdatedComponent</span><span class="hljs-params">(alias)</span>{</span>
         <span class="hljs-keyword">var</span> updatedComponent = _.findWhere(change.updatedComponents, { alias: alias });
         <span class="hljs-keyword">if</span>(!updatedComponent) {
@@ -486,10 +388,8 @@ after creation but before setting the module</p>
         }
         <span class="hljs-keyword">return</span> updatedComponent;
       }
-      actions.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(a)</span> {</span>
-        methods[a.method](a.alias, a.property, a.value);
-      });
-      updateExistingComponents(change);
+      actions.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(a)</span> {</span> methods[a.method](a.alias, a.property, a.value); });
+      mirror.update(change);
       <span class="hljs-keyword">return</span> change;
     }
   }

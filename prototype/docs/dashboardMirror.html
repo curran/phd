@@ -2,7 +2,7 @@
 
 <html>
 <head>
-  <title>layout.js</title>
+  <title>dashboardMirror.js</title>
   <meta http-equiv="content-type" content="text/html; charset=UTF-8">
   <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
   <link rel="stylesheet" media="all" href="docco.css" />
@@ -81,7 +81,7 @@
         
           <li id="title">
               <div class="annotation">
-                  <h1>layout.js</h1>
+                  <h1>dashboardMirror.js</h1>
               </div>
           </li>
         
@@ -93,12 +93,15 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-1">&#182;</a>
               </div>
-              <p>This module implements nested box layout for visualization dashboards.</p>
-<p>Curran Kelleher 3/27/2014</p>
+              <p>This module provides a mirror of the dashboard
+model that updates state based on processing 
+configuration change actions.</p>
+<p>Curran Kelleher 3/30/2014</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>define([<span class="hljs-string">'wire'</span>, <span class="hljs-string">'computeLayout'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(wire, computeLayout)</span> {</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>define([], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+  <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">DashboardMirror</span><span class="hljs-params">()</span>{</span></pre></div></div>
             
         </li>
         
@@ -109,13 +112,18 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-2">&#182;</a>
               </div>
-              <p>The constructor function.</p>
+              <p>Keeps track of the entire dashboard model
+as a simple JavaScript object.</p>
+<ul>
+<li>Keys are component aliases</li>
+<li>Values are component option objects</li>
+</ul>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(dashboard)</span> {</span>
+            <div class="content"><div class='highlight'><pre>    components = {};
 
-    <span class="hljs-keyword">var</span> model = <span class="hljs-keyword">new</span> Backbone.Model();</pre></div></div>
+    <span class="hljs-keyword">return</span> {</pre></div></div>
             
         </li>
         
@@ -126,11 +134,11 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-3">&#182;</a>
               </div>
-              <p>Call once to initialize</p>
+              <p>Gets a component options object for the given alias.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    setBoxFromDiv();</pre></div></div>
+            <div class="content"><div class='highlight'><pre>      get: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(alias)</span> {</span></pre></div></div>
             
         </li>
         
@@ -141,21 +149,13 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-4">&#182;</a>
               </div>
-              <p>Call whenever the browser window changes size</p>
+              <p>Protect from outside mutation by cloning</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    window.addEventListener(<span class="hljs-string">'resize'</span>, setBoxFromDiv);
-
-    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">setBoxFromDiv</span><span class="hljs-params">()</span>{</span>
-      <span class="hljs-keyword">var</span> div = dashboard.div.node();
-      model.set(<span class="hljs-string">'box'</span>, {
-        x: <span class="hljs-number">0</span>,
-        y: <span class="hljs-number">0</span>,
-        width: div.clientWidth,
-        height: div.clientHeight
-      });
-    }</pre></div></div>
+            <div class="content"><div class='highlight'><pre>        <span class="hljs-keyword">return</span> _.clone(components[alias]);
+      },
+      update: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(change)</span>{</span></pre></div></div>
             
         </li>
         
@@ -166,40 +166,22 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-5">&#182;</a>
               </div>
-              <p>Computes the layout based on the dashboard div size
-and the configured layout tree.</p>
+              <p>change.deletedComponents.forEach(function (alias) {
+ // TODO test this codepath
+ delete existingComponents[alias];
+});</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    model.wire([<span class="hljs-string">'tree'</span>, <span class="hljs-string">'box'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(tree, box)</span> {</span>
-      <span class="hljs-keyword">if</span>(tree) {
-        <span class="hljs-keyword">var</span> layout = computeLayout(tree, box);</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-6">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-6">&#182;</a>
-              </div>
-              <p>Set the <code>box</code> property on each visualization model
-to an object with (x, y, width, height) in pixels.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>        layout.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(layoutElement)</span> {</span>
-          dashboard.getComponent(layoutElement.name, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(component)</span> {</span>
-            component.set(<span class="hljs-string">'box'</span>, layoutElement.box);
-          });
+            <div class="content"><div class='highlight'><pre>        change.createdComponents.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(component)</span> {</span>
+          components[component.alias] = { module: component.module };
+        });
+        change.updatedComponents.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(component)</span> {</span>
+          _.extend(components[component.alias], component.options);
         });
       }
-    });
-
-    <span class="hljs-keyword">return</span> model;
-  }
-
+    }
+  };
 });</pre></div></div>
             
         </li>
