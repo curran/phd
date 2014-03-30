@@ -24,3 +24,9 @@ Prior art: reusable D3 visualizations
  * [NVD3](http://nvd3.org/)
  * [DC](http://nickqizhu.github.io/dc.js/)
  * [reD3](http://bugzu.github.io/reD3/#/)
+
+Related previous work:
+
+ * [(2013) dashboardScaffold](https://github.com/curran/dashboardScaffold) (July 2013) - An open source visualization dashboard layout and dynamic configuration framework. Developed while interning at Rapid7 creating cybersecurity visualization visualization dashboards with multiple linked views.
+ * [(2012) A Web-based Data Cube Visualization Ecosystem Architecture](http://curran.github.com/portfolio/2012/A Web-based Data Cube Visualization Ecosystem Architecture.pdf) - Sketches of my doctoral dissertation, presented at the IEEE VisWeek 2012 Doctoral Colloquium.
+ * [(2010) Universal Data Cube](http://curran.github.com/portfolio/2010/Universal Data Cube.pdf) - A report on my work on developing the "Universal Data Cube" concept at University of Konstanz.

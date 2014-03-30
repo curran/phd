@@ -2,34 +2,40 @@
   "layout": {
     "module": "layout",
     "tree": {
-      "orientation": "horizontal",
+      "orientation": "vertical",
       "children": [
-        { "name": "a" },
+        { "name": "j" },
         {
-          "size": 2,
-          "orientation": "vertical",
+          "orientation": "horizontal",
           "children": [
-            { "name": "c" },
+            { "name": "a" },
             {
               "size": 2,
-              "orientation": "horizontal",
+              "orientation": "vertical",
               "children": [
-                { "name": "e" },
+                { "name": "c" },
                 {
-                  "orientation": "vertical",
+                  "size": 2,
+                  "orientation": "horizontal",
                   "children": [
-                    { "name": "f" },
-                    { "name": "g" },
-                    { "name": "h" },
-                    { "name": "i" }
+                    { "name": "e" },
+                    {
+                      "orientation": "vertical",
+                      "children": [
+                        { "name": "f" },
+                        { "name": "g" },
+                        { "name": "h" },
+                        { "name": "i" }
+                      ]
+                    }
                   ]
-                }
+                },
+                { "name": "d" }
               ]
             },
-            { "name": "d" }
+            { "name": "b" }
           ]
-        },
-        { "name": "b" }
+        }
       ]
     }
   },
