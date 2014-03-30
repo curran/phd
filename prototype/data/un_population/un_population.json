@@ -1,0 +1,23 @@
+{
+  "name": "Population Estimates",
+  "source": "United Nations",
+  "dimensions": [
+    {
+      "column: "year",
+      "dimension: "Time",
+      "codeList: "years"
+    },
+    {
+      "column": "countryCode",
+      "dimension": "Space",
+      "codeList": "UN M.49"
+    }
+  ],
+  "measures":[
+    {
+      "column": "population",
+      "measure": "Population",
+      "scale": 1000
+    }
+  ]
+}
