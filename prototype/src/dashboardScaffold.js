@@ -32,14 +32,16 @@ define(['configDiff', 'processActions'], function (configDiff, ProcessActions) {
     // Sets the configuration for the dashboard.
     function setConfig(newConfig){
 
-      // Convert the configuration changes into a sequence of actions 
-      var changes = processActions(configDiff(oldConfig, newConfig));
+      // Convert the configuration change into a sequence of actions 
+      var change = processActions(configDiff(oldConfig, newConfig));
 
-      //TODO changes.deletedComponents.forEach(function (deletedComponent) {
+      // TODO manually test this codepath
+      //change.deletedComponents.forEach(function (alias) {
       //  // delete deletedComponent
+      //  console.log('should delete component ' + alias);
       //});
 
-      changes.createdComponents.forEach(function (component) {
+      change.createdComponents.forEach(function (component) {
         // Use require.js to dynamically fetch the module.
         require([component.module], function (createModel) {
 
@@ -51,7 +53,7 @@ define(['configDiff', 'processActions'], function (configDiff, ProcessActions) {
         });
       });
 
-      changes.updatedComponents.forEach(function (component) {
+      change.updatedComponents.forEach(function (component) {
         getComponent(component.alias, function (model) {
           model.set(component.options);
         });

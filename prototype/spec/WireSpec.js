@@ -151,7 +151,7 @@ describe('wire', function() {
     });
   });
 
-  it('should work as model.wire assigned', function () {
+  it('should work as model.wire assigned', function (done) {
     var model = new Backbone.Model({ x: 5 });
     model.wire = wire;
     model.wire(['x'], function (x) {
@@ -160,7 +160,7 @@ describe('wire', function() {
     });
   });
 
-  it('should work as model.wire on any model', function () {
+  it('should work as model.wire on any model', function (done) {
     var model = new Backbone.Model({ x: 5 });
     model.wire(['x'], function (x) {
       expect(x).toBe(5);

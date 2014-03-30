@@ -209,11 +209,11 @@ for this particular dashboard.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-8">&#182;</a>
               </div>
-              <p>Convert the configuration changes into a sequence of actions </p>
+              <p>Convert the configuration change into a sequence of actions </p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">var</span> changes = processActions(configDiff(oldConfig, newConfig));</pre></div></div>
+            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">var</span> change = processActions(configDiff(oldConfig, newConfig));</pre></div></div>
             
         </li>
         
@@ -224,14 +224,16 @@ for this particular dashboard.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-9">&#182;</a>
               </div>
-              <p>TODO changes.deletedComponents.forEach(function (deletedComponent) {
+              <p>TODO manually test this codepath
+change.deletedComponents.forEach(function (alias) {
  // delete deletedComponent
+ console.log(‘should delete component ‘ + alias);
 });</p>
 
             </div>
             
             <div class="content"><div class='highlight'><pre>
-      changes.createdComponents.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(component)</span> {</span></pre></div></div>
+      change.createdComponents.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(component)</span> {</span></pre></div></div>
             
         </li>
         
@@ -268,7 +270,7 @@ create and store the runtime component.</p>
         });
       });
 
-      changes.updatedComponents.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(component)</span> {</span>
+      change.updatedComponents.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(component)</span> {</span>
         getComponent(component.alias, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(model)</span> {</span>
           model.set(component.options);
         });
