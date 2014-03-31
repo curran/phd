@@ -76,10 +76,13 @@ define([], function () {
         return sources[source][dataSet].dimensions[dimension].domain;
       },
       getValue: function (source, dataSet, cell, measure) {
+        // TODO multiply by scale
         return sources[source][dataSet].index[key(cell)][measure];
       },
       waitFor: function waitFor(source, dataSet, callback) {
-        if(sources[source] && sources[source][dataSet]) {
+        var exists = sources[source] && sources[source][dataSet],
+            loaded = exists && sources[source][dataSet].table;
+        if(loaded){
           callback();
         } else {
           setTimeout(function () {

@@ -96,4 +96,5 @@ describe('udc', function() {
     expect(value).toBe(6916183.482);
   });
 
+  // TODO test waitFor
 });
