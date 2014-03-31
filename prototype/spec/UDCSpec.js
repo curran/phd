@@ -14,6 +14,7 @@ describe('udc', function() {
     });
   });
 
+  // TODO improve performance of index creation
   it('should load a data set', function (done) {
     var url = 'data/un_population/un_population';
     udc.load(url, function () {

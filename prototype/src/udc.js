@@ -77,6 +77,15 @@ define([], function () {
       },
       getValue: function (source, dataSet, cell, measure) {
         return sources[source][dataSet].index[key(cell)][measure];
+      },
+      waitFor: function waitFor(source, dataSet, callback) {
+        if(sources[source] && sources[source][dataSet]) {
+          callback();
+        } else {
+          setTimeout(function () {
+            waitFor(source, dataSet, callback);
+          }, 10);
+        }
       }
     };
   };

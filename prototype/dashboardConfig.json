@@ -4,7 +4,7 @@
     "tree": {
       "orientation": "vertical",
       "children": [
-        { "name": "j" },
+        { "name": "timeline" },
         {
           "orientation": "horizontal",
           "children": [
@@ -50,9 +50,17 @@
   },
   "data": {
     "module": "data",
-    "sources": [
-      "unPopulation"
-    ]
+    "sources": [ "data/un_population/un_population" ]
+  },
+  "timeline": {
+    "module": "timeline",
+    "data": {
+      "source": "United Nations",
+      "dataSet": "Population Estimates",
+      "slices": { "Space": "900" }
+    },
+    "x": "Time",
+    "y": "Population"
   },
   "a": { "module": "dummyVis", "text": "a", "color": "rgb(237,72,174)" },
   "b": { "module": "dummyVis", "text": "b", "color": "rgb(147,123,191)" },
