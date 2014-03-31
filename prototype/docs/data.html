@@ -69,6 +69,11 @@
               </a>
             
               
+              <a class="source" href="timeline.html">
+                timeline.js
+              </a>
+            
+              
               <a class="source" href="udc.html">
                 udc.js
               </a>
@@ -104,7 +109,7 @@ for visualization dashboards.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>define([], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>define([<span class="hljs-string">'udc'</span>, <span class="hljs-string">'wire'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(UDC, wire)</span> {</span></pre></div></div>
             
         </li>
         
@@ -120,7 +125,16 @@ for visualization dashboards.</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
-    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> Backbone.Model();
+    <span class="hljs-keyword">var</span> model = <span class="hljs-keyword">new</span> Backbone.Model({ sources: [] });
+    model.udc = UDC();
+    model.wire([<span class="hljs-string">'sources'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(sources)</span> {</span>
+      sources.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(source)</span> {</span>
+        model.udc.load(source, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+          console.log(<span class="hljs-string">'loaded '</span> + source);
+        });
+      });
+    });
+    <span class="hljs-keyword">return</span> model;
   }
 });</pre></div></div>
             

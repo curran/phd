@@ -69,6 +69,11 @@
               </a>
             
               
+              <a class="source" href="timeline.html">
+                timeline.js
+              </a>
+            
+              
               <a class="source" href="udc.html">
                 udc.js
               </a>
@@ -176,7 +181,7 @@ Curran Kelleher 3/30/2014</p>
             
             <div class="content"><div class='highlight'><pre>      load: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(url, callback)</span> {</span>
         d3.json(url + <span class="hljs-string">'.json'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(dataSet)</span> {</span>
-          <span class="hljs-keyword">var</span> dimensionNames = _.keys(dataSet.dimensions),
+          <span class="hljs-keyword">var</span> dimensionNames = _.keys(dataSet.dimensions).sort(),
               measureNames = _.keys(dataSet.measures);</pre></div></div>
             
         </li>
@@ -232,16 +237,14 @@ TODO var source = getSource(config.source);</p>
             
             <div class="content"><div class='highlight'><pre>            dataSet.index = {};
             table.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(row)</span> {</span>
-              <span class="hljs-keyword">var</span> cell = {}, values = {};
-              dimensionNames.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(dimensionName)</span> {</span>
-                <span class="hljs-keyword">var</span> dimension = dataSet.dimensions[dimensionName];
-                cell[dimensionName] = row[dimension.column];
-              });
+              <span class="hljs-keyword">var</span> values = {};
               measureNames.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(measureName)</span> {</span>
                 <span class="hljs-keyword">var</span> measure = dataSet.measures[measureName];
                 values[measureName] = <span class="hljs-built_in">parseFloat</span>(row[measure.column]);
               });
-              dataSet.index[key(cell)] = values;
+              dataSet.index[key(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(dimensionName)</span> {</span>
+                <span class="hljs-keyword">return</span> row[dataSet.dimensions[dimensionName].column];
+              }, dimensionNames)] = values;
             });
             
             callback();
@@ -259,11 +262,7 @@ TODO var source = getSource(config.source);</p>
       getDomain: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(source, dataSet, dimension)</span> {</span>
         <span class="hljs-keyword">return</span> sources[source][dataSet].dimensions[dimension].domain;
       },
-      getValue: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(source, dataSet, cell, measure)</span> {</span>
-        <span class="hljs-keyword">return</span> sources[source][dataSet].index[key(cell)][measure];
-      }
-    };
-  };</pre></div></div>
+      getValue: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(source, dataSet, cell, measure)</span> {</span></pre></div></div>
             
         </li>
         
@@ -274,19 +273,25 @@ TODO var source = getSource(config.source);</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-7">&#182;</a>
               </div>
-              <p><code>cell</code> is an object with</p>
-<ul>
-<li>Keys are UDC Dimension names</li>
-<li>Values are codes</li>
-</ul>
+              <p>TODO multiply by scale</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">key</span><span class="hljs-params">(cell)</span>{</span>
-    <span class="hljs-keyword">return</span> _.keys(cell).sort().map(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(dimensionName)</span> {</span>
-      <span class="hljs-keyword">return</span> cell[dimensionName];
-    }).join(<span class="hljs-string">'|'</span>);
-  }</pre></div></div>
+            <div class="content"><div class='highlight'><pre>        <span class="hljs-keyword">return</span> sources[source][dataSet].index[keyFromCell(cell)][measure];
+      },
+      waitFor: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">waitFor</span><span class="hljs-params">(source, dataSet, callback)</span> {</span>
+        <span class="hljs-keyword">var</span> exists = sources[source] &amp;&amp; sources[source][dataSet],
+            loaded = exists &amp;&amp; sources[source][dataSet].table;
+        <span class="hljs-keyword">if</span>(loaded){
+          callback();
+        } <span class="hljs-keyword">else</span> {
+          setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+            waitFor(source, dataSet, callback);
+          }, <span class="hljs-number">10</span>);
+        }
+      }
+    };
+  };</pre></div></div>
             
         </li>
         
@@ -296,6 +301,32 @@ TODO var source = getSource(config.source);</p>
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <p><code>cell</code> is an object with</p>
+<ul>
+<li>Keys are UDC Dimension names</li>
+<li>Values are codes</li>
+</ul>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">keyFromCell</span><span class="hljs-params">(cell)</span>{</span>
+    <span class="hljs-keyword">return</span> key(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(dimensionName)</span> {</span>
+      <span class="hljs-keyword">return</span> cell[dimensionName];
+    }, _.keys(cell).sort());
+  }
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">key</span><span class="hljs-params">(getMember, sortedDimensionNames)</span>{</span>
+    <span class="hljs-keyword">return</span> sortedDimensionNames.map(getMember).join(<span class="hljs-string">'|'</span>);
+  }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-9">&#182;</a>
               </div>
               <p>Computes the set of unique codes for a given dimension.</p>
 
