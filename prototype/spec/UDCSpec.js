@@ -51,7 +51,7 @@ describe('udc', function() {
     expect(measures).toContain('Population');
   });
 
-  it('should list members', function () {
+  it('should list members of the Time dimension', function () {
     var source = 'United Nations',
         dataSet = 'Population Estimates',
         dimension = 'Time',
@@ -62,4 +62,25 @@ describe('udc', function() {
       expect(members).toContain(year);
     });
   });
+
+  it('should list members of the Space dimension', function () {
+    var source = 'United Nations',
+        dataSet = 'Population Estimates',
+        dimension = 'Space',
+        members = udc.getDomain(source, dataSet, dimension),
+        expectedMembers = [
+          '900' /* World */, 
+          '903' /* Africa */, 
+          '935' /* Asia */, 
+          '908' /* Europe */, 
+          '904' /* Latin America and the Caribbean */, 
+          '905' /* Northern America */, 
+          '909' /* Oceania */
+        ];
+    expectedMembers.forEach(function (member) {
+      console.log(member);
+      expect(members).toContain(member);
+    });
+  });
+
 });
