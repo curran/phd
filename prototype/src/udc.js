@@ -29,7 +29,7 @@ define([], function () {
       //TODO handle failures, bogus URLs
       load: function (url, callback) {
         d3.json(url + '.json', function (dataSet) {
-          var dimensionNames = _.keys(dataSet.dimensions),
+          var dimensionNames = _.keys(dataSet.dimensions).sort(),
               measureNames = _.keys(dataSet.measures);
           // TODO validate config
           //TODO var source = getSource(config.source);
@@ -57,7 +57,11 @@ define([], function () {
                 var measure = dataSet.measures[measureName];
                 values[measureName] = parseFloat(row[measure.column]);
               });
-              dataSet.index[key(cell)] = values;
+              // Avg time to load UN data with this method is 220 ms
+              //dataSet.index[keyFromCell(cell)] = values;
+
+              // Avg time to load UN data with this method is 140 ms
+              dataSet.index[key(cell, dimensionNames)] = values;
             });
             
             callback();
@@ -77,7 +81,7 @@ define([], function () {
       },
       getValue: function (source, dataSet, cell, measure) {
         // TODO multiply by scale
-        return sources[source][dataSet].index[key(cell)][measure];
+        return sources[source][dataSet].index[keyFromCell(cell)][measure];
       },
       waitFor: function waitFor(source, dataSet, callback) {
         var exists = sources[source] && sources[source][dataSet],
@@ -96,8 +100,11 @@ define([], function () {
   // `cell` is an object with
   //  * Keys are UDC Dimension names
   //  * Values are codes
-  function key(cell){
-    return _.keys(cell).sort().map(function (dimensionName) {
+  function keyFromCell(cell){
+    return key(cell, _.keys(cell).sort());
+  }
+  function key(cell, sortedDimensionNames){
+    return sortedDimensionNames.map(function (dimensionName) {
       return cell[dimensionName];
     }).join('|');
   }
