@@ -76,11 +76,23 @@ describe('udc', function() {
           '904' /* Latin America and the Caribbean */, 
           '905' /* Northern America */, 
           '909' /* Oceania */
+          /* ... more are there but just check these */
         ];
     expectedMembers.forEach(function (member) {
-      console.log(member);
       expect(members).toContain(member);
     });
+  });
+
+  it('should look up a measure value for a data cube cell', function () {
+    var source = 'United Nations',
+        dataSet = 'Population Estimates',
+        cell = {
+          'Space': '900', /* World */
+          'Time': '2010'
+        },
+        measure = 'Population',
+        value = udc.getValue(source, dataSet, cell, measure);
+    expect(value).toBe(6916183.482);
   });
 
 });

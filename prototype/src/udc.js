@@ -21,15 +21,23 @@ define([], function () {
     //          * `column` the name of the column in the data table
     //          * `scale` the multiplication factor used in the table
     //      * `table` the data table from the CSV file
+    //      * `index` the index mapping cells to values, an object with
+    //         * Keys are canonical keys for data cube cells
+    //         * Values are objects with
+    //           * Keys are UDC Measure names
+    //           * Values are numeric valies
+
     var sources = {};
 
     return {
       //TODO handle failures, bogus URLs
       load: function (url, callback) {
         d3.json(url + '.json', function (dataSet) {
+          var dimensionNames = _.keys(dataSet.dimensions),
+              measureNames = _.keys(dataSet.measures);
           // TODO validate config
 
-          //var source = getSource(config.source);
+          //TODO var source = getSource(config.source);
           var source = sources[dataSet.source] = {};
           source[dataSet.name] = dataSet;
 
@@ -37,10 +45,26 @@ define([], function () {
             dataSet.table = table;
 
             // Compute dimension domains
-            _.keys(dataSet.dimensions).forEach(function (name) {
-              var dimension = dataSet.dimensions[name];
+            dimensionNames.forEach(function (dimensionName) {
+              var dimension = dataSet.dimensions[dimensionName];
               dimension.domain = domain(table, dimension.column);
             });
+
+            // Build the index
+            dataSet.index = {};
+            table.forEach(function (row) {
+              var cell = {}, values = {};
+              dimensionNames.forEach(function (dimensionName) {
+                var dimension = dataSet.dimensions[dimensionName];
+                cell[dimensionName] = row[dimension.column];
+              });
+              measureNames.forEach(function (measureName) {
+                var measure = dataSet.measures[measureName];
+                values[measureName] = parseFloat(row[measure.column]);
+              });
+              dataSet.index[key(cell)] = values;
+            });
+            
             callback();
           });
         });
@@ -59,9 +83,23 @@ define([], function () {
       },
       getDomain: function (source, dataSet, dimension) {
         return sources[source][dataSet].dimensions[dimension].domain;
+      },
+      getValue: function (source, dataSet, cell, measure) {
+        console.log(sources[source][dataSet].index);
+        return sources[source][dataSet].index[key(cell)][measure];
       }
     };
   };
+
+  // `cell` is an object with
+  //
+  //  * Keys are UDC Dimension names
+  //  * Values are codes
+  function key(cell){
+    return _.keys(cell).sort().map(function (dimensionName) {
+      return cell[dimensionName];
+    }).join('|');
+  }
 
   // Computes the set of unique codes for a given dimension.
   function domain(table, column){
