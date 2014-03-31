@@ -14,15 +14,8 @@ describe('udc', function() {
     });
   });
 
-  // TODO improve performance of index creation
   it('should load a data set', function (done) {
-    var url = 'data/un_population/un_population';
-    var beginTime = Date.now();
-    udc.load(url, function () {
-      var endTime = Date.now();
-      console.log('loaded data in ' + (endTime - beginTime) + ' ms');
-      done();
-    });
+    udc.load('data/un_population/un_population', done);
   });
 
   it('should list sources', function () {

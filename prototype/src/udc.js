@@ -48,20 +48,14 @@ define([], function () {
             // Build the index
             dataSet.index = {};
             table.forEach(function (row) {
-              var cell = {}, values = {};
-              dimensionNames.forEach(function (dimensionName) {
-                var dimension = dataSet.dimensions[dimensionName];
-                cell[dimensionName] = row[dimension.column];
-              });
+              var values = {};
               measureNames.forEach(function (measureName) {
                 var measure = dataSet.measures[measureName];
                 values[measureName] = parseFloat(row[measure.column]);
               });
-              // Avg time to load UN data with this method is 220 ms
-              //dataSet.index[keyFromCell(cell)] = values;
-
-              // Avg time to load UN data with this method is 140 ms
-              dataSet.index[key(cell, dimensionNames)] = values;
+              dataSet.index[key(function (dimensionName) {
+                return row[dataSet.dimensions[dimensionName].column];
+              }, dimensionNames)] = values;
             });
             
             callback();
@@ -101,12 +95,12 @@ define([], function () {
   //  * Keys are UDC Dimension names
   //  * Values are codes
   function keyFromCell(cell){
-    return key(cell, _.keys(cell).sort());
-  }
-  function key(cell, sortedDimensionNames){
-    return sortedDimensionNames.map(function (dimensionName) {
+    return key(function (dimensionName) {
       return cell[dimensionName];
-    }).join('|');
+    }, _.keys(cell).sort());
+  }
+  function key(getMember, sortedDimensionNames){
+    return sortedDimensionNames.map(getMember).join('|');
   }
 
   // Computes the set of unique codes for a given dimension.
