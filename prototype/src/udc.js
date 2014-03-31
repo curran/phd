@@ -1,9 +1,7 @@
 // This module implements the Universal Data Cube client.
-//
 // Curran Kelleher 3/30/2014
 define([], function () {
   return function UDC(){
-
     // The index of data sources.
     //  * Keys are source names
     //  * Values are `source` objects with
@@ -26,9 +24,7 @@ define([], function () {
     //         * Values are objects with
     //           * Keys are UDC Measure names
     //           * Values are numeric valies
-
     var sources = {};
-
     return {
       //TODO handle failures, bogus URLs
       load: function (url, callback) {
@@ -36,7 +32,6 @@ define([], function () {
           var dimensionNames = _.keys(dataSet.dimensions),
               measureNames = _.keys(dataSet.measures);
           // TODO validate config
-
           //TODO var source = getSource(config.source);
           var source = sources[dataSet.source] = {};
           source[dataSet.name] = dataSet;
@@ -69,12 +64,8 @@ define([], function () {
           });
         });
       },
-      listSources: function () {
-        return _.keys(sources);
-      },
-      listDataSets: function (source) {
-        return _.keys(sources[source]);
-      },
+      listSources: function () { return _.keys(sources); },
+      listDataSets: function (source) { return _.keys(sources[source]); },
       listDimensions: function (source, dataSet) {
         return _.keys(sources[source][dataSet].dimensions);
       },
@@ -85,14 +76,12 @@ define([], function () {
         return sources[source][dataSet].dimensions[dimension].domain;
       },
       getValue: function (source, dataSet, cell, measure) {
-        console.log(sources[source][dataSet].index);
         return sources[source][dataSet].index[key(cell)][measure];
       }
     };
   };
 
   // `cell` is an object with
-  //
   //  * Keys are UDC Dimension names
   //  * Values are codes
   function key(cell){
@@ -104,9 +93,7 @@ define([], function () {
   // Computes the set of unique codes for a given dimension.
   function domain(table, column){
     var set = {};
-    table.forEach(function (row) {
-      set[row[column]] = true;
-    });
+    table.forEach(function (row) { set[row[column]] = true; });
     return _.keys(set);
   }
 });
