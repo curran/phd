@@ -1,8 +1,6 @@
-/**
- * Tests the wire module.
- *
- * Curran Kelleher 3/28/2014
- */
+// Tests the wire module.
+// 
+// Curran Kelleher 3/28/2014
 describe('wire', function() {
   var wire;
 

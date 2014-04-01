@@ -1,8 +1,6 @@
-/**
- * Tests the configDiff module.
- *
- * Curran Kelleher 3/27/2014
- */
+// Tests the configDiff module.
+// 
+// Curran Kelleher 3/27/2014
 describe('computeDiff', function() {
   var configDiff;
 

@@ -1,8 +1,6 @@
-/**
- * Tests the udc module.
- *
- * Curran Kelleher 3/30/2014
- */
+// Tests the udc module.
+// 
+// Curran Kelleher 3/30/2014
 describe('udc', function() {
   // The udc module, a factory function for UDC contexts
   var UDC,

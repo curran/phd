@@ -1,23 +1,21 @@
-/**
- * Tests the layout module.
- *
- * Process for developing these tests:
- *
- *  1. configure layout in dashboardConfig
- *  2. load dashboard and visually inspect the results
- *     using labeled and colored boxes
- *  3. copy configuration into the spec
- *  4. run writeTest(boxes) in the spec
- *  5. copy the result from the spec runner console output
- *  6. paste the generated test code into the spec
- *
- * For examples of configuration and appearance, see:
- *
- *  * ComputeLayoutSpec_exampleDashboardConfig.json
- *  * ComputeLayoutSpec_exampleDashboardLayout.png
- *
- * Curran Kelleher 3/28/2014
- */
+// Tests the layout module.
+// 
+// Process for developing these tests:
+// 
+//  1. configure layout in dashboardConfig
+//  2. load dashboard and visually inspect the results
+//     using labeled and colored boxes
+//  3. copy configuration into the spec
+//  4. run writeTest(boxes) in the spec
+//  5. copy the result from the spec runner console output
+//  6. paste the generated test code into the spec
+// 
+// For examples of configuration and appearance, see:
+// 
+//  * ComputeLayoutSpec_exampleDashboardConfig.json
+//  * ComputeLayoutSpec_exampleDashboardLayout.png
+// 
+// Curran Kelleher 3/28/2014
 describe('computeLayout', function() {
   var computeLayout,
       unitBox = {

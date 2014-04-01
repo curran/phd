@@ -1,8 +1,6 @@
-/**
- * Tests the processActions module.
- *
- * Curran Kelleher 3/28/2014
- */
+// Tests the processActions module.
+// 
+// Curran Kelleher 3/28/2014
 describe('processActions', function() {
   var ProcessActions,
 
