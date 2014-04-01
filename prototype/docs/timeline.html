@@ -107,9 +107,7 @@
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>define([], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
-
-  <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(dashboard)</span> {</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>define([], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span></pre></div></div>
             
         </li>
         
@@ -119,6 +117,21 @@
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p>The constructor function invoked by <code>dashboardScaffold</code>.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(dashboard)</span> {</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
               </div>
               <p>The timeline visualization has
 the following configuration options:</p>
@@ -130,11 +143,11 @@ the following configuration options:</p>
         </li>
         
         
-        <li id="section-3">
+        <li id="section-4">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-3">&#182;</a>
+                <a class="pilcrow" href="#section-4">&#182;</a>
               </div>
               <ul>
 <li><code>margin</code> A margin object according to the
@@ -148,23 +161,6 @@ the following configuration options:</p>
         </li>
         
         
-        <li id="section-4">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-4">&#182;</a>
-              </div>
-              <ul>
-<li><code>box</code> is a property expected to be on all
-visualization components, and is set by
-the dashboard layout engine.</li>
-</ul>
-
-            </div>
-            
-        </li>
-        
-        
         <li id="section-5">
             <div class="annotation">
               
@@ -172,8 +168,9 @@ the dashboard layout engine.</li>
                 <a class="pilcrow" href="#section-5">&#182;</a>
               </div>
               <ul>
-<li><code>width</code> and <code>height</code> properties are used
-internally, computed from <code>box</code> and <code>margin</code></li>
+<li><code>box</code> is a property expected to be on all
+visualization components, and is set by
+the dashboard layout engine.</li>
 </ul>
 
             </div>
@@ -188,87 +185,11 @@ internally, computed from <code>box</code> and <code>margin</code></li>
                 <a class="pilcrow" href="#section-6">&#182;</a>
               </div>
               <ul>
-<li><code>yAxisLabel</code> (optional) A string that will be
-displayed vertically next to the Y axis.</li>
+<li><code>width</code> and <code>height</code> properties are used
+internally, computed from <code>box</code> and <code>margin</code></li>
 </ul>
 
             </div>
-            
-            <div class="content"><div class='highlight'><pre>        }),
-        svg = dashboard.div.append(<span class="hljs-string">'svg'</span>).style(<span class="hljs-string">'position'</span>, <span class="hljs-string">'absolute'</span>),
-        g = svg.append(<span class="hljs-string">'g'</span>),
-        path = g.append(<span class="hljs-string">'path'</span>)
-          .style(<span class="hljs-string">'stroke'</span>, <span class="hljs-string">'black'</span>)
-          .style(<span class="hljs-string">'stroke-width'</span>, <span class="hljs-number">2</span>)
-          .style(<span class="hljs-string">'fill'</span>, <span class="hljs-string">'none'</span>),
-        x = d3.time.scale(),
-        y = d3.scale.linear(),
-        xAxis = d3.svg.axis()
-          .scale(x)
-          .orient(<span class="hljs-string">'bottom'</span>)
-          .outerTickSize(<span class="hljs-number">0</span>),
-        yAxis = d3.svg.axis()
-          .scale(y)
-          .orient(<span class="hljs-string">'left'</span>)
-          .tickFormat(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(d)</span> {</span> <span class="hljs-keyword">return</span> d / <span class="hljs-number">1000000000</span>; })
-          .outerTickSize(<span class="hljs-number">0</span>),
-        xAxisGroup = g.append(<span class="hljs-string">'g'</span>),
-        yAxisGroup = g.append(<span class="hljs-string">'g'</span>),
-        yAxisLabel = yAxisGroup.append(<span class="hljs-string">'text'</span>)
-          .style(<span class="hljs-string">'text-anchor'</span>, <span class="hljs-string">'middle'</span>)
-          .style(<span class="hljs-string">'font'</span>, <span class="hljs-string">'14pt serif'</span>),
-        line = d3.svg.line()
-          .x(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(d)</span> {</span> <span class="hljs-keyword">return</span> x(d.x); })
-          .y(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(d)</span> {</span> <span class="hljs-keyword">return</span> y(d.y); });
-
-    model.wire(<span class="hljs-string">'yAxisLabel'</span>, yAxisLabel.text, yAxisLabel);
-
-    model.wire([<span class="hljs-string">'box'</span>, <span class="hljs-string">'margin'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(box, margin)</span> {</span>
-      model.set(<span class="hljs-string">'width'</span>, box.width - margin.left - margin.right);
-      model.set(<span class="hljs-string">'height'</span>, box.height - margin.top - margin.bottom);
-
-      svg
-        .style(<span class="hljs-string">'left'</span>, box.x + <span class="hljs-string">'px'</span>)
-        .style(<span class="hljs-string">'top'</span>, box.y + <span class="hljs-string">'px'</span>)
-        .attr(<span class="hljs-string">'width'</span>, box.width)
-        .attr(<span class="hljs-string">'height'</span>, box.height);
-
-      g.attr(<span class="hljs-string">'transform'</span>, <span class="hljs-string">'translate('</span> + margin.left + <span class="hljs-string">','</span> + margin.top + <span class="hljs-string">')'</span>);
-    });
-
-    model.wire(<span class="hljs-string">'height'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(height)</span> {</span>
-      yAxisLabel.attr(<span class="hljs-string">'transform'</span>,
-        <span class="hljs-string">'rotate(-90) translate(-'</span> + (height / <span class="hljs-number">2</span>) + <span class="hljs-string">', -25)'</span>)
-      xAxisGroup.attr(<span class="hljs-string">'transform'</span>,
-        <span class="hljs-string">'translate(0,'</span> + height + <span class="hljs-string">')'</span>);
-    });
-
-    model.wire([<span class="hljs-string">'data'</span>, <span class="hljs-string">'width'</span>, <span class="hljs-string">'height'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(data, width, height)</span> {</span>
-      query(data, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(xDomain, xyPoints)</span> {</span>
-        x.domain(d3.extent(xDomain)); y.domain([<span class="hljs-number">0</span>, d3.max(xyPoints, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(d)</span> {</span> <span class="hljs-keyword">return</span> d.y; })]);
-        x.range([<span class="hljs-number">0</span>, width]);
-        y.range([height, <span class="hljs-number">0</span>]);
-
-        path.attr(<span class="hljs-string">'d'</span>, line(xyPoints));
-
-        xAxisGroup.call(xAxis).call(styleAxis);
-        yAxisGroup.call(yAxis).call(styleAxis);
-      });
-    });
-
-    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">styleAxis</span><span class="hljs-params">(axisGroup)</span> {</span>
-      axisGroup.selectAll(<span class="hljs-string">'line, path'</span>)
-        .style(<span class="hljs-string">'stroke'</span>, <span class="hljs-string">'black'</span>)
-        .style(<span class="hljs-string">'stroke-width'</span>, <span class="hljs-number">1</span>);
-      axisGroup.selectAll(<span class="hljs-string">'g'</span>)
-        .style(<span class="hljs-string">'font'</span>, <span class="hljs-string">'10pt sans-serif'</span>);
-    }
-
-    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">query</span><span class="hljs-params">(data, callback)</span>{</span>
-      dashboard.getComponent(<span class="hljs-string">'data'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(dataComponent)</span> {</span>
-        <span class="hljs-keyword">var</span> udc = dataComponent.udc;
-        udc.waitFor(data.source, data.dataSet, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
-          <span class="hljs-keyword">var</span> xDomainStrings = udc.getDomain(data.source, data.dataSet, data.x),</pre></div></div>
             
         </li>
         
@@ -279,22 +200,657 @@ displayed vertically next to the Y axis.</li>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-7">&#182;</a>
               </div>
-              <p>TODO generalize handling of X dimensions, special case Time</p>
+              <ul>
+<li><code>yAxisLabel</code> (optional) A string that will be
+displayed vertically next to the Y axis.</li>
+</ul>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        }),</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <p>Append the svg element for this visualization
+to the dashboard div.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        svg = dashboard.div.append(<span class="hljs-string">'svg'</span>).style(<span class="hljs-string">'position'</span>, <span class="hljs-string">'absolute'</span>),</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              <p>Append an SVG group element for containing the visualization.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        g = svg.append(<span class="hljs-string">'g'</span>),</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-10">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-10">&#182;</a>
+              </div>
+              <p>Append an SVG path element that will draw the line from data.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        path = g.append(<span class="hljs-string">'path'</span>)
+          .style(<span class="hljs-string">'stroke'</span>, <span class="hljs-string">'black'</span>)
+          .style(<span class="hljs-string">'stroke-width'</span>, <span class="hljs-number">2</span>)
+          .style(<span class="hljs-string">'fill'</span>, <span class="hljs-string">'none'</span>),</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-11">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-11">&#182;</a>
+              </div>
+              <p>Create scale and axis objects.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        x = d3.time.scale(),
+        y = d3.scale.linear(),
+        xAxis = d3.svg.axis()
+          .scale(x)
+          .orient(<span class="hljs-string">'bottom'</span>)
+          .outerTickSize(<span class="hljs-number">0</span>),
+        yAxis = d3.svg.axis()
+          .scale(y)
+          .orient(<span class="hljs-string">'left'</span>)
+          .tickFormat(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(d)</span> {</span> <span class="hljs-keyword">return</span> d / <span class="hljs-number">1000000000</span>; })
+          .outerTickSize(<span class="hljs-number">0</span>),</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-12">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-12">&#182;</a>
+              </div>
+              <p>Axes are created inside their own group elements
+so that dynamic CSS can be used rather than static CSS.
+This is so no external CSS file is needed, and
+the visualization is entirely defined within this source file.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        xAxisGroup = g.append(<span class="hljs-string">'g'</span>),
+        yAxisGroup = g.append(<span class="hljs-string">'g'</span>),</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-13">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-13">&#182;</a>
+              </div>
+              <p>Append an SVG text element for the Y axis label.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        yAxisLabel = yAxisGroup.append(<span class="hljs-string">'text'</span>)
+          .style(<span class="hljs-string">'text-anchor'</span>, <span class="hljs-string">'middle'</span>)
+          .style(<span class="hljs-string">'font'</span>, <span class="hljs-string">'14pt serif'</span>),</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-14">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-14">&#182;</a>
+              </div>
+              <p>Create a line object that will set the line path from data.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        line = d3.svg.line()
+          .x(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(d)</span> {</span> <span class="hljs-keyword">return</span> x(d.x); })
+          .y(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(d)</span> {</span> <span class="hljs-keyword">return</span> y(d.y); });</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-15">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-15">&#182;</a>
+              </div>
+              <p>Set the Y axis label text from the model.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    model.wire(<span class="hljs-string">'yAxisLabel'</span>, yAxisLabel.text, yAxisLabel);
+
+    model.wire([<span class="hljs-string">'box'</span>, <span class="hljs-string">'margin'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(box, margin)</span> {</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-16">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-16">&#182;</a>
+              </div>
+              <p>Add (width, height) computed properties from <code>box</code> and <code>margin</code>.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      model.set(<span class="hljs-string">'width'</span>, box.width - margin.left - margin.right);
+      model.set(<span class="hljs-string">'height'</span>, box.height - margin.top - margin.bottom);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-17">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-17">&#182;</a>
+              </div>
+              <p>Set the CSS <code>left</code> and <code>top</code> properties
+to move the SVG element to <code>(box.x, box.y)</code>
+relative to the dashboard div.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      svg
+        .style(<span class="hljs-string">'left'</span>, box.x + <span class="hljs-string">'px'</span>)
+        .style(<span class="hljs-string">'top'</span>, box.y + <span class="hljs-string">'px'</span>)</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-18">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-18">&#182;</a>
+              </div>
+              <p>Set the <code>width</code> and <code>height</code> attributes
+to the size computed by the dashboard layout engine
+on the SVG element </p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        .attr(<span class="hljs-string">'width'</span>, box.width)
+        .attr(<span class="hljs-string">'height'</span>, box.height);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-19">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-19">&#182;</a>
+              </div>
+              <p>Translate the SVG group element containing the visualization
+based on the margin.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      g.attr(<span class="hljs-string">'transform'</span>, <span class="hljs-string">'translate('</span> + margin.left + <span class="hljs-string">','</span> + margin.top + <span class="hljs-string">')'</span>);
+    });</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-20">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-20">&#182;</a>
+              </div>
+              <p>When <code>height</code> changes,</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    model.wire(<span class="hljs-string">'height'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(height)</span> {</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-21">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-21">&#182;</a>
+              </div>
+              <p>Vertically center the Y axis label, and</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      yAxisLabel.attr(<span class="hljs-string">'transform'</span>,
+        <span class="hljs-string">'rotate(-90) translate(-'</span> + (height / <span class="hljs-number">2</span>) + <span class="hljs-string">', -25)'</span>)</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-22">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-22">&#182;</a>
+              </div>
+              <p>move the X axis to the bottom.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      xAxisGroup.attr(<span class="hljs-string">'transform'</span>, <span class="hljs-string">'translate(0,'</span> + height + <span class="hljs-string">')'</span>);
+    });</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-23">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-23">&#182;</a>
+              </div>
+              <p>When the <code>data</code> configuration or size changes,</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    model.wire([<span class="hljs-string">'data'</span>, <span class="hljs-string">'width'</span>, <span class="hljs-string">'height'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(dataOptions, width, height)</span> {</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-24">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-24">&#182;</a>
+              </div>
+              <p>query the source data cube to extract
+data in a form suitable for use with D3,</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      query(dataOptions, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(data)</span> {</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-25">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-25">&#182;</a>
+              </div>
+              <p>update scales based on data and size,</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        x.domain(d3.extent(data, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(d)</span> {</span> <span class="hljs-keyword">return</span> d.x }));
+        x.range([<span class="hljs-number">0</span>, width]);
+        y.domain([<span class="hljs-number">0</span>, d3.max(data, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(d)</span> {</span> <span class="hljs-keyword">return</span> d.y; })]);
+        y.range([height, <span class="hljs-number">0</span>]);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-26">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-26">&#182;</a>
+              </div>
+              <p>compute the line path from data,</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        path.attr(<span class="hljs-string">'d'</span>, line(data));</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-27">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-27">&#182;</a>
+              </div>
+              <p>and update the axes.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        xAxisGroup.call(xAxis).call(styleAxis);
+        yAxisGroup.call(yAxis).call(styleAxis);
+      });
+    });</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-28">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-28">&#182;</a>
+              </div>
+              <p>Styles a D3 axis using dynamic CSS.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">styleAxis</span><span class="hljs-params">(axisGroup)</span> {</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-29">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-29">&#182;</a>
+              </div>
+              <p>Set the line to be black and 1 pixel wide.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      axisGroup.selectAll(<span class="hljs-string">'line, path'</span>)
+        .style(<span class="hljs-string">'stroke'</span>, <span class="hljs-string">'black'</span>)
+        .style(<span class="hljs-string">'stroke-width'</span>, <span class="hljs-number">1</span>);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-30">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-30">&#182;</a>
+              </div>
+              <p>Set the font on tick mark labels.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      axisGroup.selectAll(<span class="hljs-string">'g'</span>)
+        .style(<span class="hljs-string">'font'</span>, <span class="hljs-string">'10pt sans-serif'</span>);
+    }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-31">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-31">&#182;</a>
+              </div>
+              <p>Queries the source data cube to extract
+data in a form suitable for use with D3.</p>
+<p><code>data</code> A data configuration object with</p>
+<ul>
+<li><code>source</code> The name of the data source</li>
+<li><code>dataSet</code> The name of the data set</li>
+<li><code>slices</code> An object that defines the
+fixed slice for dimensions that do not
+vary within visualization<ul>
+<li>Keys are dimension names</li>
+<li>Values are member codes</li>
+</ul>
+</li>
+</ul>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-comment">/* TODO use (codeList, code) pairs for identifying members here */</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-32">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-32">&#182;</a>
+              </div>
+              <ul>
+<li><code>x</code> The name of the dimension to use for the X axis</li>
+</ul>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-comment">/* TODO use a dimension selection for x */</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-33">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-33">&#182;</a>
+              </div>
+              <ul>
+<li><code>y</code> The name of the measure to use for the Y axis</li>
+</ul>
+<p><code>callback(data)</code> A callback function called with</p>
+<ul>
+<li><code>data</code> An array of objects with<ul>
+<li><code>x</code> The member values for the X axis</li>
+<li><code>y</code> The numeric values for the Y axis</li>
+</ul>
+</li>
+</ul>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">query</span><span class="hljs-params">(dataOptions, callback)</span>{</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-34">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-34">&#182;</a>
+              </div>
+              <p>Get the <code>data</code> component from the dashboard configuration,
+which is responsible for loading data sources.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      dashboard.getComponent(<span class="hljs-string">'data'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(dataComponent)</span> {</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-35">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-35">&#182;</a>
+              </div>
+              <p>Extract the UDC context from the <code>data</code> component.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        <span class="hljs-keyword">var</span> udc = dataComponent.udc,
+            source = dataOptions.source,
+            dataSet = dataOptions.dataSet;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-36">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-36">&#182;</a>
+              </div>
+              <p>Wait for the data set to load.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        udc.waitFor(source, dataSet, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-37">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-37">&#182;</a>
+              </div>
+              <p>Query the data cube for the X dimension domain.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>          <span class="hljs-comment">/* TODO refactor the API so (source, dataSet) are not needed */</span>
+          <span class="hljs-keyword">var</span> xDomainStrings = udc.getDomain(source, dataSet, dataOptions.x),
+
+              <span class="hljs-comment">/* TODO generalize handling of X dimensions, special case Time */</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-38">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-38">&#182;</a>
+              </div>
+              <p>Parse X dimension domain values into JS Date objects.</p>
 
             </div>
             
             <div class="content"><div class='highlight'><pre>              xDomainDates = xDomainStrings.map( <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(yearStr)</span> {</span>
                 <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>(yearStr, <span class="hljs-number">0</span>);
-              }),
-              cell = _.clone(data.slices),
-              xyPoints = xDomainDates.map(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(xDate, i)</span> {</span>
-                cell[data.x] = xDomainStrings[i];
-                <span class="hljs-keyword">return</span> {
-                  x: xDate,
-                  y: udc.getValue(data.source, data.dataSet, cell, data.y)
-                };
-              });
-          callback(xDomainDates, xyPoints);
+              }),</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-39">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-39">&#182;</a>
+              </div>
+              <p>Use the <code>slice</code> option as the basis for the current cell.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>              cell = _.clone(dataOptions.slices);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-40">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-40">&#182;</a>
+              </div>
+              <p>Call the callback with (x, y) pairs.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>          callback(xDomainStrings.map(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(xValue, i)</span> {</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-41">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-41">&#182;</a>
+              </div>
+              <p>Set the X dimension value for the current cell
+to the X domain value.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>            cell[dataOptions.x] = xValue;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-42">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-42">&#182;</a>
+              </div>
+              <p>Map X domain objects to data element objects with</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>            <span class="hljs-keyword">return</span> {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-43">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-43">&#182;</a>
+              </div>
+              <ul>
+<li><code>x</code> The date corresponding to the X domain value.</li>
+</ul>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>              x: xDomainDates[i],</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-44">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-44">&#182;</a>
+              </div>
+              <ul>
+<li><code>y</code> The measure value from the data cube for
+the current cell and the configured Y measure.</li>
+</ul>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>              y: udc.getValue(source, dataSet, cell, dataOptions.y)
+            };
+          }));
         });
       });
     }

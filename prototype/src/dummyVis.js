@@ -4,8 +4,9 @@
 // Curran Kelleher 3/26/2014
 define([], function () {
 
-  // The constructor function.
+  // The constructor function invoked by `dashboardScaffold`.
   return function (dashboard) {
+
     // The dummy visualization has
     // the following configuration options:
     var model = new Backbone.Model({
@@ -84,9 +85,11 @@ define([], function () {
         .style('top', box.y + 'px')
 
         // Set the `width` and `height` attributes
-        // of the SVG element
+        // to the size computed by the dashboard layout engine
+        // on the SVG element 
         .attr('width', box.width)
         .attr('height', box.height);
+
       // and of the background rect.
       rect
         .attr('width', box.width)
