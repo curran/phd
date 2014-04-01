@@ -26,9 +26,10 @@
 //   firstName: "Jane",
 //   lastName: "Doe"
 // });
-// wire(['firstName', 'lastName'], function (first, last) {
+//
+// model.wire(['firstName', 'lastName'], function (first, last) {
 //   model.set('fullName', first + last);
-// }, model);
+// });
 // ```
 //
 // The above example code uses `wire` to implement a
