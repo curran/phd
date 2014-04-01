@@ -154,7 +154,28 @@
           .y(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(d)</span> {</span> <span class="hljs-keyword">return</span> y(d.y); });
 
 
-    model.wire([<span class="hljs-string">'box'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(box)</span> {</span></pre></div></div>
+    model.wire([<span class="hljs-string">'box'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(box)</span> {</span>
+      svg
+        .style(<span class="hljs-string">'left'</span>, box.x + <span class="hljs-string">'px'</span>)
+        .style(<span class="hljs-string">'top'</span>, box.y + <span class="hljs-string">'px'</span>)
+        .attr(<span class="hljs-string">'width'</span>, box.width)
+        .attr(<span class="hljs-string">'height'</span>, box.height);
+      g.attr(<span class="hljs-string">'transform'</span>, <span class="hljs-string">'translate('</span> + margin.left + <span class="hljs-string">','</span> + margin.top + <span class="hljs-string">')'</span>);
+      yAxisLabel.attr(<span class="hljs-string">'transform'</span>, <span class="hljs-string">'rotate(-90) translate(-'</span> + (height(box) / <span class="hljs-number">2</span>) + <span class="hljs-string">', -25)'</span>)
+      xAxisGroup.attr(<span class="hljs-string">'transform'</span>, <span class="hljs-string">'translate(0,'</span> + height(box) + <span class="hljs-string">')'</span>);
+    });
+    model.wire([<span class="hljs-string">'data'</span>, <span class="hljs-string">'box'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(data, box)</span> {</span>
+      query(data, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(xDomain, xyPoints)</span> {</span>
+        x.domain(d3.extent(xDomain)); y.domain([<span class="hljs-number">0</span>, d3.max(xyPoints, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(d)</span> {</span> <span class="hljs-keyword">return</span> d.y; })]);
+        x.range([<span class="hljs-number">0</span>, width(box)]);
+        y.range([height(box), <span class="hljs-number">0</span>]);
+
+        path.attr(<span class="hljs-string">'d'</span>, line(xyPoints));
+
+        xAxisGroup.call(xAxis).call(styleAxis);
+        yAxisGroup.call(yAxis).call(styleAxis);
+      });
+    });</pre></div></div>
             
         </li>
         
@@ -165,54 +186,15 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-3">&#182;</a>
               </div>
-              <p>TODO move null checking into wire</p>
+              <p>TODO use computed property pattern</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">if</span>(box){
-        svg
-          .style(<span class="hljs-string">'left'</span>, box.x + <span class="hljs-string">'px'</span>)
-          .style(<span class="hljs-string">'top'</span>, box.y + <span class="hljs-string">'px'</span>)
-          .attr(<span class="hljs-string">'width'</span>, box.width)
-          .attr(<span class="hljs-string">'height'</span>, box.height);
-        g.attr(<span class="hljs-string">'transform'</span>, <span class="hljs-string">'translate('</span> + margin.left + <span class="hljs-string">','</span> + margin.top + <span class="hljs-string">')'</span>);
-        yAxisLabel.attr(<span class="hljs-string">'transform'</span>, <span class="hljs-string">'rotate(-90) translate(-'</span> + (height() / <span class="hljs-number">2</span>) + <span class="hljs-string">', -25)'</span>)
-        xAxisGroup.attr(<span class="hljs-string">'transform'</span>, <span class="hljs-string">'translate(0,'</span> + height() + <span class="hljs-string">')'</span>);
-      }
-    });
-    model.wire([<span class="hljs-string">'data'</span>, <span class="hljs-string">'box'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(data, box)</span> {</span></pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-4">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-4">&#182;</a>
-              </div>
-              <p>TODO move null checking into wire</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">if</span>(data &amp;&amp; box){
-        query(data, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(xDomain, xyPoints)</span> {</span>
-          x.domain(d3.extent(xDomain)); y.domain([<span class="hljs-number">0</span>, d3.max(xyPoints, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(d)</span> {</span> <span class="hljs-keyword">return</span> d.y; })]);
-          x.range([<span class="hljs-number">0</span>, width()]);
-          y.range([height(), <span class="hljs-number">0</span>]);
-
-          path.attr(<span class="hljs-string">'d'</span>, line(xyPoints));
-
-          xAxisGroup.call(xAxis).call(styleAxis);
-          yAxisGroup.call(yAxis).call(styleAxis);
-        });
-      }
-    });
-    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">width</span><span class="hljs-params">()</span>{</span>
-      <span class="hljs-keyword">return</span> model.get(<span class="hljs-string">'box'</span>).width - margin.left - margin.right;
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">width</span><span class="hljs-params">(box)</span>{</span>
+      <span class="hljs-keyword">return</span> box.width - margin.left - margin.right;
     }
-    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">height</span><span class="hljs-params">()</span>{</span>
-      <span class="hljs-keyword">return</span> model.get(<span class="hljs-string">'box'</span>).height - margin.top - margin.bottom;
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">height</span><span class="hljs-params">(box)</span>{</span>
+      <span class="hljs-keyword">return</span> box.height - margin.top - margin.bottom;
     }
     <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">styleAxis</span><span class="hljs-params">(axisGroup)</span> {</span>
       axisGroup.selectAll(<span class="hljs-string">'line, path'</span>)
@@ -230,11 +212,11 @@
         </li>
         
         
-        <li id="section-5">
+        <li id="section-4">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-5">&#182;</a>
+                <a class="pilcrow" href="#section-4">&#182;</a>
               </div>
               <p>TODO generalize handling of X dimensions, special case Time</p>
 

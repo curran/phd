@@ -134,7 +134,7 @@ when wire is called, and updated whenever <code>firstName</code> or
 <code>lastName</code> changes. The values for <code>firstName</code> and <code>lastName</code>
 are passed as arguments into the callback, based on the ordering
 in the array passed as the first argument.</p>
-<p>Curran Kelleher 3/27/2014</p>
+<p>Curran Kelleher 4/1/2014</p>
 
             </div>
             
@@ -149,22 +149,27 @@ in the array passed as the first argument.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-2">&#182;</a>
               </div>
-              <p><code>wire(dependencies, fn, model)</code></p>
-<p>or</p>
-<p><code>model.wire = wire; model.wire(dependencies, fn)</code></p>
+              <p><code>model.wire(dependencies, fn[, thisArg])</code></p>
 <ul>
-<li><code>dependencies</code> An array of dependency properties.
+<li><p><code>dependencies</code> An array of dependency properties.
 These are property names in the Backbone model <code>model</code>
-passed as the last argument.</li>
-<li><code>fn</code> The callback function that will be invoked with
-current values for each dependency property as arguments
-in the order specified by <code>dependencies</code>. This function will be invoked:<ul>
-<li>once immediately after calling <code>wire</code></li>
-<li>every time any dependency property changes</li>
-</ul>
+passed as the last argument.</p>
 </li>
-<li><code>model</code> The Backbone Model used for evaluating
-dependency properties.</li>
+<li><p><code>fn</code> The callback function that will be invoked with
+current values for each dependency property as arguments
+in the order specified by <code>dependencies</code>. This function will be invoked:</p>
+<ul>
+<li><p>once immediately after calling <code>wire</code></p>
+</li>
+<li><p>every time any dependency property changes</p>
+</li>
+</ul>
+<p><code>fn</code> will not be invoked unless all dependency property 
+values have been defined (if any property values are
+<code>undefined</code>, <code>fn</code> will not be invoked).</p>
+</li>
+<li><p><code>thisArg</code> (optional) The object used as <code>this</code> when invoking <code>fn</code>.</p>
+</li>
 </ul>
 <p>Note that <code>fn</code> is invoked on the next tick of the JavaScript
 event loop, both for initialization and for dependency property updates.</p>
@@ -173,7 +178,9 @@ result in only a single invocation of <code>fn</code>.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">wire</span><span class="hljs-params">(dependencies, fn, model)</span>{</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">wire</span><span class="hljs-params">(dependencies, fn, thisArg)</span>{</span>
+
+    <span class="hljs-keyword">var</span> model = <span class="hljs-keyword">this</span>;</pre></div></div>
             
         </li>
         
@@ -184,13 +191,12 @@ result in only a single invocation of <code>fn</code>.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-3">&#182;</a>
               </div>
-              <p>Make <code>model.wire = wire; model.wire(demendencies, fn)</code> possible</p>
+              <p><code>callFn()</code> will invoke <code>fn</code> with values of dependency properties
+on the next tick of the JavaScript event loop.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">if</span>(!model) {
-      model = <span class="hljs-keyword">this</span>;
-    }</pre></div></div>
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">var</span> callFn = _.debounce(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span>{</span></pre></div></div>
             
         </li>
         
@@ -201,14 +207,11 @@ result in only a single invocation of <code>fn</code>.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-4">&#182;</a>
               </div>
-              <p><code>callFn()</code> will invoke <code>fn</code> with values of dependency properties
-on the next tick of the JavaScript event loop.</p>
+              <p>Extract the values for each dependency property from the model.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">var</span> callFn = _.debounce(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span>{</span>
-      fn.apply(<span class="hljs-literal">null</span>, dependencies.map(model.get, model));
-    });</pre></div></div>
+            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">var</span> values = dependencies.map(model.get, model);</pre></div></div>
             
         </li>
         
@@ -219,11 +222,11 @@ on the next tick of the JavaScript event loop.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-5">&#182;</a>
               </div>
-              <p>Invoke <code>fn</code> once for initialization.</p>
+              <p>Only call the function if there all values are defined.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    callFn();</pre></div></div>
+            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">if</span>(!_.some(values, _.isUndefined)){</pre></div></div>
             
         </li>
         
@@ -233,6 +236,38 @@ on the next tick of the JavaScript event loop.</p>
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p>Call <code>fn</code> with the dependency property values.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        fn.apply(thisArg, values);
+      }
+    });</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <p>Invoke <code>fn</code> once for initialization.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    callFn();</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
               </div>
               <p>Invoke <code>fn</code> when dependency properties change.</p>
 <p>Multiple sequential dependency property changes 
@@ -249,11 +284,11 @@ because callFn is <a href="underscorejs.org/#debounce">debounced</a>.</p>
         </li>
         
         
-        <li id="section-7">
+        <li id="section-9">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-7">&#182;</a>
+                <a class="pilcrow" href="#section-9">&#182;</a>
               </div>
               <p>Make <code>model.wire(demendencies, fn)</code> possible
 for any Backbone model</p>

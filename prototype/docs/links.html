@@ -163,20 +163,17 @@ whenever the source property changes.</li>
             <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">var</span> model = <span class="hljs-keyword">new</span> Backbone.Model();
 
     model.wire([<span class="hljs-string">'bindings'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(bindings)</span> {</span>
-      <span class="hljs-keyword">if</span>(bindings){
-      <span class="hljs-comment">/*TODO move null check to wire */</span>
-        bindings.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(binding)</span> {</span>
-          <span class="hljs-keyword">var</span> source = parse(binding.source),
-              destination = parse(binding.destination);
-          dashboard.getComponent(destination.alias, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(destinationModel)</span> {</span>
-            dashboard.getComponent(source.alias, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(sourceModel)</span> {</span>
-              sourceModel.wire([source.property], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(value)</span> {</span>
-                destinationModel.set(destination.property, value);
-              });
+      bindings.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(binding)</span> {</span>
+        <span class="hljs-keyword">var</span> source = parse(binding.source),
+            destination = parse(binding.destination);
+        dashboard.getComponent(destination.alias, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(destinationModel)</span> {</span>
+          dashboard.getComponent(source.alias, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(sourceModel)</span> {</span>
+            sourceModel.wire([source.property], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(value)</span> {</span>
+              destinationModel.set(destination.property, value);
             });
           });
         });
-      }
+      });
     });</pre></div></div>
             
         </li>
