@@ -7,7 +7,7 @@ define(['udc'], function (UDC) {
     // TODO add docs for `sources`
     var model = new Backbone.Model();
     model.udc = UDC();
-    model.wire(['sources'], function (sources) {
+    model.wire('sources', function (sources) {
       sources.forEach(model.udc.load);
     });
     return model;

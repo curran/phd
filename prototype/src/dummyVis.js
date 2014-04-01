@@ -70,12 +70,12 @@ define([], function () {
         }());
 
     // Update the color and text based on the model.
-    model.wire(['color'], _.partial(rect.attr, 'fill'), rect);
-    model.wire(['text'], text.text, text);
+    model.wire('color', _.partial(rect.attr, 'fill'), rect);
+    model.wire('text', text.text, text);
 
     // When the size of the visualization is set
     // by the dashboard layout engine,
-    model.wire(['box'], function (box) {
+    model.wire('box', function (box) {
       // Set the CSS `left` and `top` properties
       // to move the SVG to `(box.x, box.y)`
       // relative to the dashboard div.

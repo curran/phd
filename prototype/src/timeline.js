@@ -47,8 +47,7 @@ define([], function () {
           .x(function (d) { return x(d.x); })
           .y(function (d) { return y(d.y); });
 
-    // TODO make wire accept model.wire('yAxisLabel', ...
-    model.wire(['yAxisLabel'], yAxisLabel.text, yAxisLabel);
+    model.wire('yAxisLabel', yAxisLabel.text, yAxisLabel);
 
     model.wire(['box', 'margin'], function (box, margin) {
       model.set('width', box.width - margin.left - margin.right);
@@ -63,7 +62,7 @@ define([], function () {
       g.attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
     });
 
-    model.wire(['height'], function (height) {
+    model.wire('height', function (height) {
       yAxisLabel.attr('transform',
         'rotate(-90) translate(-' + (height / 2) + ', -25)')
       xAxisGroup.attr('transform',

@@ -43,12 +43,14 @@
 // `model.wire(dependencies, fn[, thisArg])`
 //
 //  * `dependencies` An array of dependency properties.
-//    These are property names in the Backbone model `model`
-//    passed as the last argument.
+//    These are property names in the Backbone model.
+//    This can also be a single string in the case of 
+//    having only one dependency property.
 //
 //  * `fn` The callback function that will be invoked with
 //    current values for each dependency property as arguments
-//    in the order specified by `dependencies`. This function will be invoked:
+//    in the order specified by `dependencies`.
+//    This function will be invoked:
 //
 //    * once immediately after calling `wire`
 //
@@ -72,6 +74,11 @@ Backbone.Model.prototype.wire = function (dependencies, fn, thisArg){
 
   // Grab a reference to `this` for use in inner closures.
   var model = this;
+
+  // Support passing a single string as `dependencies`
+  if(!(dependencies instanceof Array)) {
+    dependencies = [dependencies];
+  }
 
   // `callFn()` will invoke `fn` with values of dependency properties
   // on the next tick of the JavaScript event loop.

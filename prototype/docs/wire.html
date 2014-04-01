@@ -151,12 +151,14 @@ in the array passed as the first argument.</p>
               <p><code>model.wire(dependencies, fn[, thisArg])</code></p>
 <ul>
 <li><p><code>dependencies</code> An array of dependency properties.
-These are property names in the Backbone model <code>model</code>
-passed as the last argument.</p>
+These are property names in the Backbone model.
+This can also be a single string in the case of 
+having only one dependency property.</p>
 </li>
 <li><p><code>fn</code> The callback function that will be invoked with
 current values for each dependency property as arguments
-in the order specified by <code>dependencies</code>. This function will be invoked:</p>
+in the order specified by <code>dependencies</code>.
+This function will be invoked:</p>
 <ul>
 <li><p>once immediately after calling <code>wire</code></p>
 </li>
@@ -205,12 +207,13 @@ invoked as <code>model.wire()</code> on any Backbone model.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-4">&#182;</a>
               </div>
-              <p><code>callFn()</code> will invoke <code>fn</code> with values of dependency properties
-on the next tick of the JavaScript event loop.</p>
+              <p>Support passing a single string as <code>dependencies</code></p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">var</span> callFn = _.debounce(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span>{</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">if</span>(!(dependencies <span class="hljs-keyword">instanceof</span> <span class="hljs-built_in">Array</span>)) {
+    dependencies = [dependencies];
+  }</pre></div></div>
             
         </li>
         
@@ -221,11 +224,12 @@ on the next tick of the JavaScript event loop.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-5">&#182;</a>
               </div>
-              <p>Extract the values for each dependency property from the model.</p>
+              <p><code>callFn()</code> will invoke <code>fn</code> with values of dependency properties
+on the next tick of the JavaScript event loop.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">var</span> values = dependencies.map(model.get, model);</pre></div></div>
+            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">var</span> callFn = _.debounce(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span>{</span></pre></div></div>
             
         </li>
         
@@ -236,11 +240,11 @@ on the next tick of the JavaScript event loop.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-6">&#182;</a>
               </div>
-              <p>Only call the function if all values are defined.</p>
+              <p>Extract the values for each dependency property from the model.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">if</span>(!_.some(values, _.isUndefined)){</pre></div></div>
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">var</span> values = dependencies.map(model.get, model);</pre></div></div>
             
         </li>
         
@@ -250,6 +254,21 @@ on the next tick of the JavaScript event loop.</p>
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <p>Only call the function if all values are defined.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">if</span>(!_.some(values, _.isUndefined)){</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
               </div>
               <p>Call <code>fn</code> with the dependency property values.</p>
 
@@ -262,11 +281,11 @@ on the next tick of the JavaScript event loop.</p>
         </li>
         
         
-        <li id="section-8">
+        <li id="section-9">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-8">&#182;</a>
+                <a class="pilcrow" href="#section-9">&#182;</a>
               </div>
               <p>Invoke <code>fn</code> once for initialization.</p>
 
@@ -277,11 +296,11 @@ on the next tick of the JavaScript event loop.</p>
         </li>
         
         
-        <li id="section-9">
+        <li id="section-10">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-9">&#182;</a>
+                <a class="pilcrow" href="#section-10">&#182;</a>
               </div>
               <p>Invoke <code>fn</code> when dependency properties change.</p>
 <p>Multiple sequential dependency property changes 

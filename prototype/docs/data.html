@@ -127,7 +127,7 @@ for visualization dashboards.</p>
             
             <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">var</span> model = <span class="hljs-keyword">new</span> Backbone.Model();
     model.udc = UDC();
-    model.wire([<span class="hljs-string">'sources'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(sources)</span> {</span>
+    model.wire(<span class="hljs-string">'sources'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(sources)</span> {</span>
       sources.forEach(model.udc.load);
     });
     <span class="hljs-keyword">return</span> model;

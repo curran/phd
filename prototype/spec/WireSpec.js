@@ -150,4 +150,13 @@ describe('wire', function() {
       done();
     }, theThing);
   });
+
+  it('should accept a single string (rather than an array) as the first argument', function(done) {
+    var model = new Backbone.Model({ x: 5 });
+    model.wire('x', function (x) {
+      expect(x).toBe(10);
+      done();
+    });
+    model.set('x', 10);
+  });
 });
