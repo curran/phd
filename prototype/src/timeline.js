@@ -2,8 +2,25 @@
 define([], function () {
 
   return function (dashboard) {
-    var model = new Backbone.Model(),
-        margin = {top: 20, right: 20, bottom: 30, left: 40 },
+
+    // The timeline visualization has
+    // the following configuration options:
+    var model = new Backbone.Model({
+     
+          // * `margin` A margin object according to the
+          //   [D3 Margin Convention](http://bl.ocks.org/mbostock/3019563).
+          margin: { top: 20, right: 20, bottom: 30, left: 40 },
+
+          // * `box` is a property expected to be on all
+          //   visualization components, and is set by
+          //   the dashboard layout engine.
+
+          // * `width` and `height` properties are used
+          //   internally, computed from `box` and `margin`
+
+          // * `yAxisLabel` (optional) A string that will be
+          //   displayed vertically next to the Y axis.
+        }),
         svg = dashboard.div.append('svg').style('position', 'absolute'),
         g = svg.append('g'),
         path = g.append('path')
@@ -25,29 +42,39 @@ define([], function () {
         yAxisGroup = g.append('g'),
         yAxisLabel = yAxisGroup.append('text')
           .style('text-anchor', 'middle')
-          .style('font', '14pt serif')
-           // TODO generate this text from the data
-          .text('World Population (billions)'),
+          .style('font', '14pt serif'),
         line = d3.svg.line()
           .x(function (d) { return x(d.x); })
           .y(function (d) { return y(d.y); });
 
+    // TODO make wire accept model.wire('yAxisLabel', ...
+    model.wire(['yAxisLabel'], yAxisLabel.text, yAxisLabel);
 
-    model.wire(['box'], function (box) {
+    model.wire(['box', 'margin'], function (box, margin) {
+      model.set('width', box.width - margin.left - margin.right);
+      model.set('height', box.height - margin.top - margin.bottom);
+
       svg
         .style('left', box.x + 'px')
         .style('top', box.y + 'px')
         .attr('width', box.width)
         .attr('height', box.height);
+
       g.attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
-      yAxisLabel.attr('transform', 'rotate(-90) translate(-' + (height(box) / 2) + ', -25)')
-      xAxisGroup.attr('transform', 'translate(0,' + height(box) + ')');
     });
-    model.wire(['data', 'box'], function (data, box) {
+
+    model.wire(['height'], function (height) {
+      yAxisLabel.attr('transform',
+        'rotate(-90) translate(-' + (height / 2) + ', -25)')
+      xAxisGroup.attr('transform',
+        'translate(0,' + height + ')');
+    });
+
+    model.wire(['data', 'width', 'height'], function (data, width, height) {
       query(data, function (xDomain, xyPoints) {
         x.domain(d3.extent(xDomain)); y.domain([0, d3.max(xyPoints, function (d) { return d.y; })]);
-        x.range([0, width(box)]);
-        y.range([height(box), 0]);
+        x.range([0, width]);
+        y.range([height, 0]);
 
         path.attr('d', line(xyPoints));
 
@@ -56,13 +83,6 @@ define([], function () {
       });
     });
 
-    // TODO use computed property pattern
-    function width(box){
-      return box.width - margin.left - margin.right;
-    }
-    function height(box){
-      return box.height - margin.top - margin.bottom;
-    }
     function styleAxis(axisGroup) {
       axisGroup.selectAll('line, path')
         .style('stroke', 'black')
@@ -70,6 +90,7 @@ define([], function () {
       axisGroup.selectAll('g')
         .style('font', '10pt sans-serif');
     }
+
     function query(data, callback){
       dashboard.getComponent('data', function (dataComponent) {
         var udc = dataComponent.udc;

@@ -60,7 +60,8 @@
       "slices": { "Space": "900" },
       "x": "Time",
       "y": "Population"
-    }
+    },
+    "yAxisLabel": "World Population (billions)"
   },
   "a": { "module": "dummyVis", "text": "a", "color": "rgb(237,72,174)" },
   "b": { "module": "dummyVis", "text": "b", "color": "rgb(147,123,191)" },

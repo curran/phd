@@ -6,7 +6,8 @@ define([], function () {
 
   // The constructor function.
   return function (dashboard) {
-    // The dummy visualization has the following configurable options:
+    // The dummy visualization has
+    // the following configuration options:
     var model = new Backbone.Model({
 
           // * `color` a background color
@@ -21,6 +22,10 @@ define([], function () {
           // `box` is a property expected to be on all
           // visualization components, and is set by
           // the dashboard layout engine.
+
+          // `width` and `height` properties are used
+          // internally, and are computed from the `box`
+          // and `margin` properties
         }),
 
         // Append the svg element for this visualization
