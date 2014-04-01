@@ -4,7 +4,7 @@
 // multiple linked views in a visualization dashboard.
 //
 // Curran Kelleher 3/28/2014
-define(['wire'], function (wire) {
+define([], function () {
 
   // The constructor function.
   return function (dashboard) {

@@ -1,4 +1,3 @@
-// TODO move wire into a non-AMD script.
 // A function for wiring up properties on Backbone models
 // to functions that depend on them.
 //
@@ -7,6 +6,8 @@
 //  * make a function that depends on several things in a Backbone model
 //  * call the function once for initialization
 //  * add change listeners for properties in the model so the function is called when those properties change
+//  * add an `if` statement in the change handler to check if all properties 
+//    are not null or undefined before using them
 //
 // The `wire` function provides a clean API for this pattern.
 //
@@ -38,70 +39,64 @@
 // in the array passed as the first argument.
 //
 // Curran Kelleher 4/1/2014
-define([], function () {
 
-  // `model.wire(dependencies, fn[, thisArg])`
+// `model.wire(dependencies, fn[, thisArg])`
+//
+//  * `dependencies` An array of dependency properties.
+//    These are property names in the Backbone model `model`
+//    passed as the last argument.
+//
+//  * `fn` The callback function that will be invoked with
+//    current values for each dependency property as arguments
+//    in the order specified by `dependencies`. This function will be invoked:
+//
+//    * once immediately after calling `wire`
+//
+//    * every time any dependency property changes
+//    
+//    `fn` will not be invoked unless all dependency property 
+//    values have been defined (if any property values are
+//    `undefined`, `fn` will not be invoked).
+//
+//  * `thisArg` (optional) The object used as `this` when invoking `fn`.
+//
+// Note that `fn` is invoked on the next tick of the JavaScript
+// event loop, both for initialization and for dependency property updates.
+//
+// Note also that sequential changes to multiple dependency properties
+// result in only a single invocation of `fn`.
+//
+// `wire` is added to the prototype of `Backbone.Model`, so it can be
+// invoked as `model.wire()` on any Backbone model.
+Backbone.Model.prototype.wire = function (dependencies, fn, thisArg){
+
+  // Grab a reference to `this` for use in inner closures.
+  var model = this;
+
+  // `callFn()` will invoke `fn` with values of dependency properties
+  // on the next tick of the JavaScript event loop.
+  var callFn = _.debounce(function(){
+
+    // Extract the values for each dependency property from the model.
+    var values = dependencies.map(model.get, model);
+
+    // Only call the function if all values are defined.
+    if(!_.some(values, _.isUndefined)){
+
+      // Call `fn` with the dependency property values.
+      fn.apply(thisArg, values);
+    }
+  });
+
+  // Invoke `fn` once for initialization.
+  callFn();
+
+  // Invoke `fn` when dependency properties change.
   //
-  //  * `dependencies` An array of dependency properties.
-  //    These are property names in the Backbone model `model`
-  //    passed as the last argument.
-  //
-  //  * `fn` The callback function that will be invoked with
-  //    current values for each dependency property as arguments
-  //    in the order specified by `dependencies`. This function will be invoked:
-  //
-  //    * once immediately after calling `wire`
-  //
-  //    * every time any dependency property changes
-  //    
-  //    `fn` will not be invoked unless all dependency property 
-  //    values have been defined (if any property values are
-  //    `undefined`, `fn` will not be invoked).
-  //
-  //  * `thisArg` (optional) The object used as `this` when invoking `fn`.
-  //
-  // Note that `fn` is invoked on the next tick of the JavaScript
-  // event loop, both for initialization and for dependency property updates.
-  //
-  // Note also that sequential changes to multiple dependency properties
-  // result in only a single invocation of `fn`.
-  function wire(dependencies, fn, thisArg){
-
-    var model = this;
-
-    // `callFn()` will invoke `fn` with values of dependency properties
-    // on the next tick of the JavaScript event loop.
-    var callFn = _.debounce(function(){
-
-      // Extract the values for each dependency property from the model.
-      var values = dependencies.map(model.get, model);
-
-      // Only call the function if there all values are defined.
-      if(!_.some(values, _.isUndefined)){
-
-        // Call `fn` with the dependency property values.
-        fn.apply(thisArg, values);
-      }
-    });
-
-    // Invoke `fn` once for initialization.
-    callFn();
-
-    // Invoke `fn` when dependency properties change.
-    //
-    // Multiple sequential dependency property changes 
-    // result in only a single invocation of `fn`
-    // because callFn is [debounced](underscorejs.org/#debounce).
-    dependencies.forEach(function(property){
-      model.on('change:' + property, callFn);
-    });
-  }
-
-  // Make `model.wire(demendencies, fn)` possible
-  // for any Backbone model
-  if(Backbone && Backbone.Model) {
-    Backbone.Model.prototype.wire = wire;
-  }
-
-  return wire;
-});
+  // Multiple sequential dependency property changes 
+  // result in only a single invocation of `fn`
+  // because callFn is [debounced](underscorejs.org/#debounce).
+  dependencies.forEach(function(property){
+    model.on('change:' + property, callFn);
+  });
+}

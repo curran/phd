@@ -2,7 +2,7 @@
 // for testing the visualization dashboard framework.
 //
 // Curran Kelleher 3/26/2014
-define(['wire'], function (wire) {
+define([], function () {
 
   // The constructor function.
   return function (dashboard) {

@@ -1,5 +1,5 @@
 // Curran Kelleher 3/30/2014
-define(['wire'], function (wire) {
+define([], function () {
 
   return function (dashboard) {
     var model = new Backbone.Model(),

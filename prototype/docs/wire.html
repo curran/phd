@@ -103,14 +103,15 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-1">&#182;</a>
               </div>
-              <p>TODO move wire into a non-AMD script.
-A function for wiring up properties on Backbone models
+              <p>A function for wiring up properties on Backbone models
 to functions that depend on them.</p>
 <p>One of the most common patterns when using Backbone is the following:</p>
 <ul>
 <li>make a function that depends on several things in a Backbone model</li>
 <li>call the function once for initialization</li>
 <li>add change listeners for properties in the model so the function is called when those properties change</li>
+<li>add an <code>if</code> statement in the change handler to check if all properties 
+are not null or undefined before using them</li>
 </ul>
 <p>The <code>wire</code> function provides a clean API for this pattern.</p>
 <p>Inspired by</p>
@@ -137,8 +138,6 @@ in the array passed as the first argument.</p>
 <p>Curran Kelleher 4/1/2014</p>
 
             </div>
-            
-            <div class="content"><div class='highlight'><pre>define([], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span></pre></div></div>
             
         </li>
         
@@ -175,12 +174,12 @@ values have been defined (if any property values are
 event loop, both for initialization and for dependency property updates.</p>
 <p>Note also that sequential changes to multiple dependency properties
 result in only a single invocation of <code>fn</code>.</p>
+<p><code>wire</code> is added to the prototype of <code>Backbone.Model</code>, so it can be
+invoked as <code>model.wire()</code> on any Backbone model.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">wire</span><span class="hljs-params">(dependencies, fn, thisArg)</span>{</span>
-
-    <span class="hljs-keyword">var</span> model = <span class="hljs-keyword">this</span>;</pre></div></div>
+            <div class="content"><div class='highlight'><pre>Backbone.Model.prototype.wire = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(dependencies, fn, thisArg)</span>{</span></pre></div></div>
             
         </li>
         
@@ -191,12 +190,11 @@ result in only a single invocation of <code>fn</code>.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-3">&#182;</a>
               </div>
-              <p><code>callFn()</code> will invoke <code>fn</code> with values of dependency properties
-on the next tick of the JavaScript event loop.</p>
+              <p>Grab a reference to <code>this</code> for use in inner closures.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">var</span> callFn = _.debounce(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span>{</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">var</span> model = <span class="hljs-keyword">this</span>;</pre></div></div>
             
         </li>
         
@@ -207,11 +205,12 @@ on the next tick of the JavaScript event loop.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-4">&#182;</a>
               </div>
-              <p>Extract the values for each dependency property from the model.</p>
+              <p><code>callFn()</code> will invoke <code>fn</code> with values of dependency properties
+on the next tick of the JavaScript event loop.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">var</span> values = dependencies.map(model.get, model);</pre></div></div>
+            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">var</span> callFn = _.debounce(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span>{</span></pre></div></div>
             
         </li>
         
@@ -222,11 +221,11 @@ on the next tick of the JavaScript event loop.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-5">&#182;</a>
               </div>
-              <p>Only call the function if there all values are defined.</p>
+              <p>Extract the values for each dependency property from the model.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">if</span>(!_.some(values, _.isUndefined)){</pre></div></div>
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">var</span> values = dependencies.map(model.get, model);</pre></div></div>
             
         </li>
         
@@ -237,13 +236,11 @@ on the next tick of the JavaScript event loop.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-6">&#182;</a>
               </div>
-              <p>Call <code>fn</code> with the dependency property values.</p>
+              <p>Only call the function if all values are defined.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>        fn.apply(thisArg, values);
-      }
-    });</pre></div></div>
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">if</span>(!_.some(values, _.isUndefined)){</pre></div></div>
             
         </li>
         
@@ -254,11 +251,13 @@ on the next tick of the JavaScript event loop.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-7">&#182;</a>
               </div>
-              <p>Invoke <code>fn</code> once for initialization.</p>
+              <p>Call <code>fn</code> with the dependency property values.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    callFn();</pre></div></div>
+            <div class="content"><div class='highlight'><pre>      fn.apply(thisArg, values);
+    }
+  });</pre></div></div>
             
         </li>
         
@@ -269,17 +268,11 @@ on the next tick of the JavaScript event loop.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-8">&#182;</a>
               </div>
-              <p>Invoke <code>fn</code> when dependency properties change.</p>
-<p>Multiple sequential dependency property changes 
-result in only a single invocation of <code>fn</code>
-because callFn is <a href="underscorejs.org/#debounce">debounced</a>.</p>
+              <p>Invoke <code>fn</code> once for initialization.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    dependencies.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(property)</span>{</span>
-      model.on(<span class="hljs-string">'change:'</span> + property, callFn);
-    });
-  }</pre></div></div>
+            <div class="content"><div class='highlight'><pre>  callFn();</pre></div></div>
             
         </li>
         
@@ -290,17 +283,17 @@ because callFn is <a href="underscorejs.org/#debounce">debounced</a>.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-9">&#182;</a>
               </div>
-              <p>Make <code>model.wire(demendencies, fn)</code> possible
-for any Backbone model</p>
+              <p>Invoke <code>fn</code> when dependency properties change.</p>
+<p>Multiple sequential dependency property changes 
+result in only a single invocation of <code>fn</code>
+because callFn is <a href="underscorejs.org/#debounce">debounced</a>.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">if</span>(Backbone &amp;&amp; Backbone.Model) {
-    Backbone.Model.prototype.wire = wire;
-  }
-
-  <span class="hljs-keyword">return</span> wire;
-});</pre></div></div>
+            <div class="content"><div class='highlight'><pre>  dependencies.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(property)</span>{</span>
+    model.on(<span class="hljs-string">'change:'</span> + property, callFn);
+  });
+}</pre></div></div>
             
         </li>
         

@@ -2,10 +2,6 @@
 // 
 // Curran Kelleher 4/1/2014
 describe('wire', function() {
-  // Use require.js to fetch the module.
-  beforeEach(function(done) {
-    require(['wire'], done)
-  });
 
   it('should call fn once initially', function(done) {
     var model = new Backbone.Model({ x: 5 });

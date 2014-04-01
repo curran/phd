@@ -2,7 +2,7 @@
 // for visualization dashboards.
 //
 // Curran Kelleher 3/26/2014
-define(['udc', 'wire'], function (UDC, wire) {
+define(['udc'], function (UDC) {
   return function () {
     // TODO add docs for `sources`
     var model = new Backbone.Model();

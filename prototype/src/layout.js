@@ -1,7 +1,7 @@
 // This module implements nested box layout for visualization dashboards.
 //
 // Curran Kelleher 4/1/2014
-define(['wire', 'computeLayout'], function (wire, computeLayout) {
+define(['computeLayout'], function (computeLayout) {
 
   // The constructor function.
   return function (dashboard) {
