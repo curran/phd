@@ -70,13 +70,5 @@
   "f": { "module": "dummyVis", "text": "f", "color": "rgb(241,93,43)" },
   "g": { "module": "dummyVis", "text": "g", "color": "rgb(198,41,223)" },
   "h": { "module": "dummyVis", "text": "h", "color": "rgb(226,78,23)" },
-  "i": { "module": "dummyVis", "text": "i", "color": "rgb(209,12,90)" },
-  "j": { "module": "dummyVis", "text": "j", "color": "rgb(111,193,20)" },
-  "k": { "module": "dummyVis", "text": "k", "color": "rgb(39,199,218)" },
-  "l": { "module": "dummyVis", "text": "l", "color": "rgb(221,211,106)" },
-  "m": { "module": "dummyVis", "text": "m", "color": "rgb(172,41,11)" },
-  "n": { "module": "dummyVis", "text": "n", "color": "rgb(177,190,220)" },
-  "o": { "module": "dummyVis", "text": "o", "color": "rgb(85,90,111)" },
-  "p": { "module": "dummyVis", "text": "p", "color": "rgb(128,46,148)" },
-  "q": { "module": "dummyVis", "text": "q", "color": "rgb(145,126,35)" }
+  "i": { "module": "dummyVis", "text": "i", "color": "rgb(209,12,90)" }
 }
