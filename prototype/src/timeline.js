@@ -34,32 +34,26 @@ define(['wire'], function (wire) {
 
 
     model.wire(['box'], function (box) {
-      // TODO move null checking into wire
-      if(box){
-        svg
-          .style('left', box.x + 'px')
-          .style('top', box.y + 'px')
-          .attr('width', box.width)
-          .attr('height', box.height);
-        g.attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
-        yAxisLabel.attr('transform', 'rotate(-90) translate(-' + (height() / 2) + ', -25)')
-        xAxisGroup.attr('transform', 'translate(0,' + height() + ')');
-      }
+      svg
+        .style('left', box.x + 'px')
+        .style('top', box.y + 'px')
+        .attr('width', box.width)
+        .attr('height', box.height);
+      g.attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
+      yAxisLabel.attr('transform', 'rotate(-90) translate(-' + (height() / 2) + ', -25)')
+      xAxisGroup.attr('transform', 'translate(0,' + height() + ')');
     });
     model.wire(['data', 'box'], function (data, box) {
-      // TODO move null checking into wire
-      if(data && box){
-        query(data, function (xDomain, xyPoints) {
-          x.domain(d3.extent(xDomain)); y.domain([0, d3.max(xyPoints, function (d) { return d.y; })]);
-          x.range([0, width()]);
-          y.range([height(), 0]);
+      query(data, function (xDomain, xyPoints) {
+        x.domain(d3.extent(xDomain)); y.domain([0, d3.max(xyPoints, function (d) { return d.y; })]);
+        x.range([0, width()]);
+        y.range([height(), 0]);
 
-          path.attr('d', line(xyPoints));
+        path.attr('d', line(xyPoints));
 
-          xAxisGroup.call(xAxis).call(styleAxis);
-          yAxisGroup.call(yAxis).call(styleAxis);
-        });
-      }
+        xAxisGroup.call(xAxis).call(styleAxis);
+        yAxisGroup.call(yAxis).call(styleAxis);
+      });
     });
     function width(){
       return model.get('box').width - margin.left - margin.right;

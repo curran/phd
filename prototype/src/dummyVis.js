@@ -50,6 +50,7 @@ define(['wire'], function (wire) {
           var x1, x2;
           return d3.behavior.drag()
             .on('dragstart', function (d) {
+              console.log("here");
               x1 = d3.event.sourceEvent.pageX;
             })
             .on('drag', function (d) {
@@ -78,64 +79,53 @@ define(['wire'], function (wire) {
 
     // Update the text element based on the model.
     model.wire(['text', 'box'], function(newText, box){
-
-      // Only display the text if there is a box.
-      if(box){
-        text.text(newText);
-      }
+      text.text(newText);
     });
 
     // When the size of the visualization is set
     // by the dashboard layout engine,
     model.wire(['box'], function (box) {
-      if(box){
-        /*TODO move null check to wire */
-        // Set the CSS `left` and `top` properties
-        // to move the SVG to `(box.x, box.y)`
-        // relative to the dashboard div.
-        svg
-          .style('left', box.x + 'px')
-          .style('top', box.y + 'px')
+      // Set the CSS `left` and `top` properties
+      // to move the SVG to `(box.x, box.y)`
+      // relative to the dashboard div.
+      svg
+        .style('left', box.x + 'px')
+        .style('top', box.y + 'px')
 
-          // Set the `width` and `height` attributes
-          // of the SVG element
-          .attr('width', box.width)
-          .attr('height', box.height);
-        // and of the background rect.
-        rect
-          .attr('width', box.width)
-          .attr('height', box.height);
+        // Set the `width` and `height` attributes
+        // of the SVG element
+        .attr('width', box.width)
+        .attr('height', box.height);
+      // and of the background rect.
+      rect
+        .attr('width', box.width)
+        .attr('height', box.height);
 
-        // Update the text label to be centered.
-        text
-          .attr('x', box.width / 2)
-          .attr('y', box.height / 2);
-      }
+      // Update the text label to be centered.
+      text
+        .attr('x', box.width / 2)
+        .attr('y', box.height / 2);
     });
 
     // Update the X lines whenever either
     // the `box` or `lineWidth` model properties change.
     model.wire(['box', 'lineWidth'], function (box, lineWidth) {
-      if(box){
-        /*TODO move null check to wire */
-        var w = box.width,
-            h = box.height,
-            lines = svg.selectAll('line').data([
-              {x1: 0, y1: 0, x2: w, y2: h},
-              {x1: 0, y1: h, x2: w, y2: 0}
-            ]);
-        lines.enter().append('line');
-        lines
-          .attr('x1', function (d) { return d.x1; })
-          .attr('y1', function (d) { return d.y1; })
-          .attr('x2', function (d) { return d.x2; })
-          .attr('y2', function (d) { return d.y2; })
-          .style('stroke-width', lineWidth)
-          .style('stroke-opacity', 0.2)
-          .style('stroke', 'black')
-          .call(lineDrag);
-      }
-
+      var w = box.width,
+          h = box.height,
+          lines = svg.selectAll('line').data([
+            {x1: 0, y1: 0, x2: w, y2: h},
+            {x1: 0, y1: h, x2: w, y2: 0}
+          ]);
+      lines.enter().append('line');
+      lines
+        .attr('x1', function (d) { return d.x1; })
+        .attr('y1', function (d) { return d.y1; })
+        .attr('x2', function (d) { return d.x2; })
+        .attr('y2', function (d) { return d.y2; })
+        .style('stroke-width', lineWidth)
+        .style('stroke-opacity', 0.2)
+        .style('stroke', 'black')
+        .call(lineDrag);
     });
 
     // Return the Backbone model representing the

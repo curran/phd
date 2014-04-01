@@ -34,20 +34,17 @@ define(['wire'], function (wire) {
     var model = new Backbone.Model();
 
     model.wire(['bindings'], function (bindings) {
-      if(bindings){
-      /*TODO move null check to wire */
-        bindings.forEach(function (binding) {
-          var source = parse(binding.source),
-              destination = parse(binding.destination);
-          dashboard.getComponent(destination.alias, function (destinationModel) {
-            dashboard.getComponent(source.alias, function (sourceModel) {
-              sourceModel.wire([source.property], function (value) {
-                destinationModel.set(destination.property, value);
-              });
+      bindings.forEach(function (binding) {
+        var source = parse(binding.source),
+            destination = parse(binding.destination);
+        dashboard.getComponent(destination.alias, function (destinationModel) {
+          dashboard.getComponent(source.alias, function (sourceModel) {
+            sourceModel.wire([source.property], function (value) {
+              destinationModel.set(destination.property, value);
             });
           });
         });
-      }
+      });
     });
 
     // Parses a binding string.

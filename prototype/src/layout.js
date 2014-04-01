@@ -31,23 +31,16 @@ define(['wire', 'computeLayout'], function (wire, computeLayout) {
       });
     }
 
-    // Computes the layout based on the dashboard div size
+    // Compute the layout based on the dashboard div size
     // and the configured layout tree whenever either one changes.
     model.wire(['tree', 'box'], function (tree, box) {
-      if(tree) {
-      /* TODO move null checking to wire */
-
-        // Compute the nested box layout.
-        var layout = computeLayout(tree, box);
-
-        // Set the `box` property on each visualization model
-        // to an object with (x, y, width, height) in pixels.
-        layout.forEach(function (layoutElement) {
-          dashboard.getComponent(layoutElement.name, function (component) {
-            component.set('box', layoutElement.box);
-          });
+      computeLayout(tree, box).forEach(function (layoutElement) {
+        dashboard.getComponent(layoutElement.name, function (component) {
+          // Set the `box` property on each visualization model
+          // to an object with (x, y, width, height) in pixels.
+          component.set('box', layoutElement.box);
         });
-      }
+      });
     });
 
     return model;
