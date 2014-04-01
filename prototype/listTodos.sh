@@ -3,7 +3,7 @@
 # By Curran Kelleher 4/1/2014 
 
 # $excluded is a regex for paths to exclude from search 
-excluded="spec\|node_modules\|README\|lib\|docs\|csv\|XLS\|json\|png"
+excluded="spec\|node_modules\|README\|lib\|docs\|csv\|XLS\|json\|png\|listTodos"
 
 countLines(){
   # -mindepth exclues the current directory (".")
