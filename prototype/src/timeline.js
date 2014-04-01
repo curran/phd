@@ -2,15 +2,9 @@
 define(['wire'], function (wire) {
 
   return function (dashboard) {
-    var model = new Backbone.Model({
-          data: { },
-          x: null,
-          y: null,
-          queryResult: null
-        }),
+    var model = new Backbone.Model(),
         margin = {top: 20, right: 20, bottom: 30, left: 40 },
-        svg = dashboard.div.append('svg')
-          .style('position', 'absolute'),
+        svg = dashboard.div.append('svg').style('position', 'absolute'),
         g = svg.append('g'),
         path = g.append('path')
           .style('stroke', 'black')
@@ -48,28 +42,31 @@ define(['wire'], function (wire) {
           .attr('width', box.width)
           .attr('height', box.height);
         g.attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
+        yAxisLabel.attr('transform', 'rotate(-90) translate(-' + (height() / 2) + ', -25)')
+        xAxisGroup.attr('transform', 'translate(0,' + height() + ')');
       }
     });
     model.wire(['data', 'box'], function (data, box) {
       // TODO move null checking into wire
       if(data && box){
-        var width = box.width - margin.left - margin.right,
-            height = box.height - margin.top - margin.bottom;
-        yAxisLabel.attr('transform', 'rotate(-90) translate(-' + (height / 2) + ', -25)')
         query(data, function (xDomain, xyPoints) {
-          x.domain(d3.extent(xDomain));
-          y.domain([0, d3.max(xyPoints, function (d) { return d.y; })]);
-          x.range([0, width]);
-          y.range([height, 0]);
+          x.domain(d3.extent(xDomain)); y.domain([0, d3.max(xyPoints, function (d) { return d.y; })]);
+          x.range([0, width()]);
+          y.range([height(), 0]);
 
           path.attr('d', line(xyPoints));
 
-          xAxisGroup.attr('transform', 'translate(0,' + height + ')');
           xAxisGroup.call(xAxis).call(styleAxis);
           yAxisGroup.call(yAxis).call(styleAxis);
         });
       }
     });
+    function width(){
+      return model.get('box').width - margin.left - margin.right;
+    }
+    function height(){
+      return model.get('box').height - margin.top - margin.bottom;
+    }
     function styleAxis(axisGroup) {
       axisGroup.selectAll('line, path')
         .style('stroke', 'black')
