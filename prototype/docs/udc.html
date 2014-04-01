@@ -175,7 +175,9 @@ Curran Kelleher 3/30/2014</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-3">&#182;</a>
               </div>
-              <p>TODO handle failures, bogus URLs</p>
+              <p>TODO handle failures, bogus URLs
+TODO write proper docs
+callback is optional</p>
 
             </div>
             
@@ -247,7 +249,9 @@ TODO var source = getSource(config.source);</p>
               }, dimensionNames)] = values;
             });
             
-            callback();
+            <span class="hljs-keyword">if</span>(callback &amp;&amp; <span class="hljs-keyword">typeof</span> callback === <span class="hljs-string">'function'</span>) {
+              callback();
+            }
           });
         });
       },
@@ -262,22 +266,9 @@ TODO var source = getSource(config.source);</p>
       getDomain: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(source, dataSet, dimension)</span> {</span>
         <span class="hljs-keyword">return</span> sources[source][dataSet].dimensions[dimension].domain;
       },
-      getValue: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(source, dataSet, cell, measure)</span> {</span></pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-7">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-7">&#182;</a>
-              </div>
-              <p>TODO multiply by scale</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>        <span class="hljs-keyword">return</span> sources[source][dataSet].index[keyFromCell(cell)][measure];
+      getValue: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(source, dataSet, cell, measure)</span> {</span>
+        <span class="hljs-keyword">var</span> scale = sources[source][dataSet].measures[measure].scale;
+        <span class="hljs-keyword">return</span> sources[source][dataSet].index[keyFromCell(cell)][measure] * scale;
       },
       waitFor: <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">waitFor</span><span class="hljs-params">(source, dataSet, callback)</span> {</span>
         <span class="hljs-keyword">var</span> exists = sources[source] &amp;&amp; sources[source][dataSet],
@@ -296,11 +287,11 @@ TODO var source = getSource(config.source);</p>
         </li>
         
         
-        <li id="section-8">
+        <li id="section-7">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-8">&#182;</a>
+                <a class="pilcrow" href="#section-7">&#182;</a>
               </div>
               <p><code>cell</code> is an object with</p>
 <ul>
@@ -322,11 +313,11 @@ TODO var source = getSource(config.source);</p>
         </li>
         
         
-        <li id="section-9">
+        <li id="section-8">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-9">&#182;</a>
+                <a class="pilcrow" href="#section-8">&#182;</a>
               </div>
               <p>Computes the set of unique codes for a given dimension.</p>
 

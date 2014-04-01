@@ -110,15 +110,9 @@
             <div class="content"><div class='highlight'><pre>define([<span class="hljs-string">'wire'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(wire)</span> {</span>
 
   <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(dashboard)</span> {</span>
-    <span class="hljs-keyword">var</span> model = <span class="hljs-keyword">new</span> Backbone.Model({
-          data: { },
-          x: <span class="hljs-literal">null</span>,
-          y: <span class="hljs-literal">null</span>,
-          queryResult: <span class="hljs-literal">null</span>
-        }),
-        margin = {top: <span class="hljs-number">20</span>, right: <span class="hljs-number">20</span>, bottom: <span class="hljs-number">30</span>, left: <span class="hljs-number">70</span> },
-        svg = dashboard.div.append(<span class="hljs-string">'svg'</span>)
-          .style(<span class="hljs-string">'position'</span>, <span class="hljs-string">'absolute'</span>),
+    <span class="hljs-keyword">var</span> model = <span class="hljs-keyword">new</span> Backbone.Model(),
+        margin = {top: <span class="hljs-number">20</span>, right: <span class="hljs-number">20</span>, bottom: <span class="hljs-number">30</span>, left: <span class="hljs-number">40</span> },
+        svg = dashboard.div.append(<span class="hljs-string">'svg'</span>).style(<span class="hljs-string">'position'</span>, <span class="hljs-string">'absolute'</span>),
         g = svg.append(<span class="hljs-string">'g'</span>),
         path = g.append(<span class="hljs-string">'path'</span>)
           .style(<span class="hljs-string">'stroke'</span>, <span class="hljs-string">'black'</span>)
@@ -133,14 +127,13 @@
         yAxis = d3.svg.axis()
           .scale(y)
           .orient(<span class="hljs-string">'left'</span>)
+          .tickFormat(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(d)</span> {</span> <span class="hljs-keyword">return</span> d / <span class="hljs-number">1000000000</span>; })
           .outerTickSize(<span class="hljs-number">0</span>),
         xAxisGroup = g.append(<span class="hljs-string">'g'</span>),
         yAxisGroup = g.append(<span class="hljs-string">'g'</span>),
-        line = d3.svg.line()
-          .x(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(d)</span> {</span> <span class="hljs-keyword">return</span> x(d.x); })
-          .y(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(d)</span> {</span> <span class="hljs-keyword">return</span> y(d.y); });
-
-    model.wire([<span class="hljs-string">'box'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(box)</span> {</span></pre></div></div>
+        yAxisLabel = yAxisGroup.append(<span class="hljs-string">'text'</span>)
+          .style(<span class="hljs-string">'text-anchor'</span>, <span class="hljs-string">'middle'</span>)
+          .style(<span class="hljs-string">'font'</span>, <span class="hljs-string">'14pt serif'</span>)</pre></div></div>
             
         </li>
         
@@ -151,20 +144,17 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-2">&#182;</a>
               </div>
-              <p>TODO move null checking into wire</p>
+              <p>TODO generate this text from the data</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">if</span>(box){
-        svg
-          .style(<span class="hljs-string">'left'</span>, box.x + <span class="hljs-string">'px'</span>)
-          .style(<span class="hljs-string">'top'</span>, box.y + <span class="hljs-string">'px'</span>)
-          .attr(<span class="hljs-string">'width'</span>, box.width)
-          .attr(<span class="hljs-string">'height'</span>, box.height);
-        g.attr(<span class="hljs-string">'transform'</span>, <span class="hljs-string">'translate('</span> + margin.left + <span class="hljs-string">','</span> + margin.top + <span class="hljs-string">')'</span>);
-      }
-    });
-    model.wire([<span class="hljs-string">'data'</span>, <span class="hljs-string">'box'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(data, box)</span> {</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>          .text(<span class="hljs-string">'World Population (billions)'</span>),
+        line = d3.svg.line()
+          .x(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(d)</span> {</span> <span class="hljs-keyword">return</span> x(d.x); })
+          .y(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(d)</span> {</span> <span class="hljs-keyword">return</span> y(d.y); });
+
+
+    model.wire([<span class="hljs-string">'box'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(box)</span> {</span></pre></div></div>
             
         </li>
         
@@ -179,28 +169,57 @@
 
             </div>
             
+            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">if</span>(box){
+        svg
+          .style(<span class="hljs-string">'left'</span>, box.x + <span class="hljs-string">'px'</span>)
+          .style(<span class="hljs-string">'top'</span>, box.y + <span class="hljs-string">'px'</span>)
+          .attr(<span class="hljs-string">'width'</span>, box.width)
+          .attr(<span class="hljs-string">'height'</span>, box.height);
+        g.attr(<span class="hljs-string">'transform'</span>, <span class="hljs-string">'translate('</span> + margin.left + <span class="hljs-string">','</span> + margin.top + <span class="hljs-string">')'</span>);
+        yAxisLabel.attr(<span class="hljs-string">'transform'</span>, <span class="hljs-string">'rotate(-90) translate(-'</span> + (height() / <span class="hljs-number">2</span>) + <span class="hljs-string">', -25)'</span>)
+        xAxisGroup.attr(<span class="hljs-string">'transform'</span>, <span class="hljs-string">'translate(0,'</span> + height() + <span class="hljs-string">')'</span>);
+      }
+    });
+    model.wire([<span class="hljs-string">'data'</span>, <span class="hljs-string">'box'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(data, box)</span> {</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p>TODO move null checking into wire</p>
+
+            </div>
+            
             <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">if</span>(data &amp;&amp; box){
-        <span class="hljs-keyword">var</span> width = box.width - margin.left - margin.right,
-            height = box.height - margin.top - margin.bottom;
         query(data, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(xDomain, xyPoints)</span> {</span>
-          x.domain(d3.extent(xDomain));
-          y.domain([<span class="hljs-number">0</span>, d3.max(xyPoints, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(d)</span> {</span> <span class="hljs-keyword">return</span> d.y; })]);
-          x.range([<span class="hljs-number">0</span>, width]);
-          y.range([height, <span class="hljs-number">0</span>]);
+          x.domain(d3.extent(xDomain)); y.domain([<span class="hljs-number">0</span>, d3.max(xyPoints, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(d)</span> {</span> <span class="hljs-keyword">return</span> d.y; })]);
+          x.range([<span class="hljs-number">0</span>, width()]);
+          y.range([height(), <span class="hljs-number">0</span>]);
 
           path.attr(<span class="hljs-string">'d'</span>, line(xyPoints));
 
-          xAxisGroup.attr(<span class="hljs-string">'transform'</span>, <span class="hljs-string">'translate(0,'</span> + height + <span class="hljs-string">')'</span>);
           xAxisGroup.call(xAxis).call(styleAxis);
           yAxisGroup.call(yAxis).call(styleAxis);
         });
       }
     });
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">width</span><span class="hljs-params">()</span>{</span>
+      <span class="hljs-keyword">return</span> model.get(<span class="hljs-string">'box'</span>).width - margin.left - margin.right;
+    }
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">height</span><span class="hljs-params">()</span>{</span>
+      <span class="hljs-keyword">return</span> model.get(<span class="hljs-string">'box'</span>).height - margin.top - margin.bottom;
+    }
     <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">styleAxis</span><span class="hljs-params">(axisGroup)</span> {</span>
       axisGroup.selectAll(<span class="hljs-string">'line, path'</span>)
         .style(<span class="hljs-string">'stroke'</span>, <span class="hljs-string">'black'</span>)
         .style(<span class="hljs-string">'stroke-width'</span>, <span class="hljs-number">1</span>);
-      axisGroup.style(<span class="hljs-string">'font'</span>, <span class="hljs-string">'10pt sans-serif'</span>);
+      axisGroup.selectAll(<span class="hljs-string">'g'</span>)
+        .style(<span class="hljs-string">'font'</span>, <span class="hljs-string">'10pt sans-serif'</span>);
     }
     <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">query</span><span class="hljs-params">(data, callback)</span>{</span>
       dashboard.getComponent(<span class="hljs-string">'data'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(dataComponent)</span> {</span>
@@ -211,11 +230,11 @@
         </li>
         
         
-        <li id="section-4">
+        <li id="section-5">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-4">&#182;</a>
+                <a class="pilcrow" href="#section-5">&#182;</a>
               </div>
               <p>TODO generalize handling of X dimensions, special case Time</p>
 

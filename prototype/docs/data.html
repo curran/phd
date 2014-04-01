@@ -103,13 +103,17 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-1">&#182;</a>
               </div>
-              <p>This module will implement data source configurations
+              <p>This module implements data source configurations
 for visualization dashboards.</p>
 <p>Curran Kelleher 3/26/2014</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>define([<span class="hljs-string">'udc'</span>, <span class="hljs-string">'wire'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(UDC, wire)</span> {</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>define([<span class="hljs-string">'udc'</span>, <span class="hljs-string">'wire'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(UDC, wire)</span> {</span>
+  <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+    <span class="hljs-keyword">var</span> model = <span class="hljs-keyword">new</span> Backbone.Model();
+    model.udc = UDC();
+    model.wire([<span class="hljs-string">'sources'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(sources)</span> {</span></pre></div></div>
             
         </li>
         
@@ -120,19 +124,13 @@ for visualization dashboards.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-2">&#182;</a>
               </div>
-              <p>The constructor function.</p>
+              <p>TODO move null checking into wire</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
-    <span class="hljs-keyword">var</span> model = <span class="hljs-keyword">new</span> Backbone.Model({ sources: [] });
-    model.udc = UDC();
-    model.wire([<span class="hljs-string">'sources'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(sources)</span> {</span>
-      sources.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(source)</span> {</span>
-        model.udc.load(source, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
-          console.log(<span class="hljs-string">'loaded '</span> + source);
-        });
-      });
+            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">if</span>(sources){
+        sources.forEach(model.udc.load);
+      }
     });
     <span class="hljs-keyword">return</span> model;
   }
