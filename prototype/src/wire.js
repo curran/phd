@@ -4,10 +4,10 @@
 // One of the most common patterns when using Backbone is the following:
 //
 //  * make a function that depends on several things in a Backbone model
-//  * call the function once for initialization
+//  * extract values from the model into local variables
+//  * add an if statement to check if all properties are defined before using them
 //  * add change listeners for properties in the model so the function is called when those properties change
-//  * add an `if` statement in the change handler to check if all properties 
-//    are not null or undefined before using them
+//  * call the function once for initialization
 //
 // The `wire` function provides a clean API for this pattern.
 //

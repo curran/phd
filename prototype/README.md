@@ -30,3 +30,9 @@ Related previous work:
  * [(2013) dashboardScaffold](https://github.com/curran/dashboardScaffold) (July 2013) - An open source visualization dashboard layout and dynamic configuration framework. Developed while interning at Rapid7 creating cybersecurity visualization visualization dashboards with multiple linked views.
  * [(2012) A Web-based Data Cube Visualization Ecosystem Architecture](http://curran.github.com/portfolio/2012/A Web-based Data Cube Visualization Ecosystem Architecture.pdf) - Sketches of my doctoral dissertation, presented at the IEEE VisWeek 2012 Doctoral Colloquium.
  * [(2010) Universal Data Cube](http://curran.github.com/portfolio/2010/Universal Data Cube.pdf) - A report on my work on developing the "Universal Data Cube" concept at University of Konstanz.
+
+Open source contributions and discussions resulting from this project:
+
+ * [Backbone Mailing List - Improving the Backbone Model API with wire()](https://groups.google.com/forum/#!topic/backbonejs/CnFLHg-d0uk)
+ * [StackOverflow Answer - count (non-blank) lines-of-code in bash](http://stackoverflow.com/questions/114814/count-non-blank-lines-of-code-in-bash)
+ * [D3 Mailing List - How to position and size an SVG programmatically? (dynamic CSS not working)](https://groups.google.com/forum/#!topic/d3-js/x4Tz_O7wA3Q)
