@@ -1,6 +1,8 @@
 // Computes the difference between two dashboard configuration objects
 // and returns the difference as a sequence of actions to be executed.
 //
+// TODO add an example config diff and expected actions
+//
 // Curran Kelleher 3/27/2014
 define([], function () {
 

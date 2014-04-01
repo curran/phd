@@ -1,4 +1,6 @@
 // The dashboard configuration engine.
+// Responsible for maintaining runtime components that
+// reflect the dashboard configuration.
 // 
 // Curran Kelleher 3/26/2014
 define(['configDiff', 'processActions'], function (configDiff, ProcessActions) {
@@ -18,11 +20,14 @@ define(['configDiff', 'processActions'], function (configDiff, ProcessActions) {
         dashboard = {
           setConfig: setConfig,
           getComponent: getComponent,
+          
+          // Expose a D3 selection of the dashboard div
+          // to visualization components.
           div: d3.select('#' + dashboardDivId)
         },
 
         // The previously set configuration object,
-        // used for computing diffs between subsequent calls to setConfig().
+        // used for computing diffs between calls to setConfig().
         oldConfig = {},
 
         // The stateful function that preprocesses actions
@@ -35,11 +40,12 @@ define(['configDiff', 'processActions'], function (configDiff, ProcessActions) {
       // Convert the configuration change into a sequence of actions 
       var change = processActions(configDiff(oldConfig, newConfig));
 
-      // TODO manually test this codepath
-      //change.deletedComponents.forEach(function (alias) {
-      //  // delete deletedComponent
-      //  console.log('should delete component ' + alias);
-      //});
+      /* TODO manually test this codepath
+      change.deletedComponents.forEach(function (alias) {
+        // delete deletedComponent
+        console.log('should delete component ' + alias);
+      });
+      */
 
       change.createdComponents.forEach(function (component) {
         // Use require.js to dynamically fetch the module.

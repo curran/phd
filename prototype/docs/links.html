@@ -103,8 +103,9 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-1">&#182;</a>
               </div>
-              <p>This module implements links in a data flow network
-supporting multiple linked views in a visualization dashboard.</p>
+              <p>TODO add unit tests for this module</p>
+<p>Implements links in a data flow network supporting
+multiple linked views in a visualization dashboard.</p>
 <p>Curran Kelleher 3/28/2014</p>
 
             </div>
@@ -124,31 +125,76 @@ supporting multiple linked views in a visualization dashboard.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(dashboard)</span> {</span>
-    <span class="hljs-keyword">var</span> model = <span class="hljs-keyword">new</span> Backbone.Model({
-      bindings: []
-    });
+            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(dashboard)</span> {</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p>The configuration expects a single property,
+<code>bindings</code>, which is an array of objects with:</p>
+<ul>
+<li><code>source</code> A binding string that identifies
+the source of the one-way data binding</li>
+<li><code>destination</code> A binding string that identifies
+the destination of the one-way data binding</li>
+</ul>
+<p>A binding string is a string of the form “foo.bar”
+where “foo” is the alias of the dashboard component,
+and “bar” is a model property name on that component.</p>
+<p>For each binding entry in <code>bindings</code>, a one-way data binding
+is established between the source and destination properties.</p>
+<p>Establishing a one-way data binding means that</p>
+<ul>
+<li>the destination property value is initialized to be
+the value of the source property, and</li>
+<li>the destination property values is updated to be
+the value of the source property
+whenever the source property changes.</li>
+</ul>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">var</span> model = <span class="hljs-keyword">new</span> Backbone.Model();
 
     model.wire([<span class="hljs-string">'bindings'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(bindings)</span> {</span>
-      bindings.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(binding)</span> {</span>
-        <span class="hljs-keyword">var</span> source = parse(binding.source),
-            destination = parse(binding.destination);
-        dashboard.getComponent(destination.alias, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(destinationModel)</span> {</span>
-          dashboard.getComponent(source.alias, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(sourceModel)</span> {</span>
-            sourceModel.wire([source.property], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(value)</span> {</span>
-              destinationModel.set(destination.property, value);
+      <span class="hljs-keyword">if</span>(bindings){
+      <span class="hljs-comment">/*TODO move null check to wire */</span>
+        bindings.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(binding)</span> {</span>
+          <span class="hljs-keyword">var</span> source = parse(binding.source),
+              destination = parse(binding.destination);
+          dashboard.getComponent(destination.alias, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(destinationModel)</span> {</span>
+            dashboard.getComponent(source.alias, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(sourceModel)</span> {</span>
+              sourceModel.wire([source.property], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(value)</span> {</span>
+                destinationModel.set(destination.property, value);
+              });
             });
           });
         });
-      });
-    });
+      }
+    });</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p>Parses a binding string.</p>
 
-    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">parse</span><span class="hljs-params">(bindingStr)</span>{</span>
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">parse</span><span class="hljs-params">(bindingStr)</span>{</span>
       <span class="hljs-keyword">var</span> arr = bindingStr.split(<span class="hljs-string">'.'</span>);
-      <span class="hljs-keyword">return</span> {
-        alias: arr[<span class="hljs-number">0</span>],
-        property: arr[<span class="hljs-number">1</span>]
-      };
+      <span class="hljs-keyword">return</span> { alias: arr[<span class="hljs-number">0</span>], property: arr[<span class="hljs-number">1</span>] };
     }
 
     <span class="hljs-keyword">return</span> model;

@@ -1,3 +1,4 @@
+// TODO move wire into a non-AMD script.
 // A function for wiring up properties on Backbone models
 // to functions that depend on them.
 //
