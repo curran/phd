@@ -1,40 +1,35 @@
-// Tests the wire module.
+// Tests the `wire` module.
 // 
-// Curran Kelleher 3/28/2014
+// Curran Kelleher 4/1/2014
 describe('wire', function() {
-  var wire;
-
   // Use require.js to fetch the module.
   beforeEach(function(done) {
-    require(['wire'], function (module) {
-      wire = module;
-      done();
-    });
+    require(['wire'], done)
   });
 
   it('should call fn once initially', function(done) {
     var model = new Backbone.Model({ x: 5 });
-    wire(['x'], function (x) {
+    model.wire(['x'], function (x) {
       expect(x).toBe(5);
       done();
-    }, model);
+    });
   });
 
   it('should call fn only once for initialization and immediate update', function(done) {
     var model = new Backbone.Model({ x: 5 });
-    wire(['x'], function (x) {
+    model.wire(['x'], function (x) {
       expect(x).toBe(10);
       done();
-    }, model);
+    });
     model.set('x', 10);
   });
 
   it('should call fn only once for initialization and multiple immediate updates', function(done) {
     var model = new Backbone.Model({ x: 5 });
-    wire(['x'], function (x) {
+    model.wire(['x'], function (x) {
       expect(x).toBe(30);
       done();
-    }, model);
+    });
     model.set('x', 10);
     model.set('x', 20);
     model.set('x', 30);
@@ -42,32 +37,32 @@ describe('wire', function() {
 
   it('should call fn with multiple dependency properties', function(done) {
     var model = new Backbone.Model({ x: 5, y: 6, z: 7 });
-    wire(['x', 'y', 'z'], function (x, y, z) {
+    model.wire(['x', 'y', 'z'], function (x, y, z) {
       expect(x).toBe(5);
       expect(y).toBe(6);
       expect(z).toBe(7);
       done();
-    }, model);
+    });
   });
 
   it('should call fn with multiple dependency properties in the order specified', function(done) {
     var model = new Backbone.Model({ x: 5, y: 6, z: 7 });
-    wire(['x', 'z', 'y'], function (x, z, y) {
+    model.wire(['x', 'z', 'y'], function (x, z, y) {
       expect(x).toBe(5);
       expect(y).toBe(6);
       expect(z).toBe(7);
       done();
-    }, model);
+    });
   });
 
   it('should call fn with multiple dependency properties only once after several updates', function(done) {
     var model = new Backbone.Model({ x: 5, y: 6, z: 7 });
-    wire(['x', 'y', 'z'], function (x, y, z) {
+    model.wire(['x', 'y', 'z'], function (x, y, z) {
       expect(x).toBe(8);
       expect(y).toBe(9);
       expect(z).toBe(10);
       done();
-    }, model);
+    });
     model.set('x', 8);
     model.set('y', 9);
     model.set('z', 1000);
@@ -84,10 +79,10 @@ describe('wire', function() {
       doneCallback = done;
       expectedX = 5;
 
-      wire(['x'], function (x) {
+      model.wire(['x'], function (x) {
         expect(x).toBe(expectedX);
         doneCallback();
-      }, model);
+      });
     });
 
     it('once after asynchronous update',function(done) {
@@ -126,12 +121,12 @@ describe('wire', function() {
       expectedY = 6;
       expectedZ = 7;
 
-      wire(['x', 'y', 'z'], function (x, y, z) {
+      model.wire(['x', 'y', 'z'], function (x, y, z) {
         expect(x).toBe(expectedX);
         expect(y).toBe(expectedY);
         expect(z).toBe(expectedZ);
         doneCallback();
-      }, model);
+      });
     });
 
     it('once after asynchronous update of one dependency property', function (done) {
@@ -149,21 +144,14 @@ describe('wire', function() {
     });
   });
 
-  it('should work as model.wire assigned', function (done) {
-    var model = new Backbone.Model({ x: 5 });
-    model.wire = wire;
+  it('should use thisArg', function(done) {
+    var model = new Backbone.Model({ x: 5 }),
+        theThing = { foo: "bar" };
     model.wire(['x'], function (x) {
       expect(x).toBe(5);
+      expect(this).toBe(theThing);
+      expect(this.foo).toBe("bar");
       done();
-    });
+    }, theThing);
   });
-
-  it('should work as model.wire on any model', function (done) {
-    var model = new Backbone.Model({ x: 5 });
-    model.wire(['x'], function (x) {
-      expect(x).toBe(5);
-      done();
-    });
-  });
-
 });

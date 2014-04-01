@@ -37,10 +37,10 @@
 // are passed as arguments into the callback, based on the ordering
 // in the array passed as the first argument.
 //
-// Curran Kelleher 3/27/2014
+// Curran Kelleher 4/1/2014
 define([], function () {
 
-  // `model.wire(dependencies, fn, model)`
+  // `model.wire(dependencies, fn[, thisArg])`
   //
   //  * `dependencies` An array of dependency properties.
   //    These are property names in the Backbone model `model`
@@ -58,20 +58,16 @@ define([], function () {
   //    values have been defined (if any property values are
   //    `undefined`, `fn` will not be invoked).
   //
-  //  * `model` The Backbone Model used for evaluating
-  //    dependency properties.
+  //  * `thisArg` (optional) The object used as `this` when invoking `fn`.
   //
   // Note that `fn` is invoked on the next tick of the JavaScript
   // event loop, both for initialization and for dependency property updates.
   //
   // Note also that sequential changes to multiple dependency properties
   // result in only a single invocation of `fn`.
-  function wire(dependencies, fn, model){
+  function wire(dependencies, fn, thisArg){
 
-    // Make `model.wire = wire; model.wire(demendencies, fn)` possible
-    if(!model) {
-      model = this;
-    }
+    var model = this;
 
     // `callFn()` will invoke `fn` with values of dependency properties
     // on the next tick of the JavaScript event loop.
@@ -84,8 +80,7 @@ define([], function () {
       if(!_.some(values, _.isUndefined)){
 
         // Call `fn` with the dependency property values.
-        // TODO use thisArg
-        fn.apply(null, values);
+        fn.apply(thisArg, values);
       }
     });
 

@@ -40,14 +40,14 @@ define(['wire'], function (wire) {
         .attr('width', box.width)
         .attr('height', box.height);
       g.attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
-      yAxisLabel.attr('transform', 'rotate(-90) translate(-' + (height() / 2) + ', -25)')
-      xAxisGroup.attr('transform', 'translate(0,' + height() + ')');
+      yAxisLabel.attr('transform', 'rotate(-90) translate(-' + (height(box) / 2) + ', -25)')
+      xAxisGroup.attr('transform', 'translate(0,' + height(box) + ')');
     });
     model.wire(['data', 'box'], function (data, box) {
       query(data, function (xDomain, xyPoints) {
         x.domain(d3.extent(xDomain)); y.domain([0, d3.max(xyPoints, function (d) { return d.y; })]);
-        x.range([0, width()]);
-        y.range([height(), 0]);
+        x.range([0, width(box)]);
+        y.range([height(box), 0]);
 
         path.attr('d', line(xyPoints));
 
@@ -55,11 +55,13 @@ define(['wire'], function (wire) {
         yAxisGroup.call(yAxis).call(styleAxis);
       });
     });
-    function width(){
-      return model.get('box').width - margin.left - margin.right;
+
+    // TODO use computed property pattern
+    function width(box){
+      return box.width - margin.left - margin.right;
     }
-    function height(){
-      return model.get('box').height - margin.top - margin.bottom;
+    function height(box){
+      return box.height - margin.top - margin.bottom;
     }
     function styleAxis(axisGroup) {
       axisGroup.selectAll('line, path')

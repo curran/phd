@@ -1,6 +1,6 @@
 // This module implements nested box layout for visualization dashboards.
 //
-// Curran Kelleher 3/27/2014
+// Curran Kelleher 4/1/2014
 define(['wire', 'computeLayout'], function (wire, computeLayout) {
 
   // The constructor function.
@@ -36,6 +36,7 @@ define(['wire', 'computeLayout'], function (wire, computeLayout) {
     model.wire(['tree', 'box'], function (tree, box) {
       computeLayout(tree, box).forEach(function (layoutElement) {
         dashboard.getComponent(layoutElement.name, function (component) {
+
           // Set the `box` property on each visualization model
           // to an object with (x, y, width, height) in pixels.
           component.set('box', layoutElement.box);

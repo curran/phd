@@ -50,7 +50,6 @@ define(['wire'], function (wire) {
           var x1, x2;
           return d3.behavior.drag()
             .on('dragstart', function (d) {
-              console.log("here");
               x1 = d3.event.sourceEvent.pageX;
             })
             .on('drag', function (d) {
@@ -65,22 +64,9 @@ define(['wire'], function (wire) {
             });
         }());
 
-    // `wire` is used for mapping model properties
-    // to functions that should execute when they change.
-
-    // Whe the `color` model property chages,
-    model.wire(['color'], function (color) {
-      // update the fill color of the rect.
-      rect.attr('fill', color);
-    });
-
-    // TODO make wire(dependencies, fn, thisArg)
-    //model.wire(['text'], text.text, text);
-
-    // Update the text element based on the model.
-    model.wire(['text', 'box'], function(newText, box){
-      text.text(newText);
-    });
+    // Update the color and text based on the model.
+    model.wire(['color'], _.partial(rect.attr, 'fill'), rect);
+    model.wire(['text'], text.text, text);
 
     // When the size of the visualization is set
     // by the dashboard layout engine,

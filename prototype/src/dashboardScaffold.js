@@ -64,9 +64,7 @@ define(['configDiff', 'processActions'], function (configDiff, ProcessActions) {
           model.set(component.options);
         });
       });
-
       oldConfig = newConfig;
-
     }
 
     // Gets a runtime dashboard component by name.
