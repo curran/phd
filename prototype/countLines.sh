@@ -5,6 +5,7 @@
 #
 # By Curran Kelleher 3/31/2014 
 
+# $excluded is a regex for paths to exclude from line counting
 excluded="spec\|node_modules\|README\|lib\|docs\|csv\|XLS\|json\|png"
 
 countLines(){
