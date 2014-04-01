@@ -8,7 +8,7 @@ define(['wire'], function (wire) {
           y: null,
           queryResult: null
         }),
-        margin = {top: 20, right: 20, bottom: 30, left: 70 },
+        margin = {top: 20, right: 20, bottom: 30, left: 40 },
         svg = dashboard.div.append('svg')
           .style('position', 'absolute'),
         g = svg.append('g'),
@@ -25,12 +25,19 @@ define(['wire'], function (wire) {
         yAxis = d3.svg.axis()
           .scale(y)
           .orient('left')
+          .tickFormat(function (d) { return d / 1000000000; })
           .outerTickSize(0),
         xAxisGroup = g.append('g'),
         yAxisGroup = g.append('g'),
+        yAxisLabel = yAxisGroup.append('text')
+          .style('text-anchor', 'middle')
+          .style('font', '14pt serif')
+           // TODO generate this text from the data
+          .text('World Population (billions)'),
         line = d3.svg.line()
           .x(function (d) { return x(d.x); })
           .y(function (d) { return y(d.y); });
+
 
     model.wire(['box'], function (box) {
       // TODO move null checking into wire
@@ -48,6 +55,7 @@ define(['wire'], function (wire) {
       if(data && box){
         var width = box.width - margin.left - margin.right,
             height = box.height - margin.top - margin.bottom;
+        yAxisLabel.attr('transform', 'rotate(-90) translate(-' + (height / 2) + ', -25)')
         query(data, function (xDomain, xyPoints) {
           x.domain(d3.extent(xDomain));
           y.domain([0, d3.max(xyPoints, function (d) { return d.y; })]);
@@ -66,7 +74,8 @@ define(['wire'], function (wire) {
       axisGroup.selectAll('line, path')
         .style('stroke', 'black')
         .style('stroke-width', 1);
-      axisGroup.style('font', '10pt sans-serif');
+      axisGroup.selectAll('g')
+        .style('font', '10pt sans-serif');
     }
     function query(data, callback){
       dashboard.getComponent('data', function (dataComponent) {
