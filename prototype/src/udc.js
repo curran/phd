@@ -27,6 +27,8 @@ define([], function () {
     var sources = {};
     return {
       //TODO handle failures, bogus URLs
+      //TODO write proper docs
+      // callback is optional
       load: function (url, callback) {
         d3.json(url + '.json', function (dataSet) {
           var dimensionNames = _.keys(dataSet.dimensions).sort(),
@@ -58,7 +60,9 @@ define([], function () {
               }, dimensionNames)] = values;
             });
             
-            callback();
+            if(callback && typeof callback === 'function') {
+              callback();
+            }
           });
         });
       },
