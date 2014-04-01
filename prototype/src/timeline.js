@@ -1,3 +1,11 @@
+// A generalized timeline visualization.
+//
+// Draws from
+//
+//  * [D3 Line Chart Example](http://bl.ocks.org/mbostock/3883245)
+//  * [Population timeline](https://github.com/curran/visualizations/tree/gh-pages/population-simple)
+//  * [D3 Margin Convention](http://bl.ocks.org/mbostock/3019563)
+//
 // Curran Kelleher 3/30/2014
 define([], function () {
 
@@ -8,10 +16,15 @@ define([], function () {
     // the following configuration options:
     var model = new Backbone.Model({
      
-          // * `margin` A margin object according to the
-          //   [D3 Margin Convention](http://bl.ocks.org/mbostock/3019563).
+          // * `margin` A margin object according to the D3 convention
           margin: { top: 20, right: 20, bottom: 30, left: 40 },
 
+          // * `yAxisLabel` (optional) A string that will be
+          //   displayed vertically next to the Y axis.
+          //
+          // The following properties are used internally
+          // and are not part of the configuration set by users:
+          //
           // * `box` is a property expected to be on all
           //   visualization components, and is set by
           //   the dashboard layout engine.
@@ -19,8 +32,6 @@ define([], function () {
           // * `width` and `height` properties are used
           //   internally, computed from `box` and `margin`
 
-          // * `yAxisLabel` (optional) A string that will be
-          //   displayed vertically next to the Y axis.
         }),
 
         // Append the svg element for this visualization
@@ -49,6 +60,11 @@ define([], function () {
           .tickFormat(function (d) { return d / 1000000000; })
           .outerTickSize(0),
 
+        // `(x,y)PixelsPerTick` is used for dynamically computing
+        // the number of tick marks needed based on the visualization size.
+        xPixelsPerTick = 70,
+        yPixelsPerTick = 30,
+
         // Axes are created inside their own group elements
         // so that dynamic CSS can be used rather than static CSS.
         // This is so no external CSS file is needed, and
@@ -69,6 +85,7 @@ define([], function () {
     // Set the Y axis label text from the model.
     model.wire('yAxisLabel', yAxisLabel.text, yAxisLabel);
 
+    // Whenever the `box` or `margin` model properties change...
     model.wire(['box', 'margin'], function (box, margin) {
 
       // Add (width, height) computed properties from `box` and `margin`.
@@ -116,6 +133,11 @@ define([], function () {
         x.range([0, width]);
         y.domain([0, d3.max(data, function (d) { return d.y; })]);
         y.range([height, 0]);
+
+        // Set the number of tick marks so that tick density
+        // is consistent after resizing the visualization.
+        xAxis.ticks(width / xPixelsPerTick);
+        yAxis.ticks(height / yPixelsPerTick);
 
         // compute the line path from data,
         path.attr('d', line(data));
