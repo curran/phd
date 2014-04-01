@@ -74,8 +74,8 @@ define([], function () {
         return sources[source][dataSet].dimensions[dimension].domain;
       },
       getValue: function (source, dataSet, cell, measure) {
-        // TODO multiply by scale
-        return sources[source][dataSet].index[keyFromCell(cell)][measure];
+        var scale = sources[source][dataSet].measures[measure].scale;
+        return sources[source][dataSet].index[keyFromCell(cell)][measure] * scale;
       },
       waitFor: function waitFor(source, dataSet, callback) {
         var exists = sources[source] && sources[source][dataSet],

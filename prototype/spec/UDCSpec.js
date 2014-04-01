@@ -89,7 +89,7 @@ describe('udc', function() {
         },
         measure = 'Population',
         value = udc.getValue(source, dataSet, cell, measure);
-    expect(value).toBe(6916183.482);
+    expect(value).toBe(6916183.482 * 1000);
   });
 
   // TODO test waitFor
