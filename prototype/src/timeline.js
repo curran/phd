@@ -9,8 +9,7 @@
 // Curran Kelleher 3/30/2014
 define([], function () {
 
-  // The constructor function invoked by `dashboardScaffold`.
-  return function (dashboard) {
+  function timeline(div) {
 
     // The timeline visualization has
     // the following configuration options:
@@ -28,15 +27,14 @@ define([], function () {
           // * `box` is a property expected to be on all
           //   visualization components, and is set by
           //   the dashboard layout engine.
-
+          //
           // * `width` and `height` properties are used
           //   internally, computed from `box` and `margin`
-
         }),
 
         // Append the svg element for this visualization
         // to the dashboard div.
-        svg = dashboard.div.append('svg').style('position', 'absolute'),
+        svg = div.append('svg').style('position', 'absolute'),
 
         // Append an SVG group element for containing the visualization.
         g = svg.append('g'),
@@ -122,30 +120,24 @@ define([], function () {
     });
 
     // When the `data` configuration or size changes,
-    model.wire(['data', 'width', 'height'], function (dataOptions, width, height) {
+    model.wire(['data', 'width', 'height'], function (data, width, height) {
+      // update scales based on data and size,
+      x.domain(d3.extent(data, function (d) { return d.x }));
+      x.range([0, width]);
+      y.domain([0, d3.max(data, function (d) { return d.y; })]);
+      y.range([height, 0]);
 
-      // query the source data cube to extract
-      // data in a form suitable for use with D3,
-      query(dataOptions, function (data) {
+      // Set the number of tick marks so that tick density
+      // is consistent after resizing the visualization.
+      xAxis.ticks(width / xPixelsPerTick);
+      yAxis.ticks(height / yPixelsPerTick);
 
-        // update scales based on data and size,
-        x.domain(d3.extent(data, function (d) { return d.x }));
-        x.range([0, width]);
-        y.domain([0, d3.max(data, function (d) { return d.y; })]);
-        y.range([height, 0]);
+      // compute the line path from data,
+      path.attr('d', line(data));
 
-        // Set the number of tick marks so that tick density
-        // is consistent after resizing the visualization.
-        xAxis.ticks(width / xPixelsPerTick);
-        yAxis.ticks(height / yPixelsPerTick);
-
-        // compute the line path from data,
-        path.attr('d', line(data));
-
-        // and update the axes.
-        xAxisGroup.call(xAxis).call(styleAxis);
-        yAxisGroup.call(yAxis).call(styleAxis);
-      });
+      // and update the axes.
+      xAxisGroup.call(xAxis).call(styleAxis);
+      yAxisGroup.call(yAxis).call(styleAxis);
     });
 
     // Styles a D3 axis using dynamic CSS.
@@ -160,6 +152,26 @@ define([], function () {
       axisGroup.selectAll('g')
         .style('font', '10pt sans-serif');
     }
+
+    return model;
+  }
+
+  // The constructor function invoked by `dashboardScaffold`.
+  // TODO refactor data cube query into a separate module.
+  return function (dashboard) {
+    var model = timeline(dashboard.div);
+
+    model.wire(['dataConfig'], function (dataConfig) {
+      // query the source data cube to extract
+      // data in a form suitable for use with D3,
+      query(dataConfig, function (data) {
+        model.set('data', data);
+      });
+    });
+
+    return model;
+
+    // TODO set up model.data > model.queryResult with wire
 
     // Queries the source data cube to extract
     // data in a form suitable for use with D3.
@@ -228,7 +240,6 @@ define([], function () {
         });
       });
     }
+  };
 
-    return model;
-  }
 });
