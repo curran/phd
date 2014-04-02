@@ -162,26 +162,47 @@ describe('wire', function() {
 
   function demo(){
 var model = new Backbone.Model();
-model.wire(['x'], function (x) {
-  console.log('x = ' + x);
-  model.set('y', x + 1);
+// I = V / R
+model.wire(['V', 'R'], function (V, R) {
+  model.set('I', V / R);
 });
-model.wire(['y'], function (y) {
-  console.log('y = ' + y);
-  model.set('z', y * 2);
+// V = IR
+model.wire(['I', 'R'], function (I, R) {
+  model.set('V', I * R);
 });
-model.wire(['z'], function (z) {
-  console.log('z = ' + z);
-  expect(z).toBe(22);
+// R = V / I
+model.wire(['V', 'I'], function (V, I) {
+  model.set('R', V / I);
 });
-model.set('x', 10);
+
+// Print values when they change
+model.wire(['V', 'I', 'R'], function (V, I, R) {
+  console.log('V = ' + V);
+  console.log('I = ' + I);
+  console.log('R = ' + R);
+});
+
+model.set('R', 3);
+// nothing is printed
+
+model.set('V', 6);
 // prints the following:
-// x = 10
-// y = 11
-// z = 22 
+// V = 6
+// I = 2
+// R = 3
+
+setTimeout(function(){
+  model.set('I', 3);
+  // prints the following:
+  // V = 9
+  // I = 3
+  // R = 3
+}, 1000);
+
   }
 
   it('propagate changes two hops through a data dependency graph', function(done) {
+    demo();
     var model = new Backbone.Model();
     model.wire(['x'], function (x) {
       model.set('y', x + 1);
