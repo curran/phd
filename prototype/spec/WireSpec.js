@@ -159,4 +159,62 @@ describe('wire', function() {
     });
     model.set('x', 10);
   });
+
+  function demo(){
+var model = new Backbone.Model();
+model.wire(['x'], function (x) {
+  console.log('x = ' + x);
+  model.set('y', x + 1);
+});
+model.wire(['y'], function (y) {
+  console.log('y = ' + y);
+  model.set('z', y * 2);
+});
+model.wire(['z'], function (z) {
+  console.log('z = ' + z);
+  expect(z).toBe(22);
+});
+model.set('x', 10);
+// prints the following:
+// x = 10
+// y = 11
+// z = 22 
+  }
+
+  it('propagate changes two hops through a data dependency graph', function(done) {
+    var model = new Backbone.Model();
+    model.wire(['x'], function (x) {
+      model.set('y', x + 1);
+    });
+    model.wire(['y'], function (y) {
+      expect(y).toBe(11);
+      model.set('z', y * 2);
+    });
+    model.wire(['z'], function (z) {
+      expect(z).toBe(22);
+      done();
+    });
+    model.set('x', 10);
+  });
+
+  it('propagate changes three hops through a data dependency graph', function(done) {
+    var model = new Backbone.Model();
+    model.wire(['w'], function (w) {
+      expect(w).toBe(5);
+      model.set('x', w * 2);
+    });
+    model.wire(['x'], function (x) {
+      expect(x).toBe(10);
+      model.set('y', x + 1);
+    });
+    model.wire(['y'], function (y) {
+      expect(y).toBe(11);
+      model.set('z', y * 2);
+    });
+    model.wire(['z'], function (z) {
+      expect(z).toBe(22);
+      done();
+    });
+    model.set('w', 5);
+  });
 });
