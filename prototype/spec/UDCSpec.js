@@ -77,7 +77,16 @@ describe('udc', function() {
   });
 
   it('should look up a measure value for a data cube cell', function () {
-    var cell = { 'Space': '900', /* World */ 'Time': '2010' },
+    var cell = {
+          'Space': {
+            code: '900', /* World */
+            codeList: 'UN M.49'
+          },
+          'Time': {
+            code: '2010',
+            codeList: 'years'
+          }
+        },
         measure = 'Population',
         value = udc.getValue(source, dataSet, cell, measure);
     expect(value).toBe(6916183.482 * 1000);
@@ -91,7 +100,16 @@ describe('udc', function() {
     localUDC.load('data/un_population/un_population');
 
     localUDC.waitFor(source, dataSet, function () {
-      var cell = { 'Space': '900', /* World */ 'Time': '2010' },
+      var cell = {
+            'Space': {
+              code: '900', /* World */
+              codeList: 'UN M.49'
+            },
+            'Time': {
+              code: '2010',
+              codeList: 'years'
+            }
+          },
           measure = 'Population',
           value = localUDC.getValue(source, dataSet, cell, measure);
       expect(value).toBe(6916183.482 * 1000);

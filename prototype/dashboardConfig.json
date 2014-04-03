@@ -57,7 +57,12 @@
     "dataConfig": {
       "source": "United Nations",
       "dataSet": "Population Estimates",
-      "slices": { "Space": "900" },
+      "slices": {
+        "Space": {
+          "code": "900",
+          "codeList": "UN M.49"
+        }
+      },
       "x": "Time",
       "y": "Population"
     },

@@ -209,22 +209,26 @@ define([], function () {
 
           // Query the data cube for the X dimension domain.
           /* TODO refactor the API so (source, dataSet) are not needed */
-          var xDomainStrings = udc.getDomain(source, dataSet, dataOptions.x),
+          var xDomainCodes = udc.getDomain(source, dataSet, dataOptions.x),
+              xDomainCodeList = udc.getCodeList(source, dataSet, dataOptions.x),
 
               /* TODO generalize handling of X dimensions, special case Time */
               // Parse X dimension domain values into JS Date objects.
-              xDomainDates = xDomainStrings.map( function (yearStr) {
+              xDomainDates = xDomainCodes.map( function (yearStr) {
                 return new Date(yearStr, 0);
               }),
               // Use the `slice` option as the basis for the current cell.
               cell = _.clone(dataOptions.slices);
 
           // Call the callback with (x, y) pairs.
-          callback(xDomainStrings.map(function (xValue, i) {
+          callback(xDomainCodes.map(function (code, i) {
 
             // Set the X dimension value for the current cell
             // to the X domain value.
-            cell[dataOptions.x] = xValue;
+            cell[dataOptions.x] = {
+              code: code,
+              codeList: xDomainCodeList
+            };
             
             // Map X domain objects to data element objects with
             return {

@@ -35,6 +35,7 @@ define([], function () {
               measureNames = _.keys(dataSet.measures);
           // TODO validate config
           //TODO var source = getSource(config.source);
+          //TODO test for multiple data sets
           var source = sources[dataSet.source] = {};
           source[dataSet.name] = dataSet;
 
@@ -50,14 +51,19 @@ define([], function () {
             // Build the index
             dataSet.index = {};
             table.forEach(function (row) {
-              var values = {};
+              var cell = {}, values = {};
+              dimensionNames.forEach(function (dimensionName) {
+                var dimension = dataSet.dimensions[dimensionName];
+                cell[dimensionName] = {
+                  code: row[dimension.column],
+                  codeList: dimension.codeList
+                };
+              });
               measureNames.forEach(function (measureName) {
                 var measure = dataSet.measures[measureName];
                 values[measureName] = parseFloat(row[measure.column]);
               });
-              dataSet.index[key(function (dimensionName) {
-                return row[dataSet.dimensions[dimensionName].column];
-              }, dimensionNames)] = values;
+              dataSet.index[key(cell)] = values;
             });
             
             if(callback && typeof callback === 'function') {
@@ -77,9 +83,12 @@ define([], function () {
       getDomain: function (source, dataSet, dimension) {
         return sources[source][dataSet].dimensions[dimension].domain;
       },
+      getCodeList: function (source, dataSet, dimension) {
+        return sources[source][dataSet].dimensions[dimension].codeList;
+      },
       getValue: function (source, dataSet, cell, measure) {
         var scale = sources[source][dataSet].measures[measure].scale;
-        return sources[source][dataSet].index[keyFromCell(cell)][measure] * scale;
+        return sources[source][dataSet].index[key(cell)][measure] * scale;
       },
       waitFor: function waitFor(source, dataSet, callback) {
         var exists = sources[source] && sources[source][dataSet],
@@ -97,14 +106,19 @@ define([], function () {
 
   // `cell` is an object with
   //  * Keys are UDC Dimension names
-  //  * Values are codes
-  function keyFromCell(cell){
-    return key(function (dimensionName) {
-      return cell[dimensionName];
-    }, _.keys(cell).sort());
-  }
-  function key(getMember, sortedDimensionNames){
-    return sortedDimensionNames.map(getMember).join('|');
+  //  * Values are objects with
+  //    * `code` the code representing a dimension member
+  //    * `codeList` the name of the codeList used
+  function key(cell){
+    var dimensionNames = _.keys(cell).sort();
+    var key = dimensionNames.map(function (dimensionName) {
+      var member = cell[dimensionName];
+      // TODO compute and use canonical code
+      // based on loaded concordance tables.
+      // TODO write a unit test for this with simple data
+      return member.code;
+    }).join('|');
+    return key;
   }
 
   // Computes the set of unique codes for a given dimension.
