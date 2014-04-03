@@ -54,7 +54,7 @@
   },
   "timeline": {
     "module": "timeline",
-    "data": {
+    "dataConfig": {
       "source": "United Nations",
       "dataSet": "Population Estimates",
       "slices": { "Space": "900" },

@@ -1,0 +1,11 @@
+{
+  "type": "concordanceTable",
+  "name": "UN Locations Concordance Table",
+  "source": "United Nations",
+  "dimension": "Space",
+  "codeLists": {
+    "countryName": "UN Country Names",
+    "unCountryCode": "UN M.49",
+    "alphaCode": "ISO 3 Alpha"
+  }
+}

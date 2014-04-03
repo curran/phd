@@ -17,6 +17,13 @@
 //  * [Angular's dependency injection](http://docs.angularjs.org/guide/di)
 //  * [Require's dependency declaration syntax](http://requirejs.org/docs/api.html#defdep)
 //
+// These functional reactive programming libraries share some concepts with `wire`:
+//
+//  * [RxJS](http://reactive-extensions.github.io/RxJS/)
+//    * [the RxJS `when` operator](https://github.com/Reactive-Extensions/RxJS/blob/master/doc/api/core/observable.md#rxobservablewhenargs)
+//  * [Bacon.js](https://github.com/baconjs/bacon.js/tree/master)
+//    * [the Bacon.js `when` operator](https://github.com/baconjs/bacon.js/tree/master#bacon-when)
+//
 // See also https://github.com/curran/backboneComputedProperties
 //
 // Example usage:
