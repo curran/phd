@@ -160,49 +160,8 @@ describe('wire', function() {
     model.set('x', 10);
   });
 
-  function demo(){
-var model = new Backbone.Model();
-// I = V / R
-model.wire(['V', 'R'], function (V, R) {
-  model.set('I', V / R);
-});
-// V = IR
-model.wire(['I', 'R'], function (I, R) {
-  model.set('V', I * R);
-});
-// R = V / I
-model.wire(['V', 'I'], function (V, I) {
-  model.set('R', V / I);
-});
-
-// Print values when they change
-model.wire(['V', 'I', 'R'], function (V, I, R) {
-  console.log('V = ' + V);
-  console.log('I = ' + I);
-  console.log('R = ' + R);
-});
-
-model.set('R', 3);
-// nothing is printed
-
-model.set('V', 6);
-// prints the following:
-// V = 6
-// I = 2
-// R = 3
-
-setTimeout(function(){
-  model.set('I', 3);
-  // prints the following:
-  // V = 9
-  // I = 3
-  // R = 3
-}, 1000);
-
-  }
 
   it('propagate changes two hops through a data dependency graph', function(done) {
-    demo();
     var model = new Backbone.Model();
     model.wire(['x'], function (x) {
       model.set('y', x + 1);
@@ -237,5 +196,20 @@ setTimeout(function(){
       done();
     });
     model.set('w', 5);
+  });
+
+  it('propagate changes in a fully connected data dependency graph (Ohm\'s Law)', function(done) {
+    var model = new Backbone.Model();
+    model.wire(['V', 'R'], function (V, R) { model.set('I', V / R); });
+    model.wire(['I', 'R'], function (I, R) { model.set('V', I * R); });
+    model.wire(['V', 'I'], function (V, I) { model.set('R', V / I); });
+    model.wire(['V', 'I', 'R'], function (V, I, R) {
+      expect(V).toBe(6);
+      expect(I).toBe(2);
+      expect(R).toBe(3);
+      done();
+    });
+    model.set('R', 3);
+    model.set('V', 6);
   });
 });
