@@ -36,3 +36,5 @@ Open source contributions and discussions resulting from this project:
  * [Backbone Mailing List - Improving the Backbone Model API with wire()](https://groups.google.com/forum/#!topic/backbonejs/CnFLHg-d0uk)
  * [StackOverflow Answer - count (non-blank) lines-of-code in bash](http://stackoverflow.com/questions/114814/count-non-blank-lines-of-code-in-bash)
  * [D3 Mailing List - How to position and size an SVG programmatically? (dynamic CSS not working)](https://groups.google.com/forum/#!topic/d3-js/x4Tz_O7wA3Q)
+ * [StackOverflow Answer - How read data From *.CSV file using javascript?](http://stackoverflow.com/questions/7431268/how-read-data-from-csv-file-using-javascript/22850815#22850815)
+ * [StackOverflow Answer - how to implement observer pattern in javascript?](http://stackoverflow.com/questions/12308246/how-to-implement-observer-pattern-in-javascript/22824844#22824844)
