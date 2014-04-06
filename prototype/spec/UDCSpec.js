@@ -116,4 +116,16 @@ describe('udc', function() {
       done();
     });
   });
+  
+  //it('should load data sets from data in memory', function () {
+  //  // Load a data set defined as (JSON, CSV)
+  //  var dataSet = {
+  //    metadata: {
+  //      
+  //    },
+  //    data: [{ name:'Foo', value:5 }, { name: 'Bar', x:5 }]
+  //  };
+  //});
+  //
+  //it('should integrate two data sets and look up values', function () {});
 });
