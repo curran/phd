@@ -4,7 +4,13 @@
     "tree": {
       "orientation": "vertical",
       "children": [
-        { "name": "timeline" },
+        {
+          "orientation": "horizontal",
+          "children": [
+            { "name": "map" },
+            { "name": "timeline" }
+          ]
+        },
         {
           "orientation": "horizontal",
           "children": [
@@ -67,6 +73,9 @@
       "y": "Population"
     },
     "yAxisLabel": "World Population (billions)"
+  },
+  "map": {
+    "module": "map"
   },
   "a": { "module": "dummyVis", "text": "a", "color": "rgb(237,72,174)" },
   "b": { "module": "dummyVis", "text": "b", "color": "rgb(147,123,191)" },
