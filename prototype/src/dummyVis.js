@@ -7,31 +7,9 @@ define([], function () {
   // The constructor function invoked by `dashboardScaffold`.
   return function (dashboard) {
 
-    // The dummy visualization has
-    // the following configuration options:
-    var model = new Backbone.Model({
-
-          // * `color` a background color
-          color: 'white',
-
-          // * `text` a string that gets displayed
-          text: '',
-
-          // * `lineWidth` the width of lines for the X
-          lineWidth: 8
-
-          // `box` is a property expected to be on all
-          // visualization components, and is set by
-          // the dashboard layout engine.
-
-          // `width` and `height` properties are used
-          // internally, and are computed from the `box`
-          // and `margin` properties
-        }),
-
-        // Append the svg element for this visualization
-        // to the dashboard div.
-        svg = dashboard.div.append('svg')
+    // Append the svg element for this visualization
+    // to the dashboard div.
+    var svg = dashboard.div.append('svg')
 
           // Use CSS `position: absolute;`
           // so setting `left` and `top` later will
@@ -68,59 +46,81 @@ define([], function () {
               model.set('lineWidth', newLineWidth);
               x1 = x2;
             });
-        }());
+        }()),
 
-    // Update the color and text based on the model.
-    model.wire('color', _.partial(rect.attr, 'fill'), rect);
-    model.wire('text', text.text, text);
+        // The dummy visualization has
+        // the following configuration options:
+        model = new Backbone.Model({
 
-    // When the size of the visualization is set
-    // by the dashboard layout engine,
-    model.wire('box', function (box) {
-      // Set the CSS `left` and `top` properties
-      // to move the SVG to `(box.x, box.y)`
-      // relative to the dashboard div.
-      svg
-        .style('left', box.x + 'px')
-        .style('top', box.y + 'px')
+          // * `color` a background color
+          color: 'white',
 
-        // Set the `width` and `height` attributes
-        // to the size computed by the dashboard layout engine
-        // on the SVG element 
-        .attr('width', box.width)
-        .attr('height', box.height);
+          // * `text` a string that gets displayed
+          text: '',
 
-      // and of the background rect.
-      rect
-        .attr('width', box.width)
-        .attr('height', box.height);
+          // * `lineWidth` the width of lines for the X
+          lineWidth: 8
 
-      // Update the text label to be centered.
-      text
-        .attr('x', box.width / 2)
-        .attr('y', box.height / 2);
-    });
+          // `box` is a property expected to be on all
+          // visualization components, and is set by
+          // the dashboard layout engine.
 
-    // Update the X lines whenever either
-    // the `box` or `lineWidth` model properties change.
-    model.wire(['box', 'lineWidth'], function (box, lineWidth) {
-      var w = box.width,
-          h = box.height,
-          lines = svg.selectAll('line').data([
-            {x1: 0, y1: 0, x2: w, y2: h},
-            {x1: 0, y1: h, x2: w, y2: 0}
-          ]);
-      lines.enter().append('line');
-      lines
-        .attr('x1', function (d) { return d.x1; })
-        .attr('y1', function (d) { return d.y1; })
-        .attr('x2', function (d) { return d.x2; })
-        .attr('y2', function (d) { return d.y2; })
-        .style('stroke-width', lineWidth)
-        .style('stroke-opacity', 0.2)
-        .style('stroke', 'black')
-        .call(lineDrag);
-    });
+          // `width` and `height` properties are used
+          // internally, and are computed from the `box`
+          // and `margin` properties
+        })
+
+        // Update the color and text based on the model.
+        .wire('color', _.partial(rect.attr, 'fill'), rect)
+        .wire('text', text.text, text)
+
+        // When the size of the visualization is set
+        // by the dashboard layout engine,
+        .wire('box', function (box) {
+          // Set the CSS `left` and `top` properties
+          // to move the SVG to `(box.x, box.y)`
+          // relative to the dashboard div.
+          svg
+            .style('left', box.x + 'px')
+            .style('top', box.y + 'px')
+
+            // Set the `width` and `height` attributes
+            // to the size computed by the dashboard layout engine
+            // on the SVG element 
+            .attr('width', box.width)
+            .attr('height', box.height);
+
+          // and of the background rect.
+          rect
+            .attr('width', box.width)
+            .attr('height', box.height);
+
+          // Update the text label to be centered.
+          text
+            .attr('x', box.width / 2)
+            .attr('y', box.height / 2);
+        })
+
+        // Update the X lines whenever either
+        // the `box` or `lineWidth` model properties change.
+        .wire(['box', 'lineWidth'], function (box, lineWidth) {
+          var w = box.width,
+              h = box.height,
+              lines = svg.selectAll('line').data([
+                {x1: 0, y1: 0, x2: w, y2: h},
+                {x1: 0, y1: h, x2: w, y2: 0}
+              ]);
+          lines.enter().append('line');
+          lines
+            .attr('x1', function (d) { return d.x1; })
+            .attr('y1', function (d) { return d.y1; })
+            .attr('x2', function (d) { return d.x2; })
+            .attr('y2', function (d) { return d.y2; })
+            .style('stroke-width', lineWidth)
+            .style('stroke-opacity', 0.2)
+            .style('stroke', 'black')
+            .call(lineDrag);
+        });
 
     // Return the Backbone model representing the
     // configuration of the visualizations.
@@ -132,6 +132,6 @@ define([], function () {
     // This model will also be available to other
     // components on the dashboard, like the `links`
     // module or other visualization.
-    return model;
+    return model
   }
 });

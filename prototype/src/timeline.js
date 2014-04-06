@@ -11,27 +11,7 @@ define([], function () {
 
   function timeline(div) {
 
-    // The timeline visualization has
-    // the following configuration options:
-    var model = new Backbone.Model({
-     
-          // * `margin` A margin object according to the D3 convention
-          margin: { top: 20, right: 20, bottom: 30, left: 40 },
-
-          // * `yAxisLabel` (optional) A string that will be
-          //   displayed vertically next to the Y axis.
-          //
-          // The following properties are used internally
-          // and are not part of the configuration set by users:
-          //
-          // * `box` is a property expected to be on all
-          //   visualization components, and is set by
-          //   the dashboard layout engine.
-          //
-          // * `width` and `height` properties are used
-          //   internally, computed from `box` and `margin`
-        }),
-
+    var
         // Append the svg element for this visualization
         // to the dashboard div.
         svg = div.append('svg').style('position', 'absolute'),
@@ -80,15 +60,32 @@ define([], function () {
           .x(function (d) { return x(d.x); })
           .y(function (d) { return y(d.y); });
 
+
+    // The timeline visualization has
+    // the following configuration options:
+    return new Backbone.Model({
+     
+      // * `margin` A margin object according to the D3 convention
+      margin: { top: 20, right: 20, bottom: 30, left: 40 },
+
+      // * `yAxisLabel` (optional) A string that will be
+      //   displayed vertically next to the Y axis.
+      //
+      // The following properties are used internally
+      // and are not part of the configuration set by users:
+      //
+      // * `box` is a property expected to be on all
+      //   visualization components, and is set by
+      //   the dashboard layout engine.
+      //
+      // * `width` and `height` properties are used
+      //   internally, computed from `box` and `margin`
+    })
     // Set the Y axis label text from the model.
-    model.wire('yAxisLabel', yAxisLabel.text, yAxisLabel);
+    .wire('yAxisLabel', yAxisLabel.text, yAxisLabel)
 
     // Whenever the `box` or `margin` model properties change...
-    model.wire(['box', 'margin'], function (box, margin) {
-
-      // Add (width, height) computed properties from `box` and `margin`.
-      model.set('width', box.width - margin.left - margin.right);
-      model.set('height', box.height - margin.top - margin.bottom);
+    .wire(['box', 'margin'], function (box, margin, set) {
 
       // Set the CSS `left` and `top` properties
       // to move the SVG element to `(box.x, box.y)`
@@ -106,10 +103,16 @@ define([], function () {
       // Translate the SVG group element containing the visualization
       // based on the margin.
       g.attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
-    });
+
+      // Add (width, height) computed properties from `box` and `margin`.
+      set({
+        width: box.width - margin.left - margin.right,
+        height: box.height - margin.top - margin.bottom
+      });
+    })
 
     // When `height` changes,
-    model.wire('height', function (height) {
+    .wire('height', function (height) {
 
       // Vertically center the Y axis label, and
       yAxisLabel.attr('transform',
@@ -117,10 +120,11 @@ define([], function () {
 
       // move the X axis to the bottom.
       xAxisGroup.attr('transform', 'translate(0,' + height + ')');
-    });
+    })
 
     // When the `data` configuration or size changes,
-    model.wire(['data', 'width', 'height'], function (data, width, height) {
+    .wire(['data', 'width', 'height'], function (data, width, height) {
+
       // update scales based on data and size,
       x.domain(d3.extent(data, function (d) { return d.x }));
       x.range([0, width]);
@@ -152,26 +156,19 @@ define([], function () {
       axisGroup.selectAll('g')
         .style('font', '10pt sans-serif');
     }
-
-    return model;
   }
 
   // The constructor function invoked by `dashboardScaffold`.
   // TODO refactor data cube query into a separate module.
   return function (dashboard) {
-    var model = timeline(dashboard.div);
-
-    model.wire(['dataConfig'], function (dataConfig) {
-      // query the source data cube to extract
-      // data in a form suitable for use with D3,
-      query(dataConfig, function (data) {
-        model.set('data', data);
+    return timeline(dashboard.div)
+      .wire(['dataConfig'], function (dataConfig, set) {
+        // query the source data cube to extract
+        // data in a form suitable for use with D3,
+        query(dataConfig, function (data) {
+          set('data', data);
+        });
       });
-    });
-
-    return model;
-
-    // TODO set up model.data > model.queryResult with wire
 
     // Queries the source data cube to extract
     // data in a form suitable for use with D3.

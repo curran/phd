@@ -212,4 +212,37 @@ describe('wire', function() {
     model.set('R', 3);
     model.set('V', 6);
   });
+  it('should support chaining', function(done) {
+    var model = new Backbone.Model();
+    
+    model
+      .wire(['x'], function (x) {
+        expect(x).toBe(10);
+        model.set('y', x + 1);
+      })
+      .wire(['y'], function (y) {
+        expect(y).toBe(11);
+        model.set('z', y * 2);
+      })
+      .wire(['z'], function (z) {
+        expect(z).toBe(22);
+        done();
+      })
+      .set('x', 10);
+  });
+  it('should support set() as last arg', function(done) {
+    new Backbone.Model({ x: 10 }) 
+      .wire(['x'], function (x, set) {
+        expect(x).toBe(10);
+        set('y', x + 1);
+      })
+      .wire(['y'], function (y, set) {
+        expect(y).toBe(11);
+        set('z', y * 2);
+      })
+      .wire(['z'], function (z) {
+        expect(z).toBe(22);
+        done();
+      });
+  });
 });

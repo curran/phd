@@ -81,7 +81,8 @@
 Backbone.Model.prototype.wire = function (dependencies, fn, thisArg){
 
   // Grab a reference to `this` for use in inner closures.
-  var model = this;
+  var model = this,
+      set = _.bind(model.set, model);
 
   // Support passing a single string as `dependencies`
   if(!(dependencies instanceof Array)) {
@@ -93,13 +94,18 @@ Backbone.Model.prototype.wire = function (dependencies, fn, thisArg){
   var callFn = _.debounce(function(){
 
     // Extract the values for each dependency property from the model.
-    var values = dependencies.map(model.get, model);
+    var values = dependencies.map(model.get, model),
+        computedProperties;
+
+    // Add the model `set` function as the last argument,
+    // allowing callbacks to set computed properties.
+    values.push(set);
 
     // Only call the function if all values are defined.
     if(!_.some(values, _.isUndefined)){
 
       // Call `fn` with the dependency property values.
-      fn.apply(thisArg, values);
+      computedProperties = fn.apply(thisArg, values);
     }
   });
 
@@ -114,4 +120,8 @@ Backbone.Model.prototype.wire = function (dependencies, fn, thisArg){
   dependencies.forEach(function(property){
     model.on('change:' + property, callFn);
   });
+
+  // Return the model for chaining.
+  // TODO test this
+  return model;
 }
