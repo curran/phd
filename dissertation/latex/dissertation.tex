@@ -26,11 +26,13 @@ There is immense potential value in data that is not being realized. While many 
 
 \begin{doublespace}
 \section{Introduction}
+The contributions of this dissertation are novel data structures and algorithms for integration and interactive visualization of many data sets from multiple sources, based on the data cube concept. The proposed data representation framework will allow data sets to be combined together and visualized using interactive visualization dashboards like the one described above, giving users the sense that the data exists within a single unified structure. The framework is designed to be able to represent and integrate an arbitrary number of data sets created independently of one another, and expose the integrated structure to reusable visualization tools that can be combined together in dashboard layouts with multiple linked views using existing interaction techniques such as brushing and linking. The proposed data representation and visualization framework is fundamentally new, and will allow heterogeneous data sets to be explored in a unified way that was never before possible. 
+
+The overall goal of this work is to build digital telescope into the universe of phenomena on Earth via publicly available data. For example, consider public data sources such as the United Nations, the US Census, the US Bureau of Labor Statistics, or the US Centers for Disease Control. These organizations and hundreds of others around the world provide publicly available data about various topics including population statistics, public health, distribution of wealth, quality of life, economics, the environment, and many others. By unifying these data sources and providing users with tools to explore and present the data visually, a deeper understanding of the world can be gleaned through the lens of public data. The focus of this dissertation is on applications involving public data, however the techniques introduced can be applied to any data sets that can be conceptually modeled as data cubes, regardless of whether they are public or private. 
+
 Consider the data from the US Census that covers population statistics for US States from 1950 to 2010. Consider also population statistics from the United Nations covering World Countries from 1970 to 2012. These two data sets may use different identifiers for years and geographic regions, but they cover an overlapping conceptual data space of time, geography and population. From these two data sets it is possible to create a visualization dashboard with a map of the world showing population as color and a corresponding line graph showing population for each region as lines. If the user views the whole world, the UN population data is shown for each country. If the user zooms into the US, US Census data is shown for each state. If the user selects a point of time in the line graph, the data shown on the map is from that point in time. If the user pans and zooms on the map, the lines in the line graph update to only show the regions visible on the map. This is one example of an interactive visualization dashboard with multiple linked views (the timeline and map views) operating over multiple data sets integrated from different sources (the United Nations population data and the US Census population data).
 
 % TODO implement this and put screenshot image here
-
-The contributions of this dissertation are novel data structures and algorithms for integration and interactive visualization of many data sets from multiple sources, based on the data cube concept. The focus will be on public data, however the techniques can be applied to any data collection that can be conceptually modeled as data cubes. The proposed data representation framework will allow data sets to be combined together and visualized using interactive visualization dashboards like the one described above, giving users the sense that the data exists within a single unified structure. The framework is designed to be able to represent and integrate an arbitrary number of data sets created independently of one another, and expose the integrated structure to reusable visualization tools that can be combined together in dashboard layouts (nested box layouts) with multiple linked views using existing interaction techniques such as brushing and linking. The proposed data representation and visualization framework is fundamentally new, and will allow heterogeneous data sets to be explored in a unified way that was never before possible. 
 
 Data cubes, also known as OLAP (OnLine Analytical Processing) cubes, can represent data that contains measures aggregated (typically using sum or average) along categorical hierarchies. The data cube concept emerged from the field of data warehousing as a way to summarize transactional data, allowing analysts to get a bird's eye view of company activities. The term OLAP stands in contrast to the term OLTP (OnLine Transaction Processing), which is the part of the data warehouse system that ingests and stores data at the level of individual transactions or events. After the ETL (Extract, Transform and Load) phase of the data warehouse flow, the data is analyzed by computing a data cube from the transactional data.
 
@@ -40,30 +42,71 @@ With this approach, it is possible to model many data sets together using shared
 
 %TODO Continue editing from here.
 
-The data cube structure lends itself particularly well to visualization. Long standing perception-based data visualization theory presented by Bertin \cite{bertin1983semiology} and Mackinlay \cite{mackinlay1986automating} identify effective ways to visually encode data based on the various kinds of data fields:
+The data cube structure lends itself particularly well to visualization. Long standing perception-based data visualization theory presented by Bertin \cite{bertin1983semiology} and Mackinlay \cite{mackinlay1986automating} identify effective ways to visually encode data based on data fields that are nominal, ordinal or quantitative. Visualization techniques have been explored for hierarchical (tree-based) data as well \cite{graham2010survey}. Data cubes can contain data that projects to tables containing fields of these types. Therefore existing visualization theory can be applied to the data cube model to determine which visualizations are appropriate for representing which data, depending on its data cube structure. This topic is discussed in section \ref{dataCubeVisualization}.
+
+\pagebreak
+\section{Related Work}
+
+\pagebreak
+\section{Data Cube Representation and Integration}
+\subsection{Defining Data Cubes}
+%TODO describe CSV + JSON representation
+\subsection{Building a Data Cube Index}
+%TODO pseudocode for building the index
+\subsection{Querying a Data Cube}
+%TODO pseudocode for querying the index
+\subsection{Integration of Dimensions}
+%TODO include pseudocode for UDC index building & query
+\pagebreak
+\section{Data Cube Visualization} \label{dataCubeVisualization}
+Data cubes can contain the following kinds of data:
 \begin{itemize}
 \item \emph{nominal} - unordered collections of categories
 \item \emph{ordinal} - ordered collections of categories
+\item \emph{hierarchical} - collections of categories organized as trees
 \item \emph{quantitative} - continuously varying numeric values
 \end{itemize}
 
-\begin{tabular}{ | l | l | l | l | }
-\hline
-Place & Time & Population & Source URL \\ \hline
-India & 1950 & 369880000 & \tiny \verb1www.geohive.com/earth/population3.aspx1 \\ \hline
-China & 1950 & 563000000 & \tiny \verb1geography.about.com/od/populationgeography/a/chinapopulation.htm1 \\ \hline
-USA & 1950 & 150697361 & \tiny \verb2en.wikipedia.org/wiki/1950_United_States_Census2 \\ \hline
-India & 2010 & 1150000000 & \tiny \verb1www.indiaonlinepages.com/population/india-population.html1\\ \hline
-China & 2010 & 1339724852 & \tiny \verb1en.wikipedia.org/wiki/Demographics_of_China1\\ \hline
-USA & 2010 & 308745538 & \tiny \verb1en.wikipedia.org/wiki/United_States_Census1\\ \hline
-\end{tabular}
+Data cube dimensions can be nominal, ordinal or hierarchical. Data cube measures are always quantitative. This mapping relates data cubes to data types that have been well studied in the literature on visualization theory \cite{bertin1983semiology, mackinlay1986automating, graham2010survey}.
 
+%TODO add table with (nominal, ... , quantitative) vs. (color, value, position, size, connection, containment, ...)
+%TODO add table with (Visualization, Data Cube Structure) referencing visualizations in other sections
+
+
+\pagebreak
+\section{Data Sets}
+\subsection{United Nations Population Estimates}
+\subsection{United Nations Millenium Development Goals}
+\subsection{United States Census Population Estimates}
+%TODO include figures/usCensusPopulationByState.png
+%TODO import data from http://www.census.gov/popest/data/state/totals/2013/index.html
+\subsection{US Central Intelligence Agency World Factbook}
+%TODO import subsets of the data
+\subsection{US Centers for Disease Control Causes of Death}
+%TODO generalize stacked area and tree vis
+\subsection{W3Schools Browser Market Share}
+%TODO import this data
+
+\pagebreak
+\section{Visualizations}
+% TODO insert visualization taxonomy here
+% TODO pseudocode conventions
+\subsection{Bar Chart}
+\subsection{Scatter Plot}
+\subsection{Line Chart}
+\subsection{Choropleth Map}
+\subsection{Stacked Area Plot}
+\subsection{TreeMap}
+\subsection{Node Link Tree}
+\subsection{Radial Tree}
+\subsection{Icicle Plot}
+\subsection{TreeMap}
+\subsection{Parallel Coordinates}
 
 % TODO include tree visualizations for multiple hierarchies (cause of death, region, time)
 
 %
 %
-%The overall goal of this work is to build digital telescope into the universe of phenomena on Earth via publicly available data. For example, consider public data sources such as the United Nations, the US Census, the US Bureau of Labor Statistics, or the US Centers for Disease Control. These organizations and hundreds of others around the world provide publicly available data about various topics including population statistics, public health, distribution of wealth, quality of life, economics, the environment, and many others. By unifying these data sources and providing users of any expertize level with tools to explore and present the data visually, a deeper understanding of the world can be gleaned by anyone through the lens of public data.
 %
 %There is immense potential value in public data that is not being realized. The ability to visually explore public data lends itself to applications in education, journalism, and public policy. Especially in the era of ``Big Data'', it is increasingly valuable for organizations and individuals to have the ability to analyze large quantities of data from various sources that varies across time, space, and other dimensions. In addition, publicly available data can provide context for business-centric proprietary data analysis activities.
 %
