@@ -78,6 +78,10 @@
 //
 // `wire` is added to the prototype of `Backbone.Model`, so it can be
 // invoked as `model.wire()` on any Backbone model.
+/* TODO make simple Model API, eliminate Backbone dependency */
+
+/* TODO support var callbacks = when().when().when().callbacks()
+ * and model.cancel(callbacks); for component deletion handling */
 Backbone.Model.prototype.wire = function (dependencies, fn, thisArg){
 
   // Grab a reference to `this` for use in inner closures.

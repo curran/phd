@@ -3,6 +3,12 @@
 // Draws from Mike Bostock's map example:
 // http://bl.ocks.org/mbostock/3757132
 //
+// TODO visualize UN population data drawing from
+// Choropleth - http://bl.ocks.org/mbostock/4060606
+//
+// TODO Add zooming and panning from 
+// http://stackoverflow.com/questions/17093614/d3-geo-performance-on-pan-zoom
+//
 // Curran Kelleher 4/5/2014
 define([], function () {
 
@@ -21,7 +27,7 @@ define([], function () {
         // Use a mercator projection.
         projection = d3.geo.mercator().precision(.1),
         geoPath = d3.geo.path().projection(projection),
-        path = svg.append('path'),
+        g = svg.append('g'),
 
         // The dummy visualization has
         // the following configuration options:
@@ -54,12 +60,16 @@ define([], function () {
             .scale((box.width + 1) / 2 / Math.PI)
             .translate([box.width / 2, box.height / 2]);
 
-          path.attr('d', geoPath(features));
+          var path = g.selectAll('path').data(features);
+          path.enter().append('path');
+          path.attr('d', geoPath);
         });
 
     // TODO move this into the data configuration
     d3.json('data/geo/world-110m.json', function(error, data) {
-      model.set('features', topojson.feature(data, data.objects.land));
+      var feature = topojson.feature(data, data.objects.land);
+      console.log(feature);
+      model.set('features', feature.features);
     });
 
     return model
