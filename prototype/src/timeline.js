@@ -9,12 +9,11 @@
 // Curran Kelleher 3/30/2014
 define([], function () {
 
-  function timeline(div) {
+  return function timeline(dashboard) {
 
-    var
-        // Append the svg element for this visualization
-        // to the dashboard div.
-        svg = div.append('svg').style('position', 'absolute'),
+    // Append the svg element for this visualization
+    // to the dashboard div.
+    var svg = dashboard.div.append('svg').style('position', 'absolute'),
 
         // Append an SVG group element for containing the visualization.
         g = svg.append('g'),
@@ -157,90 +156,4 @@ define([], function () {
         .style('font', '10pt sans-serif');
     }
   }
-
-  // The constructor function invoked by `dashboardScaffold`.
-  // TODO refactor data cube query into a separate module.
-  return function (dashboard) {
-    return timeline(dashboard.div)
-      .wire(['dataConfig'], function (dataConfig, set) {
-        // query the source data cube to extract
-        // data in a form suitable for use with D3,
-        query(dataConfig, function (data) {
-          set('data', data);
-        });
-      });
-
-    // Queries the source data cube to extract
-    // data in a form suitable for use with D3.
-    //
-    // `data` A data configuration object with
-    //  * `source` The name of the data source
-    //  * `dataSet` The name of the data set
-    //  * `slices` An object that defines the
-    //    fixed slice for dimensions that do not
-    //    vary within visualization
-    //    * Keys are dimension names
-    //    * Values are member codes
-    /* TODO use (codeList, code) pairs for identifying members here */
-    //  * `x` The name of the dimension to use for the X axis
-    /* TODO use a dimension selection for x */
-    //  * `y` The name of the measure to use for the Y axis
-    //
-    // `callback(data)` A callback function called with
-    //  * `data` An array of objects with
-    //    * `x` The member values for the X axis
-    //    * `y` The numeric values for the Y axis
-    function query(dataOptions, callback){
-
-      // Get the `data` component from the dashboard configuration,
-      // which is responsible for loading data sources.
-      dashboard.getComponent('data', function (dataComponent) {
-
-        // Extract the UDC context from the `data` component.
-        var udc = dataComponent.udc,
-            source = dataOptions.source,
-            dataSet = dataOptions.dataSet;
-
-        // Wait for the data set to load.
-        udc.waitFor(source, dataSet, function () {
-
-          // Query the data cube for the X dimension domain.
-          /* TODO refactor the API so (source, dataSet) are not needed */
-          var xDomainCodes = udc.getDomain(source, dataSet, dataOptions.x),
-              xDomainCodeList = udc.getCodeList(source, dataSet, dataOptions.x),
-
-              /* TODO generalize handling of X dimensions, special case Time */
-              // Parse X dimension domain values into JS Date objects.
-              xDomainDates = xDomainCodes.map( function (yearStr) {
-                return new Date(yearStr, 0);
-              }),
-              // Use the `slice` option as the basis for the current cell.
-              cell = _.clone(dataOptions.slices);
-
-          // Call the callback with (x, y) pairs.
-          callback(xDomainCodes.map(function (code, i) {
-
-            // Set the X dimension value for the current cell
-            // to the X domain value.
-            cell[dataOptions.x] = {
-              code: code,
-              codeList: xDomainCodeList
-            };
-            
-            // Map X domain objects to data element objects with
-            return {
-
-              // * `x` The date corresponding to the X domain value.
-              x: xDomainDates[i],
-
-              // * `y` The measure value from the data cube for
-              // the current cell and the configured Y measure.
-              y: udc.getValue(source, dataSet, cell, dataOptions.y)
-            };
-          }));
-        });
-      });
-    }
-  };
-
 });

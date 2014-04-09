@@ -5,6 +5,7 @@
       "orientation": "vertical",
       "children": [
         {
+          "size": 2,
           "orientation": "horizontal",
           "children": [
             { "name": "map" },
@@ -49,18 +50,26 @@
     "module": "links",
     "bindings": [
       {
+        "source": "timelineData.result",
+        "destination": "timeline.data"
+      },
+      {
         "source": "a.lineWidth",
         "destination": "b.lineWidth"
       }
     ]
   },
+  "timeline": {
+    "module": "timeline",
+    "yAxisLabel": "World Population (billions)"
+  },
   "data": {
     "module": "data",
     "sources": [ "data/un_population/un_population" ]
   },
-  "timeline": {
-    "module": "timeline",
-    "dataConfig": {
+  "timelineData": {
+    "module": "query",
+    "query": {
       "source": "United Nations",
       "dataSet": "Population Estimates",
       "slices": {
@@ -71,8 +80,7 @@
       },
       "x": "Time",
       "y": "Population"
-    },
-    "yAxisLabel": "World Population (billions)"
+    }
   },
   "map": {
     "module": "map"
