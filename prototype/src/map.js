@@ -28,9 +28,7 @@ define([], function () {
         // Use a mercator projection.
         projection = d3.geo.mercator().precision(.1),
         geoPath = d3.geo.path().projection(projection),
-        g = svg.append('g')
-          .call(d3.behavior.zoom().on('zoom', zoom))
-          .append('g'),
+        g = svg.append('g'),
 
         // The dummy visualization has
         // the following configuration options:
@@ -81,9 +79,11 @@ define([], function () {
         //});
       });
 
-    function zoom() {
+    // Set up zooming and panning.
+    // TODO integrate zoom and pan with the model
+    svg.call(d3.behavior.zoom().on('zoom', function () {
       g.attr('transform', 'translate(' + d3.event.translate + ')scale(' + d3.event.scale + ')');
-    }
+    }));
 
     // TODO move this into the data configuration
     d3.json('data/natural_earth/countries.json', function(error, data) {
