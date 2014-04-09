@@ -6,9 +6,13 @@
 \usepackage{subcaption}
 \usepackage{url}
 \usepackage{setspace}
+\usepackage{color}
+
+\newcommand{\TODO}[1]{{ \color{red}\textbf{TODO} #1 }}
+
 \title{Doctoral Dissertation}
 \author{Curran Kelleher}
-\date{4/5/2014}
+\date{4/9/2014}
 \begin{document}
 \maketitle 
 
@@ -32,7 +36,7 @@ The overall goal of this work is to build digital telescope into the universe of
 
 Consider the data from the US Census that covers population statistics for US States from 1950 to 2010. Consider also population statistics from the United Nations covering World Countries from 1970 to 2012. These two data sets may use different identifiers for years and geographic regions, but they cover an overlapping conceptual data space of time, geography and population. From these two data sets it is possible to create a visualization dashboard with a map of the world showing population as color and a corresponding line graph showing population for each region as lines. If the user views the whole world, the UN population data is shown for each country. If the user zooms into the US, US Census data is shown for each state. If the user selects a point of time in the line graph, the data shown on the map is from that point in time. If the user pans and zooms on the map, the lines in the line graph update to only show the regions visible on the map. This is one example of an interactive visualization dashboard with multiple linked views (the timeline and map views) operating over multiple data sets integrated from different sources (the United Nations population data and the US Census population data).
 
-% TODO implement this and put screenshot image here
+\TODO{implement this and put screenshot image here}
 
 Data cubes, also known as OLAP (OnLine Analytical Processing) cubes, can represent data that contains measures aggregated (typically using sum or average) along categorical hierarchies. The data cube concept emerged from the field of data warehousing as a way to summarize transactional data, allowing analysts to get a bird's eye view of company activities. The term OLAP stands in contrast to the term OLTP (OnLine Transaction Processing), which is the part of the data warehouse system that ingests and stores data at the level of individual transactions or events. After the ETL (Extract, Transform and Load) phase of the data warehouse flow, the data is analyzed by computing a data cube from the transactional data.
 
@@ -40,26 +44,27 @@ The data cube concept and structure can be used to model existing data sets as w
 
 With this approach, it is possible to model many data sets together using shared dimensions and measures. This will allow integration of many data sets together in a single unified structure. Existing data cube technologies assume that data cubes will be computed from a relational source, and are not designed to handle integration of pre-computed data cubes that may use inconsistent identifiers for common dimensions and inconsistent scaling factors for common measures. Therefore the application of the data cube concept to integration and visualization of many pre-computed data cubes, while theoretically plausible, requires the development of novel data structures and algorithms that extend the data cube model to handle integration of pre-computed data cubes that may use inconsistent identifiers for common dimensions and inconsistent scaling factors for common measures.
 
-%TODO Continue editing from here.
 
-The data cube structure lends itself particularly well to visualization. Long standing perception-based data visualization theory presented by Bertin \cite{bertin1983semiology} and Mackinlay \cite{mackinlay1986automating} identify effective ways to visually encode data based on data fields that are nominal, ordinal or quantitative. Visualization techniques have been explored for hierarchical (tree-based) data as well \cite{graham2010survey}. Data cubes can contain data that projects to tables containing fields of these types. Therefore existing visualization theory can be applied to the data cube model to determine which visualizations are appropriate for representing which data, depending on its data cube structure. This topic is discussed in section \ref{dataCubeVisualization}.
+The data cube structure lends itself particularly well to visualization. Long standing perception-based data visualization theory presented by Bertin \cite{bertin1983semiology} and Mackinlay \cite{mackinlay1986automating} identify effective ways to visually encode data based on data fields that are nominal, ordinal or quantitative. Visualization techniques have been explored for hierarchical (tree-based) data as well \cite{graham2010survey}. Data cubes can contain data of these types. Therefore existing visualization theory can be applied to the data cube model to determine which visualizations are appropriate for representing which data, depending on its data cube structure. This topic is discussed in section \ref{dataCubeVisualization}.
 
 \pagebreak
 \section{Related Work}
+\TODO{pull related work from proposal}
 
 \pagebreak
 \section{Data Cube Representation and Integration}
 \subsection{Defining Data Cubes}
-%TODO describe CSV + JSON representation
+\TODO{describe CSV + JSON representation}
 \subsection{Building a Data Cube Index}
-%TODO pseudocode for building the index
+\TODO{ pseudocode for building the index}
 \subsection{Querying a Data Cube}
-%TODO pseudocode for querying the index
+\TODO{ pseudocode for querying the index}
 \subsection{Integration of Dimensions}
-%TODO include pseudocode for UDC index building & query
+\TODO{ include modified pseudocode for UDC index building \& query that resolves identifiers}
 
 \pagebreak
 \section{Data Cube Visualization} \label{dataCubeVisualization}
+\subsection{Relating Data Cubes and Visualization Theory}
 Data cubes can contain the following kinds of data:
 \begin{itemize}
 \item \emph{nominal} - unordered collections of categories
@@ -67,40 +72,53 @@ Data cubes can contain the following kinds of data:
 \item \emph{hierarchical} - collections of categories organized as trees
 \item \emph{quantitative} - continuously varying numeric values
 \end{itemize}
-
 Data cube dimensions can be nominal, ordinal or hierarchical. Data cube measures are always quantitative. This mapping relates data cubes to data types that have been well studied in the literature on visualization theory \cite{bertin1983semiology, mackinlay1986automating, graham2010survey}.
 
-%TODO add table with (nominal, ... , quantitative) vs. (color, value, position, size, connection, containment, ...)
-%TODO add table with (Visualization, Data Cube Structure) referencing visualizations in other sections
+
+\TODO{ add table with (nominal, ... , quantitative) vs. (color, value, position, size, connection, containment, ...)}
+\subsection{A Visualization Taxonomy by Data Cube Structure}
+\TODO{ add table with (Visualization, Data Cube Structure) referencing visualizations in other sections}
 
 \pagebreak
 \section{Visualization Dashboard Infrastructure}
 \subsection{Model Driven Visualizations}
+\TODO{ include model driven bar chart pseudocode}
 \subsection{Functional Reactive Visualizations}
-%TODO
-TODO  The "when" Functional Reactive Operator
+\TODO{ include data flow graph for bar chart}
+\TODO { Discuss the "when" Functional Reactive Operator}
+\TODO { Cite functional reactive animation paper}
+\TODO{ include bar chart pseudocode using "when"}
 \subsection{Dashboard Layout using Nested Boxes}
+\TODO{Include nested box layout pseudocode}
 \subsection{Multiple Linked Views}
+\TODO{Include generic linking pseudocode using "when"}
 \subsection{Dynamic Dashboard Configuration}
+\TODO{Include pseudocode for computing configuration diffs}
+%\subsection{Synchronous Collaboration}
+%\TODO{Describe synchronous collaboration architecture}
+%\subsection{History Navigation}
 
 \pagebreak
 \section{Data Sets}
 \subsection{United Nations Population Estimates}
 \subsection{United Nations Millenium Development Goals}
 \subsection{United States Census Population Estimates}
-%TODO include figures/usCensusPopulationByState.png
-%TODO import data from http://www.census.gov/popest/data/state/totals/2013/index.html
+\TODO{ include figures/usCensusPopulationByState.png}
+\TODO{ import data from http://www.census.gov/popest/data/state/totals/2013/index.html}
 \subsection{US Central Intelligence Agency World Factbook}
-%TODO import subsets of the data
+\TODO{ import subsets of the data}
 \subsection{US Centers for Disease Control Causes of Death}
-%TODO generalize stacked area and tree vis
+\TODO{ generalize stacked area and tree vis}
 \subsection{W3Schools Browser Market Share}
-%TODO import this data
+\TODO{ import this data completely}
+\subsection{Natural Earth}
+\TODO{ include figures/naturalEarth.png}
+\TODO{ discuss data transformation process}
 
 \pagebreak
 \section{Visualizations}
-% TODO insert visualization taxonomy here
-% TODO pseudocode conventions
+\TODO{ discuss pseudocode conventions}
+\TODO{ include pseudocode for each visualization}
 \subsection{Bar Chart}
 \subsection{Scatter Plot}
 \subsection{Line Chart}
@@ -115,8 +133,9 @@ TODO  The "when" Functional Reactive Operator
 
 \pagebreak
 \section{Visualization Dashboards}
-% TODO include tree visualizations for multiple hierarchies (cause of death, region, time)
 
+
+%TODO Continue editing from here.
 %
 %
 %
