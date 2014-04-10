@@ -59,19 +59,19 @@
       }
     ]
   },
-  "timeline": {
-    "module": "timeline",
-    "yAxisLabel": "World Population (billions)"
-  },
   "data": {
     "module": "data",
     "sources": [ "data/un_population/un_population" ]
   },
+  "timeline": {
+    "module": "timeline",
+    "yAxisLabel": "World Population (billions)"
+  },
   "timelineData": {
     "module": "query",
+    "source": "United Nations",
+    "dataSet": "Population Estimates",
     "query": {
-      "source": "United Nations",
-      "dataSet": "Population Estimates",
       "slices": {
         "Space": {
           "code": "900",
