@@ -13,6 +13,7 @@ Depends on the following JavaScript libraries:
 
 The high-level organization of the framework has the following components:
 
+ * functional reactive visualizations - a model with the functional reactive `when()` operator
  * dashboardScaffold - manages configuration of dashboards with multiple linked views
  * udc - implements the Universal Data Cube framework for data cube integration
  * visualizations - provides implementations of interactive visualizations based on the udc API
