@@ -2,7 +2,7 @@
 
 <html>
 <head>
-  <title>layout.js</title>
+  <title>query.js</title>
   <meta http-equiv="content-type" content="text/html; charset=UTF-8">
   <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
   <link rel="stylesheet" media="all" href="docco.css" />
@@ -101,7 +101,7 @@
         
           <li id="title">
               <div class="annotation">
-                  <h1>layout.js</h1>
+                  <h1>query.js</h1>
               </div>
           </li>
         
@@ -113,12 +113,15 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-1">&#182;</a>
               </div>
-              <p>This module implements nested box layout for visualization dashboards.</p>
-<p>Curran Kelleher 4/1/2014</p>
+              <p>A module that queries Universal Data Cube data.</p>
+<p>Curran Kelleher 4/9/2014</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>define([<span class="hljs-string">'computeLayout'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(computeLayout)</span> {</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>define([], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span>
+  <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(dashboard)</span> {</span>
+    <span class="hljs-keyword">var</span> model = <span class="hljs-keyword">new</span> Backbone.Model();
+    model.wire([<span class="hljs-string">'source'</span>, <span class="hljs-string">'dataSet'</span>, <span class="hljs-string">'query'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(source, dataSet, query)</span> {</span></pre></div></div>
             
         </li>
         
@@ -129,11 +132,12 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-2">&#182;</a>
               </div>
-              <p>The constructor function.</p>
+              <p>Get the <code>data</code> component from the dashboard configuration,
+which is responsible for loading data sources.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(dashboard)</span> {</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>      dashboard.getComponent(<span class="hljs-string">'data'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(dataComponent)</span> {</span></pre></div></div>
             
         </li>
         
@@ -144,13 +148,11 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-3">&#182;</a>
               </div>
-              <p>The model will contain only one property,
-<code>box</code>, which reflects the size of
-the dashboard div in pixels.</p>
+              <p>Extract the UDC context from the <code>data</code> component.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">var</span> model = <span class="hljs-keyword">new</span> Backbone.Model();</pre></div></div>
+            <div class="content"><div class='highlight'><pre>        <span class="hljs-keyword">var</span> udc = dataComponent.udc;</pre></div></div>
             
         </li>
         
@@ -161,11 +163,11 @@ the dashboard div in pixels.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-4">&#182;</a>
               </div>
-              <p>Call once to initialize</p>
+              <p>Wait for the data set to load.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    setBoxFromDiv();</pre></div></div>
+            <div class="content"><div class='highlight'><pre>        udc.waitFor(source, dataSet, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> {</span></pre></div></div>
             
         </li>
         
@@ -176,11 +178,15 @@ the dashboard div in pixels.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-5">&#182;</a>
               </div>
-              <p>Call whenever the browser window changes size</p>
+              <p>Query the data cube for the X dimension domain.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    window.addEventListener(<span class="hljs-string">'resize'</span>, setBoxFromDiv);</pre></div></div>
+            <div class="content"><div class='highlight'><pre>          <span class="hljs-comment">/* TODO refactor the API so (source, dataSet) are not needed */</span>
+          <span class="hljs-keyword">var</span> xDomainCodes = udc.getDomain(source, dataSet, query.x),
+              xDomainCodeList = udc.getCodeList(source, dataSet, query.x),
+
+              <span class="hljs-comment">/* TODO generalize handling of X dimensions, special case Time */</span></pre></div></div>
             
         </li>
         
@@ -191,16 +197,13 @@ the dashboard div in pixels.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-6">&#182;</a>
               </div>
-              <p>Sets the <code>box</code> model property based on the actual
-size of the dashboard div computed by CSS.</p>
+              <p>Parse X dimension domain values into JS Date objects.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">setBoxFromDiv</span><span class="hljs-params">()</span>{</span>
-      <span class="hljs-keyword">var</span> div = dashboard.div.node();
-      model.set(<span class="hljs-string">'box'</span>, {
-        x: <span class="hljs-number">0</span>,
-        y: <span class="hljs-number">0</span>,</pre></div></div>
+            <div class="content"><div class='highlight'><pre>              xDomainDates = xDomainCodes.map( <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(yearStr)</span> {</span>
+                <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>(yearStr, <span class="hljs-number">0</span>);
+              }),</pre></div></div>
             
         </li>
         
@@ -211,15 +214,13 @@ size of the dashboard div computed by CSS.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-7">&#182;</a>
               </div>
-              <p>Use <code>clientWidth</code> and <code>clientHeight</code> to
-access the actual size of the dashboard div.</p>
+              <p>Use the <code>slice</code> option as the basis for the current cell.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>        width: div.clientWidth,
-        height: div.clientHeight
-      });
-    }</pre></div></div>
+            <div class="content"><div class='highlight'><pre>              cell = _.clone(query.slices);
+
+          model.set(<span class="hljs-string">'result'</span>, xDomainCodes.map(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(code, i)</span> {</span></pre></div></div>
             
         </li>
         
@@ -230,14 +231,15 @@ access the actual size of the dashboard div.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-8">&#182;</a>
               </div>
-              <p>Compute the layout based on the dashboard div size
-and the configured layout tree whenever either one changes.</p>
+              <p>Set the X dimension value for the current cell
+to the X domain value.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    model.wire([<span class="hljs-string">'tree'</span>, <span class="hljs-string">'box'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(tree, box)</span> {</span>
-      computeLayout(tree, box).forEach(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(layoutElement)</span> {</span>
-        dashboard.getComponent(layoutElement.name, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(component)</span> {</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>            cell[query.x] = {
+              code: code,
+              codeList: xDomainCodeList
+            };</pre></div></div>
             
         </li>
         
@@ -248,19 +250,53 @@ and the configured layout tree whenever either one changes.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-9">&#182;</a>
               </div>
-              <p>Set the <code>box</code> property on each visualization model
-to an object with (x, y, width, height) in pixels.</p>
+              <p>Map X domain objects to data element objects with</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>          component.set(<span class="hljs-string">'box'</span>, layoutElement.box);
+            <div class="content"><div class='highlight'><pre>            <span class="hljs-keyword">return</span> {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-10">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-10">&#182;</a>
+              </div>
+              <ul>
+<li><code>x</code> The date corresponding to the X domain value.</li>
+</ul>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>              x: xDomainDates[i],</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-11">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-11">&#182;</a>
+              </div>
+              <ul>
+<li><code>y</code> The measure value from the data cube for
+the current cell and the configured Y measure.</li>
+</ul>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>              y: udc.getValue(source, dataSet, cell, query.y)
+            };
+          }));
         });
       });
     });
-
     <span class="hljs-keyword">return</span> model;
-  }
-
+  };
 });</pre></div></div>
             
         </li>

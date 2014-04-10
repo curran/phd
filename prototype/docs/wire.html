@@ -64,8 +64,18 @@
               </a>
             
               
+              <a class="source" href="map.html">
+                map.js
+              </a>
+            
+              
               <a class="source" href="processActions.html">
                 processActions.js
+              </a>
+            
+              
+              <a class="source" href="query.html">
+                query.js
               </a>
             
               
@@ -193,7 +203,11 @@ invoked as <code>model.wire()</code> on any Backbone model.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>Backbone.Model.prototype.wire = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(dependencies, fn, thisArg)</span>{</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre><span class="hljs-comment">/* TODO make simple Model API, eliminate Backbone dependency */</span>
+
+<span class="hljs-comment">/* TODO support var callbacks = when().when().when().callbacks()
+ * and model.cancel(callbacks); for component deletion handling */</span>
+Backbone.Model.prototype.wire = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(dependencies, fn, thisArg)</span>{</span></pre></div></div>
             
         </li>
         
@@ -208,7 +222,8 @@ invoked as <code>model.wire()</code> on any Backbone model.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">var</span> model = <span class="hljs-keyword">this</span>;</pre></div></div>
+            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">var</span> model = <span class="hljs-keyword">this</span>,
+      set = _.bind(model.set, model);</pre></div></div>
             
         </li>
         
@@ -256,7 +271,8 @@ on the next tick of the JavaScript event loop.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">var</span> values = dependencies.map(model.get, model);</pre></div></div>
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">var</span> values = dependencies.map(model.get, model),
+        computedProperties;</pre></div></div>
             
         </li>
         
@@ -267,11 +283,12 @@ on the next tick of the JavaScript event loop.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-7">&#182;</a>
               </div>
-              <p>Only call the function if all values are defined.</p>
+              <p>Add the model <code>set</code> function as the last argument,
+allowing callbacks to set computed properties.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">if</span>(!_.some(values, _.isUndefined)){</pre></div></div>
+            <div class="content"><div class='highlight'><pre>    values.push(set);</pre></div></div>
             
         </li>
         
@@ -282,13 +299,11 @@ on the next tick of the JavaScript event loop.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-8">&#182;</a>
               </div>
-              <p>Call <code>fn</code> with the dependency property values.</p>
+              <p>Only call the function if all values are defined.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>      fn.apply(thisArg, values);
-    }
-  });</pre></div></div>
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">if</span>(!_.some(values, _.isUndefined)){</pre></div></div>
             
         </li>
         
@@ -299,11 +314,13 @@ on the next tick of the JavaScript event loop.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-9">&#182;</a>
               </div>
-              <p>Invoke <code>fn</code> once for initialization.</p>
+              <p>Call <code>fn</code> with the dependency property values.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  callFn();</pre></div></div>
+            <div class="content"><div class='highlight'><pre>      computedProperties = fn.apply(thisArg, values);
+    }
+  });</pre></div></div>
             
         </li>
         
@@ -314,6 +331,21 @@ on the next tick of the JavaScript event loop.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-10">&#182;</a>
               </div>
+              <p>Invoke <code>fn</code> once for initialization.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  callFn();</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-11">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-11">&#182;</a>
+              </div>
               <p>Invoke <code>fn</code> when dependency properties change.</p>
 <p>Multiple sequential dependency property changes 
 result in only a single invocation of <code>fn</code>
@@ -323,7 +355,23 @@ because callFn is <a href="underscorejs.org/#debounce">debounced</a>.</p>
             
             <div class="content"><div class='highlight'><pre>  dependencies.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(property)</span>{</span>
     model.on(<span class="hljs-string">'change:'</span> + property, callFn);
-  });
+  });</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-12">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-12">&#182;</a>
+              </div>
+              <p>Return the model for chaining.
+TODO test this</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">return</span> model;
 }</pre></div></div>
             
         </li>
