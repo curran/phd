@@ -1,0 +1,14 @@
+{
+  "name": "World",
+  "children": [
+    { "name": "India" },
+    { "name": "China" },
+    { "name": "USA" ,
+      "children": [
+        { "name": "Massachusetts" },
+        { "name": "New York" },
+        { "name": "California" }
+      ]
+    }
+  ]
+}
