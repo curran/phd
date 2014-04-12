@@ -1,0 +1,30 @@
+{
+  "dimensionColumns": [
+    {
+      "dimension": "Space",
+      "codeList": "countryCode",
+      "column": "Country"
+    }
+  ],
+  "measureColumns": [
+    {
+      "measure": "Population",
+      "scale": 1000000000,
+      "column": "Pop"
+    }
+  ],
+  "rows": [
+    {
+      "Country": "in",
+      "Pop": 1.237
+    },
+    {
+      "Country": "cn",
+      "Pop": 1.351
+    },
+    {
+      "Country": "us",
+      "Pop": 0.3139
+    }
+  ]
+}

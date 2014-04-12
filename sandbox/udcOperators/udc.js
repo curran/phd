@@ -15,6 +15,9 @@ var Universe = (function () {
     addDimension: function (dimension) {
       dimensions[dimension] = true;
     },
+    containsDimension: function (dimension) {
+      return dimensions[dimension];
+    },
     /**
      * Adds a codeList to the UDC universe.
      *
@@ -48,6 +51,10 @@ function Table(){
      *   to members of the specified dimension using codes from the specified code list.
      */
     addDimension: function (dimension, codeList, columnName) {
+
+      //type(dimension, String);
+      //constraints(dimension, Universe.containsDimension);
+
       dimensions.push({
         dimension: dimension,
         codeList: codeList,
@@ -71,6 +78,67 @@ function Table(){
  * @param {Table} table
  */
 function DataCube(table){
+
+//  object
+//    properties
+//    map
+//    type: object, constraints: function
+
+  type(table, {
+    properties: {
+      dimensions: [{
+        properties: {
+          dimension: {
+            type: String,
+            constraints: Universe.containsDimension
+          },
+          codeList: {
+            type: String,
+            constraints: Universe.containsCodeList
+          },
+          columnName: {
+            type: String,
+            constraints: function (columnName) {
+              return _.every(table.content, function (row) {
+                return row.hasOwnProperty(columnName);
+              });
+            }
+          }
+        }
+      }],
+      measures: [{
+        properties: {
+          measure: {
+            type: String,
+            constraints: Universe.containsMeasure
+          },
+          scale: Number,
+          columnName: {
+            type: String,
+            constraints: function (columnName) {
+              return _.every(table.content, function (row) {
+                return row.hasOwnProperty(columnName);
+              });
+            }
+          }
+        }
+      }],
+      content: [{
+        type: {
+          map: {
+            keys: String,
+            values: { either: [String, Number]}
+          }
+        },
+        constraints: function (row) {
+          // if a dimension column,
+          // values must be strings
+          // if a measure column
+          // values must be numbers
+        }
+      }]
+    }
+  });
 
   return {
     // dimensions()

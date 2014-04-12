@@ -1,0 +1,28 @@
+{
+  "dimensionColumns": [
+    {
+      "dimension": "Space",
+      "codeList": "countryName",
+      "column": "Country"
+    },
+    {
+      "dimension": "Space",
+      "codeList": "countryCode",
+      "column": "Code"
+    }
+  ],
+  "rows": [
+    {
+      "Country": "India",
+      "Code": "in"
+    },
+    {
+      "Country": "China",
+      "Code": "cn"
+    },
+    {
+      "Country": "United States of America",
+      "Code": "us"
+    }
+  ]
+}

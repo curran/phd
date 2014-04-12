@@ -1,0 +1,30 @@
+{
+  "dimensionColumns": [
+    {
+      "dimension": "Space",
+      "codeList": "countryName",
+      "column": "name"
+    }
+  ],
+  "measureColumns": [
+    {
+      "measure": "Gross Domestic Product",
+      "scale": 1000,
+      "column": "gdp"
+    }
+  ],
+  "rows": [
+    {
+      "name": "China",
+      "gdp": 12261
+    },
+    {
+      "name": "India",
+      "gdp": 4716
+    },
+    {
+      "name": "United States of America",
+      "gdp": 16244
+    }
+  ]
+}
