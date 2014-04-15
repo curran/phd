@@ -167,9 +167,8 @@ Square brackets denote access of array elements by index when placed directly af
 \End
 \li $\}$
 \li $properties = box.keys$ \Comment evaluates to $[$\verb1x1$,$\verb1y1$,$\verb1width1$,$\verb1height1$]$
-\li $values = properties.map(\lambda(property)$
-\li   $\Return box[property]$
-\li $)$ \Comment $values$ is assigned $[50, 60, 100, 150]$
+\li $values = properties.map(\lambda(property) \; \Return \; box[property])$
+\li \Comment $values$ is assigned $[50, 60, 100, 150]$
 %\li $myObject[2]$ \Comment evaluates to $9$
 %\li $myObject[1] = 3$ \Comment $myArray$ now contains $[5, 3, 9]$
 %\li $myBooleanArray \gets [\const{true}, \const{false}, \const{true}, \const{true}]$
@@ -181,5 +180,8 @@ Square brackets denote access of array elements by index when placed directly af
 \TODO{explain above code}
 
 \begin{codebox}
+\li $run(\lambda()\,log($\verb1'b'1$))$
+\li $log($\verb1'a'1$)$
+\li \Comment Prints \verb1a1, then \verb1b1
 \end{codebox}
-Our pseudocode assumes a single threaded execution environment with a built-in event loop.
+Our pseudocode assumes a single threaded execution environment with a built-in event loop, which may be implemented using the reactor pattern \cite{schmidt1995reactor}. The event loop can be used to queue functions to be executed in the future. In our pseudocode, the $run$ built in function provides access to the event loop. Calling $run$ and passing a function queues that function to be invoked in the future, after the current codepath terminates and all previously queued functions finish executing. In the above pseudocode, line 
