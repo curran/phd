@@ -92,3 +92,94 @@ Because data cubes provide an abstraction that handles aggregation, they are a w
 %  \label{fig:gapminder}
 %\end{figure}
 \TODO{pull all related work from proposal}
+
+\section{Pseudocode Conventions}
+Throughout this document, pseudocode is used to express data structures and algorithms. Our pseudocode is similar to that found in the book ``Introduction to Algorithms'' \cite{cormen2009introduction}, but differs significantly in that it uses a functional style. Primitive types in our pseudocode include numbers, strings, booleans, arrays, objects and functions. The following examples demonstrate the features of our pseudocode language.
+
+\begin{codebox}
+\li $x \gets 5$
+\end{codebox}
+
+Line numbers appear to the left of each line of pseudocode. Variables can have any name comprised of characters without spaces, and can be assigned a value with the $=$ symbol. Variables need not be explicitly declared. The scope of a variable is determined by where it is first assigned. Our pseudocode uses block scope, meaning that every indentation level introduces a new nested scope. On line 1 of the above pseudocode example, the variable $x$ is defined and assigned the value of $5$, a numeric literal.
+
+The following pseudocode demonstrates numbers, strings and booleans.
+
+\begin{codebox}
+\li $myNumber \gets 5$
+\li $myString \gets $ \verb1'test'1
+\li $myBoolean \gets \const{true} $
+\li $myOtherBoolean \gets \const{false} $
+\end{codebox}
+
+All numbers are treated as double precision floating point. Numeric literals in pseucode become numbers (see line 1). String literals are denoted by single quotes and a monospace font (see line 2). Booleans can be either true or false. True and false are builtin constant boolean values denoted by all capitalized words (see lines 3 and 4). Camel case names starting with a lower case letter are used for most variables in our pseudocode.
+
+\begin{codebox}
+\li $add \gets \lambda(a, b)$
+\Do
+\li \Return $ a + b $
+\End
+\li $result = add(4, 6)$ \Comment $result$ is assigned the value $10$
+\li $triple \gets \lambda(x)$ \Return $ x * 3 $
+\li $triple(3)$ \Comment evaluates to $9$
+\end{codebox}
+
+The above pseudocode demonstrates how a function is defined and invoked, and also introduces comments. This example defines a function called $add$ that adds two numbers together. The $\lambda$ symbol defines a new anonymus function. Variables can be assigned functions as values using $=$. The comma separated names in parentheses directly following the $\lambda$ are the arguments to the function. The pseudocode on lines following the $\lambda$ that is indented one level constitutes the function body (also called the function closure). The function arguments are only visible inside the function closure.
+
+Functions can be invoked using parentheses. The argument values are passed to the function in a comma separated list within parentheses. On line 3, the $add$ function is invoked, passing the value $4$ as argument $a$ and $6$ as argument $b$. The value returned by the function is assigned to the variable $result$. The function invocation causes the function body to execute, which adds the two numbers together and returns the resulting number using the ``return'' keyword on line 2. Lines 4 and 5 demonstrate that a simple anonymous function can be defined in a single line. Text following the $//$ symbol is a comment, and is not executed.
+
+\begin{codebox}
+\li $myArray \gets [\,]$
+\li $myArray.push(5)$ \Comment $myArray$ now contains $[5]$
+\li $myArray.push(7)$ \Comment $myArray$ now contains $[5, 7]$
+\li $myArray.push(9)$ \Comment $myArray$ now contains $[5, 7, 9]$
+\li $myArray[0]$ \Comment evaluates to $5$
+\li $myArray[2]$ \Comment evaluates to $9$
+\li $myArray[1] = 3$ \Comment $myArray$ now contains $[5, 3, 9]$
+\li $myBooleanArray \gets [\const{true}, \const{false}, \const{true}, \const{true}]$
+\li $myStringArray \gets [$\verb1'foo'1$,$\verb1'bar'1$]$
+\li $numberOfBooleans \gets myBooleanArray.length$ \Comment evaluates to 4
+\li $numberOfStrings \gets myStringArray.length$ \Comment evaluates to 2
+\li $myStringArray.forEach(\lambda(str)$
+\Do
+\li $log(str)$ \Comment prints \verb1'foo'1, then prints \verb1'bar'1
+\End
+\li $)$
+\li $myArray.map(triple)$ \Comment evaluates to $[15, 21, 27]$
+\end{codebox}
+
+The above pseudocode demonstrates arrays. Arrays are ordered lists of elements. Arrays can contain elements of any type. Array literals are denoted by square brackets and can be empty (as in line 1) or populated (as in lines 8 and 9). Arrays have a built-in function attached to them called $push$, which appends a new element to the end of the array. Lines 2-4 demonstrate how $push$ can be used to append items to an array. The dot notation seen on lines 2-4 is used on arrays only to access built-in functions and properties.
+
+Square brackets denote access of array elements by index when placed directly after the variable name of the array. Array indices start at zero. Lines 5 and 6 demonstrate how square bracket notation can be used to access values in an array based on their index. Line 7 demonstrates that square bracket notation can also be used to assign to values in an array. Lines 10 and 11 demonstrate the built-in property $length$, the number of elements in the array.
+
+\TODO{explain lines 12 - 15}
+
+\begin{codebox}
+\li $myObject \gets \{\,\}$
+\li $myObject.first = $\verb1'John'1 \Comment $myObject$ now contains $\{first:$\verb1'John'1$\}$
+\li $myObject[$\verb1'last'1$] = $\verb1'Doe'1 \Comment now $\{first:$\verb1'John'1$, last:$\verb1'Doe'1$\}$
+\li $myOtherObject = \{first:$\verb1'Jane'1$, last:$\verb1'Doe'1$\}$
+\li $box = \{$
+\Do
+\li   $x: 50$
+\li   $y: 60$
+\li   $width: 100$
+\li   $height: 150$
+\End
+\li $\}$
+\li $properties = box.keys$ \Comment evaluates to $[$\verb1x1$,$\verb1y1$,$\verb1width1$,$\verb1height1$]$
+\li $values = properties.map(\lambda(property)$
+\li   $\Return box[property]$
+\li $)$ \Comment $values$ is assigned $[50, 60, 100, 150]$
+%\li $myObject[2]$ \Comment evaluates to $9$
+%\li $myObject[1] = 3$ \Comment $myArray$ now contains $[5, 3, 9]$
+%\li $myBooleanArray \gets [\const{true}, \const{false}, \const{true}, \const{true}]$
+%\li $myStringArray \gets [$\verb1'foo'1$,$\verb1'bar'1$]$
+%\li $numberOfBooleans \gets myBooleanArray.length$ \Comment evaluates to 4
+%\li $numberOfStrings \gets myStringArray.length$ \Comment evaluates to 2
+\end{codebox}
+
+\TODO{explain above code}
+
+\begin{codebox}
+\end{codebox}
+Our pseudocode assumes a single threaded execution environment with a built-in event loop.
