@@ -25,6 +25,7 @@ Prior art: reusable D3 visualizations
  * [NVD3](http://nvd3.org/)
  * [DC](http://nickqizhu.github.io/dc.js/)
  * [reD3](http://bugzu.github.io/reD3/#/)
+ * [dimple](http://dimplejs.org/)
 
 Related previous work:
 
