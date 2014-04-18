@@ -26,6 +26,7 @@ Prior art: reusable D3 visualizations
  * [DC](http://nickqizhu.github.io/dc.js/)
  * [reD3](http://bugzu.github.io/reD3/#/)
  * [dimple](http://dimplejs.org/)
+ * [raw](http://app.raw.densitydesign.org/)
 
 Related previous work:
 
