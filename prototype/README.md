@@ -43,19 +43,19 @@ This `phd/prototype` directory contains a first pass of the entire framework, do
  * [Model](https://github.com/curran/model) - a functional reactive model for creating reusable dynamic visualizations
  * [UDC](https://github.com/curran/udc) - the Universal Data Cube framework for data cube integration and query
  * Quadsimplify - a scale-based line simplification algorithm for fast zoomable choropleth maps
- * DashboardLayout - a layout algorithm for nestex boxes
+ * Boxes - a layout algorithm for nestex boxes
+ * Visualizations - a collection of reusable visualization components
+   * depends on Model
  * Overseer - manages application state as a collection of reactive models
    * depends on Model
- * Configurator - a text-based application state editor
+ * Arranger - a text-based application state editor
    * depends on Overseer
- * DashboardScaffold - manages configuration of dashboards with multiple linked views
-   * depends on DashboardLayout, Overseer, Configurator
+ * Dashboard - manages configuration of dashboards with multiple linked views
+   * depends on Boxes, Overseer, Configurator
  * UDC-Data - a collection of UDC data sets
    * depends on UDC
  * UDC-Vis - a collection of reusable visualizations for the UDC model
+   * depends on UDC, Visualizations
  * Examples - a collection of self-contained examples
-
-The high-level organization of the framework has the following components:
-
- * visualizations - provides implementations of interactive visualizations based on the udc API
-
+   * each having own bower.json
+   * example viewer like bl.ocks.org
