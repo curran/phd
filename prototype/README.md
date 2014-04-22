@@ -11,13 +11,6 @@ Depends on the following JavaScript libraries:
  * [Backbone](http://backbonejs.org/)
  * [D3](http://d3js.org/)
 
-The high-level organization of the framework has the following components:
-
- * functional reactive visualizations - a model with the functional reactive `when()` operator
- * dashboardScaffold - manages configuration of dashboards with multiple linked views
- * udc - implements the Universal Data Cube framework for data cube integration
- * visualizations - provides implementations of interactive visualizations based on the udc API
-
 Prior art: reusable D3 visualizations
 
  * [Towards Reusable Charts](http://bost.ocks.org/mike/chart/)
@@ -42,3 +35,27 @@ Open source contributions and discussions resulting from this project:
  * [D3 Mailing List - How to position and size an SVG programmatically? (dynamic CSS not working)](https://groups.google.com/forum/#!topic/d3-js/x4Tz_O7wA3Q)
  * [StackOverflow Answer - How read data From *.CSV file using javascript?](http://stackoverflow.com/questions/7431268/how-read-data-from-csv-file-using-javascript/22850815#22850815)
  * [StackOverflow Answer - how to implement observer pattern in javascript?](http://stackoverflow.com/questions/12308246/how-to-implement-observer-pattern-in-javascript/22824844#22824844)
+
+# The Plan
+
+This `phd/prototype` directory contains a first pass of the entire framework, done to get a sense of how everything can fit together. However there are several components that should really be their own projects, and used together using a dependency management framework such as Bower. The components are as follows:
+
+ * Model - a functional reactive model for creating reusable dynamic visualizations
+ * UDC - the Universal Data Cube framework for data cube integration and query
+ * Quadsimplify - a scale-based line simplification algorithm for fast zoomable choropleth maps
+ * DashboardLayout - a layout algorithm for nestex boxes
+ * Overseer - manages application state as a collection of reactive models
+   * depends on Model
+ * Configurator - a text-based application state editor
+   * depends on Overseer
+ * DashboardScaffold - manages configuration of dashboards with multiple linked views
+   * depends on DashboardLayout, Overseer, Configurator
+ * UDC-Data - a collection of UDC data sets
+   * depends on UDC
+ * UDC-Vis - a collection of reusable visualizations 
+ * Examples - a collection of self-contained examples
+
+The high-level organization of the framework has the following components:
+
+ * visualizations - provides implementations of interactive visualizations based on the udc API
+
