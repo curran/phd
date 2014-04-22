@@ -38,10 +38,10 @@ Open source contributions and discussions resulting from this project:
 
 # The Plan
 
-This `phd/prototype` directory contains a first pass of the entire framework, done to get a sense of how everything can fit together. However there are several components that should really be their own projects, and used together using a dependency management framework such as Bower. The components are as follows:
+This `phd/prototype` directory contains a first pass of the entire framework, done to get a sense of how everything can fit together. However there are several components that should really be their own projects, and used together using a dependency management framework such as [Bower](http://bower.io/). The components are as follows:
 
- * Model - a functional reactive model for creating reusable dynamic visualizations
- * UDC - the Universal Data Cube framework for data cube integration and query
+ * [Model](https://github.com/curran/model) - a functional reactive model for creating reusable dynamic visualizations
+ * [UDC](https://github.com/curran/udc) - the Universal Data Cube framework for data cube integration and query
  * Quadsimplify - a scale-based line simplification algorithm for fast zoomable choropleth maps
  * DashboardLayout - a layout algorithm for nestex boxes
  * Overseer - manages application state as a collection of reactive models
@@ -52,7 +52,7 @@ This `phd/prototype` directory contains a first pass of the entire framework, do
    * depends on DashboardLayout, Overseer, Configurator
  * UDC-Data - a collection of UDC data sets
    * depends on UDC
- * UDC-Vis - a collection of reusable visualizations 
+ * UDC-Vis - a collection of reusable visualizations for the UDC model
  * Examples - a collection of self-contained examples
 
 The high-level organization of the framework has the following components:
