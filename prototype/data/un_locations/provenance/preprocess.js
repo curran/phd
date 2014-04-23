@@ -30,14 +30,14 @@ fs.readFile('./raw.csv', 'utf8', function (err, data) {
 });
 
 function computeUnLocationsTable(parsedRows){
-  var columnNames = [ 'countryName', 'unCountryCode', 'alphaCode' ],
+  var columnNames = [ 'countryName', 'unCountryCode', 'alphaCode', 'locationTypeName' ],
       outputRows = parsedRows.map(function (entries) {
         return columnNames.map(function (columnName) {
           return unparse(entries[indices[columnName]]);
         }).join(',')
       }),
       table = [columnNames.join(',')].concat(outputRows);
-  output('../un_locations_concordance.csv', table.join('\n'));
+  output('../un_locations.csv', table.join('\n'));
 }
 
 function computeUnLocationsHierarchy(parsedRows){
