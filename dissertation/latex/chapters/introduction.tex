@@ -139,11 +139,10 @@ Functions can be invoked using parentheses. The argument values are passed to th
 \li $myStringArray \gets [$\verb1'foo'1$,$\verb1'bar'1$]$
 \li $numberOfBooleans \gets myBooleanArray.length$ \Comment evaluates to 4
 \li $numberOfStrings \gets myStringArray.length$ \Comment evaluates to 2
-\li $myStringArray.forEach(\lambda(str)$
+\li \For $str \in myStringArray$
 \Do
-\li $log(str)$ \Comment prints \verb1'foo'1, then prints \verb1'bar'1
+\li   $log(str)$ \Comment also prints \verb1'foo'1, then prints \verb1'bar'1
 \End
-\li $)$
 \li $myArray.map(triple)$ \Comment evaluates to $[15, 21, 27]$
 \end{codebox}
 
@@ -158,14 +157,13 @@ Square brackets denote access of array elements by index when placed directly af
 \li $myObject.first = $\verb1'John'1 \Comment $myObject$ now contains $\{first:$\verb1'John'1$\}$
 \li $myObject[$\verb1'last'1$] = $\verb1'Doe'1 \Comment now $\{first:$\verb1'John'1$, last:$\verb1'Doe'1$\}$
 \li $myOtherObject = \{first:$\verb1'Jane'1$, last:$\verb1'Doe'1$\}$
-\li $box = \{$
+\li $box = $
 \Do
 \li   $x: 50$
 \li   $y: 60$
 \li   $width: 100$
 \li   $height: 150$
 \End
-\li $\}$
 \li $properties = box.keys$ \Comment evaluates to $[$\verb1x1$,$\verb1y1$,$\verb1width1$,$\verb1height1$]$
 \li $values = properties.map(\lambda(property) \; \Return \; box[property])$
 \li \Comment $values$ is assigned $[50, 60, 100, 150]$
@@ -178,10 +176,13 @@ Square brackets denote access of array elements by index when placed directly af
 \end{codebox}
 
 \TODO{explain above code}
-
 \begin{codebox}
 \li $run(\lambda()\,log($\verb1'b'1$))$
 \li $log($\verb1'a'1$)$
 \li \Comment Prints \verb1a1, then \verb1b1
 \end{codebox}
 Our pseudocode assumes a single threaded execution environment with a built-in event loop, which may be implemented using the reactor pattern \cite{schmidt1995reactor}. The event loop can be used to queue functions to be executed in the future. In our pseudocode, the $run$ built in function provides access to the event loop. Calling $run$ and passing a function queues that function to be invoked in the future, after the current codepath terminates and all previously queued functions finish executing. In the above pseudocode, line 
+
+\TODO{discuss NIL}
+\TODO{Discuss apply(fn, args)}
+\TODO{Discuss !bool}
