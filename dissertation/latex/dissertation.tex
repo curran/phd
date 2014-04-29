@@ -14,7 +14,7 @@
 
 \title{Doctoral Dissertation}
 \author{Curran Kelleher}
-\date{4/23/2014}
+\date{4/29/2014}
 \begin{document}
 \maketitle 
 
@@ -40,113 +40,31 @@ There is immense potential value in data that is not being realized. While many 
 \pagebreak
 \chapter{The Universal Data Cube}
 \chapter{Data Sets}
-\begin{figure}[h]
-  \caption{A screenshot of the Natural Earth geographic data Web site.}
-  \centering
-  \includegraphics[width=\textwidth]{figures/naturalEarth.png}
-\end{figure}
+\section{United Nations Population Estimates}
+\section{United Nations Millenium Development Goals}
+\section{United States Census Population Estimates}
 \begin{figure}[h]
   \caption{A screenshot of the US Census Population by State data set. This data set is made available in Excel and CSV formats.}
   \centering
   \includegraphics[width=\textwidth]{figures/usCensusPopulationByState.png}
 \end{figure}
+\TODO{ import data from http://www.census.gov/popest/data/state/totals/2013/index.html}
+\section{US Central Intelligence Agency World Factbook}
+\TODO{ import subsets of the data}
+\section{US Centers for Disease Control Causes of Death}
+\TODO{ generalize stacked area and tree vis}
+\section{W3Schools Browser Market Share}
+\TODO{ import this data completely}
+\section{Natural Earth}
+\begin{figure}[h]
+  \caption{A screenshot of the Natural Earth geographic data Web site.}
+  \centering
+  \includegraphics[width=\textwidth]{figures/naturalEarth.png}
+\end{figure}
+\TODO{ discuss data transformation process}
+
 \chapter{Visualizations}
-\chapter{Visualization Dashboard Infrastructure}
-\chapter{UDC Visualization Dashboards}
-\chapter{Collaboration and History Navigation}
-
-\section{Related Work}
-Previous work relating to this dissertation falls into four major categories:
-\begin{itemize}
-\item data representation - structures, models and formats for data
-\item data integration - merging data from many sources
-\item data visualization - transforming data into interactive graphics
-\item Web graphics technology - HTML5 graphics APIs and libraries
-\end{itemize}
-\subsection{Data Representation}
-%In today's world of ``information overload'', data takes many forms. Perhaps the most familiar data representation system today is Microsoft Excel, which is capable of representing data tables as well as complex operations across the data values \cite{eick2000visualizing}. Many organizations use Excel to manage data or make data available as Excel spreadsheets. For example, the United Nations Department of Economic and Social Affairs makes their population statistics available in Excel format (see figure \ref{fig:unPopExcel}).
-%
-%\begin{figure}[h!]
-%  \centering
-%  \includegraphics[width=\textwidth]{figures/UN_World_Population_Spreadsheet.png}
-%  \caption[United Nations population estimates spreadsheet.]
-%   {The United Nations Population Prospects data set \cite{unPopData}, made available in Excel format. This is another example of a public data set that could be imported into our data representation framework.}
-%  \label{fig:unPopExcel}
-%\end{figure}
-%
-Relational database systems provide a mature data management solution and are widely adopted \cite{ramakrishnan2000database}. The relational model has well understood theoretical underpinnings such as relational algebra \cite{clifford1985algebra}. Data warehouse systems are typically built on the relational model and are augmented by multi-scale aggregated data structures called data cubes, also known as OLAP (OnLine Analytical Processing) cubes \cite{gray1997data, codd1993providing}. Data cubes contain summaries of the collection of facts stored in a relational database \cite{chaudhuri1997overview}. For example, a data cube may contain how much profit was made from month to month subdivided by product category, while the relational database may contain the information associated with each individual transaction.
-
-Because data cubes provide an abstraction that handles aggregation, they are a widely used method of data abstraction for supporting visualization and analysis tasks \cite{stolte2003multiscale}. Kimball pioneered the area of ``Dimensional Modeling'', which concerns constructing data warehouse schemas amenable to data cube construction and analysis \cite{kimball1998data}. Data cubes have been implemented in a variety of different systems, so effort has been made to discover unified conceptual or mathematical models that can characterize many implementations \cite{datta1999cube, vassiliadis1999survey, vassiliadis1998modeling, li1996data, agrawal1997modeling, gyssens1997foundation, blaschka1998finding}. The data cube structure has also been used to model user Web browsing sessions to support data mining algorithms for Web prefetching \cite{yang2003data}.
-%
-%NoSQL systems are modern databases that are designed to go beyond the scalability limitations of relational systems \cite{cattell2011scalable}. While NoSQL systems sacrifice some of the integrity constraints upheld by relational database systems \cite{stonebraker2010sql}, they are gaining traction in industry because they can handle the scale of data demanded by applications of the ``Big Data'' era \cite{leavitt2010will}. NoSQL systems provide flexible storage systems that do not necessarily require the definition of a schema. This makes it arguably easier to modify and update the type of content stored over time as compared to relational systems.
-%
-%The Semantic Web is a vision of a ``Web of Data'' coexisting with the World Wide Web \cite{berners2001semantic}. The basis of the Semantic Web is the RDF (Resource Description Framework) data model, which represents a graph of data in the form of (subject, predicate, object) triples. The Semantic Web vision has evolved into the concept of Linked Data, which refers to data that is available as RDF and made available according to common conventions \cite{bizer2009linked} \cite{bizer2007publish}. Any data that can be represented using a relational database can also be represented using RDF \cite{bizer2006d2r}. The SPARQL query language for RDF can be used to query and integrate data from multiple sources \cite{quilitz2008querying}. Lopez et al. developed an information management system for integrating and analyzing heterogeneous information sources characterizing urban areas \cite{lopez2012queriocity}. The Semantic Web technology stack contains a method for declaring when different identifiers refer to the same entity and processing queries appropriately to integrate data \cite{halpin2010owl} \cite{ding2010sameas}. While the Semantic Web provides a compelling vision, its adoption is not as widespread as one might expect \cite{lytras2008semantic}.
-%
-%The RDF Data Cube Vocabulary is capable of representing data cubes using Semantic Web technologies \cite{rdfdatacube}. The intention of the RDF Data Cube Vocabulary is to provide a common representation and interchange format for statistical data. The RDF Data Cube Vocabulary draws from a previous effort called the Statistical Data and Metadata eXchange (SDMX) initiative that was launched in 2001 by seven organizations working on statistics at the international level \cite{cyganiak2010semantic}. The primary challenges faced when using the RDF Data Cube Vocabulary include transforming to and from well known formats and data models. Salas et al. discussed how data can be transformed from existing OLAP systems or flat files into RDF using the Data Cube Vocabulary, and also introduced a faceted visualization tool for RDF data cubes \cite{salas-icsc-2012}. K{\"a}mpgen et al. investigated how data represented using the RDF Data Cube Vocabulary can be transformed for analysis using traditional OLAP systems \cite{kampgen2011transforming}. Maali et al. proposed a pipeline for converting government data into high quality Linked Data utilizing the Data Cube Vocabulary \cite{maali2012publishing}.
-%
-%Datta et al. introduce a conceptual model for data cubes \cite{datta1999cube}. In this formalization, a data cube (or, in the terms of the authors, a data cube instance) is defined as a 6-tuple $(D, M, A, f, V, g)$ where $D$ is a set of dimensions, $M$ is a set of measures, $A$ is a set of attributes, $f$ is a function that maps dimensions to sets of attributes (the levels of the dimension), $V$ is a set of tuples that assign concrete numeric values for each measure, and $g$ is a function that maps data cube cells to tuples in $V$. The authors formalize common OLAP operators including slice, drill-down, roll-up, and pivot, as well as operators over multiple cubes including join, union, intersection and difference. This formalism captures the essence of data cubes, but is limited in that it does not deal with integrating data cubes from multiple sources where names used for dimensions, attributes and measures may not match.
-%
-%Kuznetsov et al. introduce a mathematical formalism of data cubes based on lattice theory \cite{kuznetsov2009mathematical}. This work focuses primarily on characterizing the lattice structure of hierarchical data cubes and relating the structure to established mathematics in lattice theory. The contribution of this work is primarily mathematical, and the structures introduced do not cover the entire problem area of representing, structuring and querying complete data cubes. This characterization is similar to the zoom graph concept introduced by stolte et al. \cite{stolte2003multiscale}. Usman et al. introduced a conceptual model for OLAP enhanced for coupling with data mining and visualization techniques \cite{usman2009conceptual}.
-%
-\subsection{Data Integration}
-%The field of data integration offers many techniques for combining data from multiple sources based on the relational model \cite{doan2012principles} as well as from a theoretical perspective \cite{lenzerini2002data} \cite{halevy2006data} \cite{ziegler2004three}. Schema matching is the area of data integration that concerns semantic matching between the attributes of data tables from different sources \cite{rahm2001survey} \cite{fagin2003data}. Schema matching may be performed manually, however it must be automated in order to scale to hundreds or thousands of different sources. Numerous approaches for automated schema matching have been proposed \cite{shvaiko2005survey} \cite{doan2001reconciling} \cite{kang2003schema} \cite{milo1998using} \cite{madhavan2001generic} \cite{doan2000learning}. Schema matching approaches aimed specifically at Web and Ontology based data integration have also been proposed \cite{he2003statistical} \cite{noy2004semantic} \cite{doan2005semantic} \cite{madhavan2007web} \cite{kalfoglou2003ontology} \cite{noy2009ontology} \cite{uschold2004ontologies} \cite{wache2001ontology} \cite{noy2003prompt} \cite{euzenat2007ontology}. Data matching (also known as record linkage) is the area of data integration focusing on resolving different identifiers to the same real-world entity \cite{winkler1999state} \cite{winkler2006overview} \cite{koudas2006record} \cite{aizawa2005fast} \cite{gu2003record}. Record linkage has been applied extensively to public data \cite{jaro1995probabilistic} \cite{jaro1989advances} \cite{holman1999population}. Several tools have been introduced that aid users in data integration tasks via a graphical user interface \cite{christen2008febrl} \cite{kandel2011wrangler} \cite{elfeky2002tailor}. Techniques from both of these areas must be applied in order to integrate data sets from multiple sources and utilize our proposed unified data model.
-%
-\subsection{Data Visualization}
-%The field of information visualization offers several compelling theoretical approaches for visualizing data. Arguably the first significant work concerning data visualization was William Playfair's ``Commercial and Political Atlas'', published in 1786 \cite{playfair1786commercial}. In this work, Playfair introduced the Bar Chart, Pie Chart, and Line Graph. The first attempt at a systematic formalization of data visualization was Jacques Bertin's ``Semiology of Graphics'' \cite{bertin1983semiology}. In this work, Bertin relates data types to visual marks and channels in a coherent system that takes visual perception into account. Bertin's work has influenced many future theoretical underpinnings of visualization, including Leland Wilkinson's ``Grammar of Graphics'' \cite{wilkinson2005grammar} and Jock Mackinlay's APT (A Presentation Tool) system \cite{mackinlay1986automating}, which led to the development of the commercial visualization package Tableau \cite{hanrahan2007visual}.
-%
-%As a more concrete manifestation of visualization theory, much effort has been placed on generating taxonomies of visualization techniques. Chi et al. introduced a concrete taxonomy of visualizations \cite{chi2000taxonomy} based on the Data State Reference Model \cite{chi1998operator}. Shneiderman introduced a more general taxonomy based on tasks and data types \cite{shneiderman1996eyes}. Card et al. made steps toward characterizing the entire design space of data visualizations based on Bertin's theory \cite{card1997structure}. Tufte explored numerous visualization techniques for quantitative information in general, many of which can be applied to visualization of data cubes \cite{tufte1983visual}.
-%
-%Much work has been done regarding visualization of data cubes. Stolte et al. introduced a formalism for defining multi-scale visualizations of data cubes throughout their work on the Polaris system \cite{stolte2003multiscale} \cite{stolte2002query} \cite{stolte2002polaris}. In this work the authors introduce theoretical underpinnings of a visualization system capable of navigating hierarchical data cubes with a combination of data abstraction and visual abstraction. One fundamental concept in this system is the ``zoom graph'', a lattice of data cubes that supports arbitrary interactive zoom paths through the multidimensional data cube hierarchies. Cuzzocrea et al. surveyed the area of data cube visualization in depth \cite{cuzzocrea2009olap} and have made several contributions regarding semantics-aware OLAP visualization \cite{cuzzocrea2007semantics} and a hierarchy driven compression technique for OLAP visualization \cite{cuzzocrea2006hierarchy}. Mansmann coined the term ``Visual OLAP'', framed it as a fundamentally new paradigm for exploring multidimensional aggregates \cite{mansmann2008visual}, explored applications of hierarchical visualization techniques to OLAP cubes \cite{mansmann2007exploring} and extended Visual OLAP to support irregular hierarchies \cite{mansmann2006extending}. Scotch et al. developed and evaluated SOVAT, a Spatial OLAP visualization and analysis tool applied to community health assessments \cite{scotch2005sovat} \cite{scotch2007usability}. Lee and Ong introduced a visualisation technique for knowledge discovery in OLAP combining elements of bar charts and parallel coordinates \cite{lee1995new}. Maniatis et al. explored how OLAP cubes can be visualized using TableLens and other techniques \cite{maniatis2003advanced}. Data cubes have also been utilized as the foundational data structure for several ``Big Data'' visualization systems \cite{lins2013nanocubes} \cite{liu2013immens}.
-%
-%Interactions within data visualization environments have been well studied. Becker et al. investigated brushing in scatter plots \cite{becker1987brushing}. Shneiderman et al. explored dynamic queries in general and how these operations fit into a larger context of visual information seeking \cite{shneiderman1994dynamic}. Ward introduced a visualization system based on multiple linked views with direct manipulation techniques including brushing and linking \cite{ward1994xmdvtool}. Anselin discussed how interactive visualization systems with linked views can be applied to Geographic Information Systems \cite{anselin1999interactive}. Yi et al. conducted a thorough survey of existing taxonomies for visualization and interactions and developed a set of generalized classes of interactions for visualization \cite{yi2007toward}. Techapichetvanich et al. explored how visualization interactions pertain to OLAP cubes in particular \cite{techapichetvanich2005interactive}. Sifer et al. introduced a visual interface utilizing coordinated dimension hierarchies for OLAP cubes \cite{sifer2003visual}. Tegarden formulates some requirements for information visualization relevant for business applications, and highlights some unconventional interactive visualizations with potential application to data cube visualization \cite{tegarden1999business}.
-%
-\subsection{Web Graphics Technology}
-%
-%The World Wide Web has evolved to become a full fledged application development platform. HTML5 is the latest set of standards and APIs (Application Programming Interfaces) from the World Wide Web Consortium that define the capabilities of modern Web browsers \cite{html5}. HTML5 applications are able to run across multiple platforms (albeit requiring some effort from developers). HTML5 has eclipsed Java Applets and Flash in fulfilling the dream of ``write once, run anywhere''. HTML5 contains three graphics technologies that can support interactive Web-based visualizations: Canvas, SVG (Scalable Vector Graphics), and WebGL.
-%
-%HTML5 Canvas provides a 2D immediate mode graphics API \cite{fulton2013html5}. When using the Canvas API, developers must work with a stateful graphics context by issuing commands to manipulate the raster image of a Canvas element within the HTML page. This approach requires developers to manage rendering logic at a low level and manage data structures that correspond to graphical representations. The Canvas API has seen wide adoption for HTML5-based games, however for visualization applications the higher level SVG API has seen wider adoption.
-%
-%SVG (Scalable Vector Graphics) provides a 2D retained mode Graphics API \cite{svg}. SVG uses the HTML DOM (Document Object Model) to represent the definition of persistent graphical elements. When using SVG, developers need only be concerned with updating the DOM. The SVG engine within the browser is responsible for updating the display to correspond with the SVG DOM. In this way, SVG is a higher level API than Canvas. This makes SVG a preferred platform for developing visualizations. However, SVG is less optimizable than Canvas, because developers do not have access to the rendering logic at all. SVG has performance limitations relating to performance limitations and DOM manipulation overhead.
-%
-%WebGL provides a 3D graphics API that is essentially an interface to OpenGL ES \cite{matsuda2013webgl}. OpenGL ES is a subset of OpenGL designed for use in embedded systems and mobile devices. Developers using WebGL must use programming techniques inherited from OpenGL such as buffer management, vertex management, shader definition, 3D projection, and lighting techniques. WebGL enables developers to take advantage of the GPU (Graphics Processing Unit) for massively parallel computation using shaders. WebGL supports high performance 2D and 3D graphics, but is much more complicated to use than Canvas or SVG.
-%
-%Many high level libraries have been built for supporting use of Canvas, SVG, and WebGL. Three.js is a 3D scene graph library that includes rendering engines for all three graphics technologies \cite{cabello2010three}. Highcharts is a high level visualization library that provides pre-packaged chart types that can be customized to a limited extent. Leaflet is a library for creating tile-based geographic maps with zooming and panning. hBrowse is a generic framework introduced for Web-based hierarchy visualization \cite{kokoszkiewicz2012hbrowse}. Processing.js is a JavaScript port of the graphics language Processing using HTML5 Canvas. Many more libraries for Web-based graphics and visualization exist, but none have come close to the widespread adoption of D3.js.
-%
-%D3.js is a flexible and powerful visualization library that uses SVG and has a strong community of users \cite{d3}. D3 at its core is a DOM manipulation library with heavy use of functional programming. D3 allows concise declarative statements to define the core logic of visualizations. D3 provides additional APIs for performing common visualization tasks such as defining and using scales, generating labeled axes, and computing layouts from graphs and trees. D3 is at the center of a vibrant developer ecosystem and has seen wide adoption in industry. There are plentiful examples of D3.js usage for creating visualizations, some of which are shown in figure \ref{fig:d3basic}. Many supporting libraries have been created including NVD3 reusable charts, Chart.js for composing visualization elements, Crossfilter.js for interactive multidimensional filtering, and DC.js for multiple linked views.
-%
-%\begin{figure}[h!]
-%  \centering
-%  \includegraphics[width=\textwidth]{figures/d3BasicCharts.png}
-%  \caption[D3.js basic charts.]
-%    {Basic chart examples using D3.js. These are some examples of visualizations that can be tailored to visualize and interact with data cube projections in a generalized manner, building on our proposed framework.}
-%  \label{fig:d3basic}
-%\end{figure}
-%
-%Several projects have focused explicitly on visualization of public data on the Web. ManyEyes was an experiment in scaling the audience for visualizations by empowering users to create visualizations of their own data \cite{viegas2007manyeyes}. ManyEyes provided a fixed set of pre-packaged visualization tools and allowed users to visualize their own data tables using the provided visualizations. GapMinder is a project aimed at exposing public data (primarily the United Nations Millenium Development Goals Indicators) using visualization \cite{rosling2005new}. GapMinder includes an animated scatter plot with an interactive time slider, a line chart showing statistics over time, and a world map (see figure \ref{fig:gapminder}). The Google Public Data Explorer provides a visual interface to selected public data sets similar to GapMinder, however it does not make the data available to users in a machine-readable format.
-%
-%\begin{figure}[h!]
-%  \centering
-%  \includegraphics[width=\textwidth]{figures/gapminder.jpg}
-%  \caption[GapMinder and Hans Rosling.]
-%   {Gapminder, a public data visualization tool based on an animated scatter plot, timeline, and map. Here, Professor Hans Rosling, the creator of GapMinder, is shown gesturing the motion of the plot while presenting the visualization.}
-%  \label{fig:gapminder}
-%\end{figure}
-\TODO{pull all related work from proposal}
-
-\pagebreak
-\section{Data Cube Representation and Integration}
-\subsection{Defining Data Cubes}
-\TODO{describe CSV + JSON representation}
-\subsection{Building a Data Cube Index}
-\TODO{ pseudocode for building the index}
-\subsection{Querying a Data Cube}
-\TODO{ pseudocode for querying the index}
-\subsection{Integration of Dimensions}
-\TODO{ include modified pseudocode for UDC index building \& query that resolves identifiers}
-
-\pagebreak
-\section{Data Cube Visualization} \label{dataCubeVisualization}
-\subsection{Relating Data Cubes and Visualization Theory}
+\section{Data Cubes and Visualization Theory}
 Data cubes can contain the following kinds of data:
 \begin{itemize}
 \item \emph{nominal} - unordered collections of categories
@@ -155,66 +73,30 @@ Data cubes can contain the following kinds of data:
 \item \emph{quantitative} - continuously varying numeric values
 \end{itemize}
 Data cube dimensions can be nominal, ordinal or hierarchical. Data cube measures are always quantitative. This mapping relates data cubes to data types that have been well studied in the literature on visualization theory \cite{bertin1983semiology, mackinlay1986automating, graham2010survey}.
-
-
-\TODO{ add table with (nominal, ... , quantitative) vs. (color, value, position, size, connection, containment, ...)}
-\subsection{A Visualization Taxonomy by Data Cube Structure}
-\TODO{ add table with (Visualization, Data Cube Structure) referencing visualizations in other sections}
-
-\pagebreak
-\section{Visualization Dashboard Infrastructure}
-\subsection{Model Driven Visualizations}
-\TODO{ include model driven bar chart pseudocode}
-\subsection{Functional Reactive Visualizations}
-\TODO{ include data flow graph for bar chart}
-\TODO { Discuss the "when" Functional Reactive Operator}
-\TODO { Cite functional reactive animation paper}
-\TODO{ include bar chart pseudocode using "when"}
-\subsection{Dashboard Layout using Nested Boxes}
-\TODO{Include nested box layout pseudocode}
-\subsection{Multiple Linked Views}
-\TODO{Include generic linking pseudocode using "when"}
-\subsection{Dynamic Dashboard Configuration}
-\TODO{Include pseudocode for computing configuration diffs}
-%\subsection{Synchronous Collaboration}
-%\TODO{Describe synchronous collaboration architecture}
-%\subsection{History Navigation}
-
-\pagebreak
-\section{Data Sets}
-\subsection{United Nations Population Estimates}
-\subsection{United Nations Millenium Development Goals}
-\subsection{United States Census Population Estimates}
-\TODO{ include figures/usCensusPopulationByState.png}
-\TODO{ import data from http://www.census.gov/popest/data/state/totals/2013/index.html}
-\subsection{US Central Intelligence Agency World Factbook}
-\TODO{ import subsets of the data}
-\subsection{US Centers for Disease Control Causes of Death}
-\TODO{ generalize stacked area and tree vis}
-\subsection{W3Schools Browser Market Share}
-\TODO{ import this data completely}
-\subsection{Natural Earth}
-\TODO{ include figures/naturalEarth.png}
-\TODO{ discuss data transformation process}
-
-\pagebreak
-\section{Visualizations}
-\TODO{ discuss pseudocode conventions}
 \TODO{ include pseudocode for each visualization}
-\subsection{Bar Chart}
-\subsection{Scatter Plot}
-\subsection{Line Chart}
-\subsection{Choropleth Map}
-\subsection{Stacked Area Plot}
-\subsection{TreeMap}
-\subsection{Node Link Tree}
-\subsection{Radial Tree}
-\subsection{Icicle Plot}
-\subsection{TreeMap}
-\subsection{Parallel Coordinates}
+\section{Bar Chart}
+\section{Scatter Plot}
+\section{Line Chart}
+\section{Choropleth Map}
+\section{Stacked Area Plot}
+\section{TreeMap}
+\section{Node Link Tree}
+\section{Radial Tree}
+\section{Icicle Plot}
+\section{TreeMap}
+\section{Parallel Coordinates}
 
-\pagebreak
-\section{Visualization Dashboards}
+
+\chapter{Visualization Dashboard Infrastructure}
+\section{Dashboard Layout using Nested Boxes}
+\TODO{Include nested box layout pseudocode}
+\section{Multiple Linked Views}
+\TODO{Include generic linking pseudocode using "when"}
+\section{Dynamic Dashboard Configuration}
+\TODO{Include pseudocode for computing configuration diffs}
+
+\chapter{UDC Visualization Dashboards}
+\chapter{Collaboration and History Navigation}
 
 
 %TODO Continue editing from here.
