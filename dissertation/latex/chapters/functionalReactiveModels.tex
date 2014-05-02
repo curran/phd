@@ -15,7 +15,9 @@ One simple and widely used method for structuring a Model is as a set of key-val
 \item $on(key, callback)$ Add a change listener for a given key. Here, $callback$ is a function that will be invoked synchronously when the value for the given key is changed.
 \end{itemize}
 
-This approach is used by popular JavaScript frameworks such as Backbone and Knockout. Using our pseudocode conventions, we will discuss one way a key-value Model can be implemented. We will first discuss a simple version with only $set$ and $get$, then discuss a more complex version that also includes $on$.
+We first discuss a simple model with only $set$ and $get$ methods ($SimplestModel$), then discuss a more complex version that also includes $on$ ($SimpleModel$), then finally introduce a reactive model that includes the $when$ operator from functional reactive programming ($Model$).
+\subsection{Simplest Model}
+
 \begin{codebox}
 \li $SimplestModel \gets \lambda()$ \label{simplestModelConstructor}
 \Do
@@ -36,6 +38,7 @@ The above pseudocode implements a key-value model that has only $set$ and $get$ 
 \li $mySimplestModel.get($\verb1'x'1$)$ \Comment Evaluates to 5
 \end{codebox}
 
+\subsection{Simple Model}
 Here is a version of the model that implements the $on$ method as well:
 
 \begin{codebox}
@@ -82,12 +85,54 @@ The above version includes an additional private variable, $callbacks$, which is
 \li $mySimpleModel.set($\verb1'x'1$,6)$ \Comment Causes line \ref{simpleModelCallbackPrintout} to log 6
 \end{codebox}
 
-\section{Functional Reactive Change Propagation}
+\subsection{Functional Reactive Model}
 For complex applications such as interactive visualizations, managing propagation of changes can quickly become complex. For this reason, modular visualization environments based on data flow have become popular \cite{abram1995extended}. A data flow graph defines a directed acyclic graph of data dependencies. The data flow model is amenable to construction of visual programming languages \cite{hils1992visual}. While many systems consider data flow as a means to construct data transformation pipelines, the concept also applies to building reactive systems that manage change propagation throughout an application or subsystem in response to user interactions or other events \cite{elliott1997functional}.
 
 To provide a solid foundation for dynamic visualization systems, the Model should be able function in the context of data dependency graphs. Developers should be able to declaratively specify data dependencies, and change propagation should be automatically managed. The $when$ operator from functional reactive programming propagates changes from one or more reactive functions (such as is found in the JavaScript libraries Bacon.js and RXJS).
 
-Our Model implementation can be extended with a $when$ operator that enables construction of data dependency graphs. This operator will become a foundation for building dynamic interactive visualizations. Since $when$ is superior to $on$ in that it handles change propagation intelligently, in this final version $on$ is not exposed in the public Model API.
+Our Model implementation can be extended with a $when$ operator that enables construction of data dependency graphs. This operator will become a foundation for building dynamic interactive visualizations. Since $when$ is superior to $on$ in that it handles change propagation intelligently, in this final version $on$ is not exposed in the public Model API. Adding $when$ depends on having some utility functions available, $debounce$ and $allAreDefined$.
+
+\begin{codebox}
+\li $debounce \gets \lambda(callback)$ \label{debounceDef}
+\Do
+  \li $queued \gets \const{false}$ \label{queuedDef}
+  \li \Return $\lambda()$ \label{debounced}
+  \Do
+    \li \If $queued \isequal \const{false}$ \label{queuedCheck}
+    \Do
+      \li $queued \gets \const{true}$ \label{queueSetTrue}
+      \li $run(\lambda()$ \label{queuedFn}
+      \Do
+        \li $queued \gets \const{false}$ \label{queueSetFalse}
+        \li $callback()$
+      \End
+      \li $)$
+    \End
+  \End
+\End
+\end{codebox}
+
+The $debounce(callback)$ function returns a function that, when invoked one or more times in a single codepath, will queue the given $callback$ function to execute only once on the next tick of the event loop. This has the effect of collapsing multiple sequential calls into a single call. The returned function is referred to as the ``debounced'' function.
+
+The $debounce$ function defined starting on line \ref{debounceDef} creates a closure with a boolean variable $queued$ (instantiated on line \ref{queuedDef}) that keeps track of whether or not the $callback$ function is currently queued to execute in the future. When the debounced function (defined starting on line \ref{debounced}) is called the first time, the condition on line \ref{queuedCheck} evaluates to $\const{true}$. This causes $queued$ to be set to \const{true} (on line \ref{queueSetTrue}) and also causes the function defined starting on line \ref{queuedFn} to be queued to run in the future (using the built-in function $run$ discussed in section \ref{run}).
+
+When the debounced function is invoked multiple times in the same code path, the condition on line \ref{queuedCheck} evaluates to \const{false}, and nothing happens. When the current code path terminates and the queued function is invoked, $queued$ is set to \const{false} (on line \ref{queueSetFalse}) and the $callback$ function is invoked.
+
+\begin{codebox}
+\li $allAreDefined \gets \lambda(array)$
+\Do
+  \li \For $item \in array$
+  \Do
+    \li \If $item \isequal \const{nil}$ 
+    \Do
+      \li \Return $\const{false}$ \label{oneIsUndefined}
+    \End
+  \End
+  \li \Return $\const{true}$ \label{allAreIndeedDefined}
+\End
+\end{codebox}
+
+The function $allAreDefined(array)$ checks if all values in the given $array$ are defined. It does so by comparing each item in the array to the special value \const{nil} (discussed in section \ref{objects}). As soon as one item is found to be \const{nil}, the function returns \const{false} (on line \ref{oneIsUndefined}). If all items have been checked and none are found to be \const{nil}, the the function returns \const{true} (on line \ref{allAreIndeedDefined}). We are now ready to define our model that includes the $when$ operator.
 
 \begin{codebox}
 \li $Model \gets \lambda()$
@@ -118,41 +163,6 @@ Our Model implementation can be extended with a $when$ operator that enables con
 \End
 \end{codebox}
 \TODO{describe Model()}
-\begin{codebox}
-\li $debounce \gets \lambda(fn)$
-\Do
-  \li $queued \gets \const{false}$
-  \li \Return $\lambda()$
-  \Do
-    \li \If $queued \isequal \const{false}$
-    \Do
-      \li $queued \gets \const{true}$
-      \li $run(\lambda()$
-      \Do
-        \li $queued \gets \const{false}$
-        \li $fn()$
-      \End
-      \li $)$
-    \End
-  \End
-\End
-\end{codebox}
-\TODO{describe debounce()}
-\begin{codebox}
-\li $allAreDefined \gets \lambda(arr)$
-\Do
-  \li \For $item \in arr$
-  \Do
-    \li \If $item$ is undefined 
-    \Do
-      \li \Return $\const{false}$
-    \End
-  \End
-  \li \Return $\const{true}$
-\End
-\end{codebox}
-\TODO{describe allAreDefined()}
-
 \begin{figure}[h]
   \caption{A simple data dependency graph using functional reactive models. Here, $fullName$ is recomputed whenever $firstName$ or $lastName$ change.}
   \centering
