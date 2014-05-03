@@ -35,7 +35,91 @@ In order to account for different identifiers referring to the same member, we i
   \end{tabular}
 \end{center}
 
-Data tables can contain data that can be modeled as either a cube or a concordance. In either case, columns in the tables can be either \emph{dimension columns} or \emph{measure columns}. A dimension column contains codes from a single code list. A measure column contains numbers representing values for a certain measure. Values in a measure column may be scaled (multiplied by a scaling factor). In order to be imported into the UDC framework, data tables must be annotated with metadata that declares whether the table represents a cube or a concordance, and specifies the role of each column as either a dimension column or a measure column.
+Data tables can contain data that can be modeled as either a cube or a concordance. In either case, columns in the tables can be either \emph{dimension columns} or \emph{measure columns}. A dimension column contains codes from a single code list. A measure column contains numbers representing values for a certain measure. Values in a measure column may be scaled (multiplied by a scaling factor). In order to be imported into the UDC framework, data tables must be annotated with metadata that declares whether the table represents a cube or a concordance, and specifies the role of each column as either a dimension column or a measure column. Below are some concrete examples of data tables and their metadata.
+
+\begin{center}
+  \begin{tabular}{ | c | c | c | }
+    \hline
+    \textbf{countryCode} & \textbf{year} & \textbf{gdp} \\ \hline
+    IND & 1960 & 37679274491.2745 \\ \hline
+    IND & 2010 & 1708450861364.17 \\ \hline
+    CHN & 1960 & 61377930682.0013 \\ \hline
+    CHN & 2010 & 5930529470799.17 \\ \hline
+    USA & 1960 & 520531181568 \\ \hline
+    USA & 2010 & 14958300000000 \\ \hline
+  \end{tabular}
+\end{center}
+
+\begin{codebox}
+\li $metadata = $
+\Do
+\li   $dimensionColumns: [$
+\Do
+\li     $\{column:$\verb1'countryCode'1$, dimension:$\verb1'Space'1$, codeList:$\verb|'ISO3'|$\}$
+\li     $\{column:$\verb1'year'1$, dimension:$\verb1'Time'1$, codeList:$\verb|'Year'|$\}$
+\End
+\li   $ ]$
+\li   $measureColumns: [$
+\Do
+\li     $\{column:$\verb1'gdp'1$, measure:$\verb1'Gross Domestic Product'1$\}$
+\End
+\li   $ ]$
+\End
+\end{codebox}
+
+%}
+%countryName,unCountryCode,alphaCode
+%India,356,IND
+%China,156,CHN
+%United States of America,840,USA
+%{
+%  "dimensionColumns": [
+%    {
+%      "column": "countryName",
+%      "dimension": "Space",
+%      "codeList": "United Nations Geographic Name"
+%    },
+%    {
+%      "column": "unCountryCode",
+%      "dimension": "Space",
+%      "codeList": "UN M.49"
+%    },
+%    {
+%      "column": "alphaCode",
+%      "dimension": "Space",
+%      "codeList": "ISO 3166-1 alpha-3"
+%    }
+%  ]
+%}
+%countryCode,year,population
+%356,1960,449595.489
+%356,2010,1205624.648
+%156,1960,650680.114
+%156,2010,1359821.465
+%840,1960,186361.893
+%840,2010,312247.116
+%{
+%  "dimensionColumns": [
+%    {
+%      "column": "countryCode",
+%      "dimension": "Space",
+%      "codeList": "UN M.49"
+%    },
+%    {
+%      "column": "year",
+%      "dimension": "Time",
+%      "codeList": "year"
+%    }
+%  ],
+%  "measureColumns": [
+%    {
+%      "column": "population",
+%      "measure": "Population",
+%      "scale": 1000
+%    }
+%  ]
+%}
+
 
 
 thesaurus
