@@ -16,9 +16,9 @@ A data cube is a multidimensional data structure that organizes data into \emph{
   \end{tabular}
 \end{center}
 
-Existing data cube technologies do not readily support integration of data cubes from multiple sources. Many data sets can be modeled as data cubes that have dimensions and measures in common. The dimensions and measures they have in common can be utilized to integrate multiple data cubes together into a unified structure. The difficulty in integrating data cubes from multiple sources arises from different identifiers referring to the same member and different scale factors being used for the same measure. Our data cube representation and integration framework, called the \emph{Universal Data Cube}, addresses these difficulties.
+Existing data cube technologies do not readily support integration of data cubes from multiple sources. Many data sets can be modeled as data cubes that have dimensions and measures in common. The dimensions and measures they have in common can be utilized to integrate multiple data cubes together into a unified structure. The difficulty in integrating data cubes from multiple sources arises from different identifiers referring to the same member and different scale factors being used for the same measure. Our data cube representation and integration framework, called the \emph{Universal Data Cube} (UDC), addresses these difficulties.
 
-In order to account for different identifiers referring to the same member, we introduce the concept of a \emph{code list}. A code list is a family of identifiers, also called \emph{codes}, that refer to members. A \emph{concordance table} is a table that declares equivalences between codes from different code lists \cite{doan2012principles}. The table below provides examples for each of the terms introduced.
+In order to account for different identifiers referring to the same member, we introduce the concept of a \emph{code list}. A code list is a family of identifiers, also called \emph{codes}, that refer to members. A \emph{concordance table}, also referred to as simple a \emph{concordance}, is a table that declares equivalences between codes from different code lists \cite{doan2012principles}. The table below provides examples for each of the terms introduced.
 
 \begin{center}
   \begin{tabular}{ | c | c | }
@@ -35,19 +35,10 @@ In order to account for different identifiers referring to the same member, we i
   \end{tabular}
 \end{center}
 
-tables
+Data tables can contain data that can be modeled as either a cube or a concordance. In either case, columns in the tables can be either \emph{dimension columns} or \emph{measure columns}. A dimension column contains codes from a single code list. A measure column contains numbers representing values for a certain measure. Values in a measure column may be scaled (multiplied by a scaling factor). In order to be imported into the UDC framework, data tables must be annotated with metadata that declares whether the table represents a cube or a concordance, and specifies the role of each column as either a dimension column or a measure column.
 
-dimension columns
-
-measure columns
-
-cubes
-
-concordance tables
 
 thesaurus
-
-
 
 hierarchies
 
@@ -61,6 +52,14 @@ hierarchies
   \includegraphics[width=\textwidth]{figures/usCensusPopulationByState.png}
 \end{figure}
 \TODO{ import data from http://www.census.gov/popest/data/state/totals/2013/index.html}
+
+\subsection{World Bank World Development Indicators}
+\begin{figure}[h]
+  \caption{The World Bank Web page for their data table containing Gross Domestic Product for world countries.}
+  \centering
+  \includegraphics[width=\textwidth]{figures/worldBankGDP.png}
+\end{figure}
+
 \section{US Central Intelligence Agency World Factbook}
 \TODO{ import subsets of the data}
 \section{US Centers for Disease Control Causes of Death}
