@@ -196,14 +196,15 @@ Line \ref{arrMap} introduces the map construct. The built-in $map(iterator)$ fun
 The above pseudocode introduces objects. Objects are key-value mappings (sometimes called \emph{maps} or \emph{dictionaries}). Curly braces denote single-line object literals. Line \ref{emptyObject} assigns the variable $myObject$ to an empty object. Object properties can be assigned using dot notation, as in line \ref{dotAssignment}, or square bracket notation, as in line \ref{bracketAssignment}. Bracket notation is useful when the property name is stored as a string in a variable. Object literals can contain key-value pairs denoted by $key: value$ as in line \ref{singleLineObjectLiteral}. When an object literal spans multiple lines, the curly braces are omitted and the key-value pairs are indented, as in lines \ref{beginMultiLineOblectLiteral}-\ref{endMultiLineObjectLiteral}. Line \ref{objectKeys} introduces the built-in function $keys$, which evaluates the keys of an object into an array. Line \ref{extractProperties} demonstrates how the values of an object can be extracted into an array using the array $map$ construct. A special value \const{nil} is returned when attempting to access nonexistent object properties, as in line \ref{nil}.
 
 \subsection{The Event Loop} \label{run}
+Our pseudocode assumes a single threaded execution environment with a built-in event loop, which may be implemented using the reactor pattern \cite{schmidt1995reactor}. The event loop can be used to queue functions to be executed in the future. In our pseudocode, the $run$ built-in function provides access to the event loop. Calling $run$ and passing a function queues that function to be invoked in the future, after the current codepath terminates and all previously queued functions finish executing.
+
 \begin{codebox}
 \li $run(\lambda()\,log($\verb1'b'1$))$ \label{runExample}
 \li $log($\verb1'a'1$)$ \label{nonQueuedLog}
 \li \Comment Prints \verb1a1, then \verb1b1
 \end{codebox}
-Our pseudocode assumes a single threaded execution environment with a built-in event loop, which may be implemented using the reactor pattern \cite{schmidt1995reactor}. The event loop can be used to queue functions to be executed in the future. In our pseudocode, the $run$ built-in function provides access to the event loop. Calling $run$ and passing a function queues that function to be invoked in the future, after the current codepath terminates and all previously queued functions finish executing. In the above pseudocode, line \ref{runExample} queues an anonymous function that prints \verb1'b'1 to run later, after the current codepath completes. While still inside the codepath which queued the function, line \ref{nonQueuedLog} prints \verb1'a'1. After line \ref{nonQueuedLog} executes, the current codepath terminates, causing the system to invoke queued function that prints \verb1b1.
 
-\TODO{discuss NIL}
+In the above pseudocode, line \ref{runExample} queues an anonymous function that prints \verb1'b'1 to run later, after the current codepath completes. While still inside the codepath which queued the function, line \ref{nonQueuedLog} prints \verb1'a'1. After line \ref{nonQueuedLog} executes, the current codepath terminates, causing the system to invoke queued function that prints \verb1b1.
 
 \TODO{Discuss apply(fn, args)}
 
