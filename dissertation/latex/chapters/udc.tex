@@ -1,0 +1,76 @@
+A data cube is a multidimensional data structure that organizes data into \emph{dimensions} and \emph{measures}. Dimensions are sets of distinct entities that may be unordered, ordered, or hierarchical. Each distinct entity of a dimension is called a \emph{member}. Measures are aggregated quantitative values that can be assigned to combinations of dimension members called \emph{cells}. An \emph{observation} links a cell with concrete values for one or more measures. A \emph{data cube}, also referred to as simply a \emph{cube}, is a set of observations that draw from a common set of dimensions and measures. The table below provides examples for each of the terms introduced.
+
+\begin{center}
+  \begin{tabular}{ | c | c | }
+    \hline
+    \textbf{Term} & \textbf{Examples} \\ \hline
+    dimension & Space, Time \\ \hline
+    member & India, China, 1970, 2010 \\ \hline
+    measure & population \\ \hline
+    cell & India in 1970, China in 2010 \\ \hline
+    observation & The population of India in 1970 was 555.2 million. \\ \hline
+    cube & The population of India in 1970 was 555.2 million. \\
+         & The population of India in 2010 was 1,206 million. \\
+         & The population of China in 1970 was 818.3 million. \\
+         & The population of China in 2010 was 1338 million. \\ \hline
+  \end{tabular}
+\end{center}
+
+Existing data cube technologies do not readily support integration of data cubes from multiple sources. Many data sets can be modeled as data cubes that have dimensions and measures in common. The dimensions and measures they have in common can be utilized to integrate multiple data cubes together into a unified structure. The difficulty in integrating data cubes from multiple sources arises from different identifiers referring to the same member and different scale factors being used for the same measure. Our data cube representation and integration framework, called the \emph{Universal Data Cube}, addresses these difficulties.
+
+In order to account for different identifiers referring to the same member, we introduce the concept of a \emph{code list}. A code list is a family of identifiers, also called \emph{codes}, that refer to members. A \emph{concordance table} is a table that declares equivalences between codes from different code lists \cite{doan2012principles}. The table below provides examples for each of the terms introduced.
+
+\begin{center}
+  \begin{tabular}{ | c | c | }
+    \hline
+    \textbf{Term} & \textbf{Examples} \\ \hline
+    code list & Country Name, Country Code \\ \hline
+    code & India, in \\ \hline
+    concordance table &
+      \begin{tabular}{ c c }
+        \textbf{Country Name} & \textbf{Country Code} \\
+        India & in \\
+        China & cn
+      \end{tabular} \\ \hline
+  \end{tabular}
+\end{center}
+
+tables
+
+dimension columns
+
+measure columns
+
+cubes
+
+concordance tables
+
+thesaurus
+
+
+
+hierarchies
+
+\section{Data Sets}
+\subsection{United Nations Population Estimates}
+\subsection{United Nations Millenium Development Goals}
+\subsection{United States Census Population Estimates}
+\begin{figure}[h]
+  \caption{A screenshot of the US Census Population by State data set. This data set is made available in Excel and CSV formats.}
+  \centering
+  \includegraphics[width=\textwidth]{figures/usCensusPopulationByState.png}
+\end{figure}
+\TODO{ import data from http://www.census.gov/popest/data/state/totals/2013/index.html}
+\section{US Central Intelligence Agency World Factbook}
+\TODO{ import subsets of the data}
+\section{US Centers for Disease Control Causes of Death}
+\TODO{ generalize stacked area and tree vis}
+\section{W3Schools Browser Market Share}
+\TODO{ import this data completely}
+\section{Natural Earth}
+\begin{figure}[h]
+  \caption{A screenshot of the Natural Earth geographic data Web site.}
+  \centering
+  \includegraphics[width=\textwidth]{figures/naturalEarth.png}
+\end{figure}
+\TODO{ discuss data transformation process }
