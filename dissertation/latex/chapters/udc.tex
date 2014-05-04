@@ -6,7 +6,7 @@ A data cube is a multidimensional data structure that organizes data into \emph{
     \textbf{Term} & \textbf{Examples} \\ \hline
     dimension & Space, Time \\ \hline
     member & India, China, 1970, 2010 \\ \hline
-    measure & population \\ \hline
+    measure & Population, Gross Domestic Product\\ \hline
     cell & India in 1970, China in 2010 \\ \hline
     observation & The population of India in 1970 was 555.2 million. \\ \hline
     cube & The population of India in 1970 was 555.2 million. \\
@@ -18,14 +18,15 @@ A data cube is a multidimensional data structure that organizes data into \emph{
 
 Existing data cube technologies do not readily support integration of data cubes from multiple sources. Many data sets can be modeled as data cubes that have dimensions and measures in common. The dimensions and measures they have in common can be utilized to integrate multiple data cubes together into a unified structure. The difficulty in integrating data cubes from multiple sources arises from different identifiers referring to the same member and different scale factors being used for the same measure. Our data cube representation and integration framework, called the \emph{Universal Data Cube} (UDC), addresses these difficulties.
 
-In order to account for different identifiers referring to the same member, we introduce the concept of a \emph{code list}. A code list is a family of identifiers, also called \emph{codes}, that refer to members. A \emph{concordance table}, also referred to as simple a \emph{concordance}, is a table that declares equivalences between codes from different code lists \cite{doan2012principles}. The table below provides examples for each of the terms introduced.
-
+In order to account for different identifiers referring to the same member, we introduce the concept of a \emph{code list}. A code list is a family of identifiers, also called \emph{codes}, that refer to members \cite{rdfdatacube}. A \emph{concordance table}, also referred to as simple a \emph{concordance}, is a table that declares equivalences between codes from different code lists \cite{doan2012principles}. Members can be identified unambiguously as (dimension, code list, code) tuples called \emph{qualified members}. The table below provides examples for each of the terms introduced. 
 \begin{center}
   \begin{tabular}{ | c | c | }
     \hline
-    \textbf{Term} & \textbf{Examples} \\ \hline
+    \textbf{Term} & \textbf{Example} \\ \hline
     code list & Country Name, Country Code \\ \hline
     code & India, in \\ \hline
+    qualified member & (Space, Country Code, in) \\
+                     & (Space, Country Name, China) \\ \hline
     concordance table &
       \begin{tabular}{ c c }
         \textbf{Country Name} & \textbf{Country Code} \\
@@ -51,11 +52,9 @@ Data tables can contain data that can be modeled as either a cube or a concordan
 \end{center}
 
 \begin{codebox}
-\li $metadata = $
-\Do
 \li   $dimensionColumns: [$
 \Do
-\li     $\{column:$\verb1'countryCode'1$, dimension:$\verb1'Space'1$, codeList:$\verb|'ISO3'|$\}$
+\li     $\{column:$\verb1'countryCode'1$, dimension:$\verb1'Space'1$, codeList:$\verb|'ISO3'|$\},$
 \li     $\{column:$\verb1'year'1$, dimension:$\verb1'Time'1$, codeList:$\verb|'Year'|$\}$
 \End
 \li   $ ]$
@@ -64,70 +63,81 @@ Data tables can contain data that can be modeled as either a cube or a concordan
 \li     $\{column:$\verb1'gdp'1$, measure:$\verb1'Gross Domestic Product'1$\}$
 \End
 \li   $ ]$
-\End
 \end{codebox}
 
-%}
-%countryName,unCountryCode,alphaCode
-%India,356,IND
-%China,156,CHN
-%United States of America,840,USA
-%{
-%  "dimensionColumns": [
-%    {
-%      "column": "countryName",
-%      "dimension": "Space",
-%      "codeList": "United Nations Geographic Name"
-%    },
-%    {
-%      "column": "unCountryCode",
-%      "dimension": "Space",
-%      "codeList": "UN M.49"
-%    },
-%    {
-%      "column": "alphaCode",
-%      "dimension": "Space",
-%      "codeList": "ISO 3166-1 alpha-3"
-%    }
-%  ]
-%}
-%countryCode,year,population
-%356,1960,449595.489
-%356,2010,1205624.648
-%156,1960,650680.114
-%156,2010,1359821.465
-%840,1960,186361.893
-%840,2010,312247.116
-%{
-%  "dimensionColumns": [
-%    {
-%      "column": "countryCode",
-%      "dimension": "Space",
-%      "codeList": "UN M.49"
-%    },
-%    {
-%      "column": "year",
-%      "dimension": "Time",
-%      "codeList": "year"
-%    }
-%  ],
-%  "measureColumns": [
-%    {
-%      "column": "population",
-%      "measure": "Population",
-%      "scale": 1000
-%    }
-%  ]
-%}
+\begin{center}
+  \begin{tabular}{ | c | c | c | }
+    \hline
+    \textbf{countryName} & \textbf{unCountryCode}& \textbf{alphaCode} \\ \hline
+    India & 356 & IND \\ \hline
+    China & 156 & CHN \\ \hline
+    United States of America & 840 & USA \\ \hline
+  \end{tabular}
+\end{center}
 
+\begin{codebox}
+\li   $dimensionColumns: [$
+\Do
+\li     $\{column:$\verb1'countryName'1$, dimension:$\verb1'Space'1$, codeList:$\verb|'UN Geoname'|$\},$
+\li     $\{column:$\verb1'unCountryCode'1$, dimension:$\verb1'Space'1$, codeList:$\verb|'UN M.49'|$\},$
+\li     $\{column:$\verb1'alphaCode'1$, dimension:$\verb1'Space'1$, codeList:$\verb|'ISO3'|$\}$
+\End
+\li   $ ]$
+\end{codebox}
 
+\begin{center}
+  \begin{tabular}{ | c | c | c | }
+    \hline
+    \textbf{countryCode} & \textbf{year}& \textbf{pop} \\ \hline
+    356 & 1960 & 449595.489 \\ \hline
+    356 & 2010 & 1205624.648 \\ \hline
+    156 & 1960 & 650680.114 \\ \hline
+    156 & 2010 & 1359821.465 \\ \hline
+    840 & 1960 & 186361.893 \\ \hline
+    840 & 2010 & 312247.116 \\ \hline
+  \end{tabular}
+\end{center}
 
-thesaurus
+\begin{codebox}
+\li   $dimensionColumns: [$
+\Do
+\li     $\{column:$\verb1'countryCode'1$, dimension:$\verb1'Space'1$, codeList:$\verb|'UN M.49'|$\},$
+\li     $\{column:$\verb1'year'1$, dimension:$\verb1'Time'1$, codeList:$\verb|'Year'|$\}$
+\End
+\li   $ ]$
+\li   $measureColumns: [$
+\Do
+\li     $\{column:$\verb1'pop'1$, measure:$\verb1'Population'1$\}$
+\End
+\li   $ ]$
+\end{codebox}
 
-hierarchies
+Loading Concordances
+
+Member Canonicalization 
+
+Loading Cubes
+
+Cube Canonicalization 
+
+Merging Cubes
+
+Querying Cubes
+
+Cube Projection
+
+Hierarchies
+
+Drill Down and Roll Up
 
 \section{Data Sets}
 \subsection{United Nations Population Estimates}
+\subsection{World Bank World Development Indicators}
+\begin{figure}[h]
+  \caption{The World Bank Web page for their data table containing Gross Domestic Product for world countries.}
+  \centering
+  \includegraphics[width=\textwidth]{figures/worldBankGDP.png}
+\end{figure}
 \subsection{United Nations Millenium Development Goals}
 \subsection{United States Census Population Estimates}
 \begin{figure}[h]
@@ -137,20 +147,13 @@ hierarchies
 \end{figure}
 \TODO{ import data from http://www.census.gov/popest/data/state/totals/2013/index.html}
 
-\subsection{World Bank World Development Indicators}
-\begin{figure}[h]
-  \caption{The World Bank Web page for their data table containing Gross Domestic Product for world countries.}
-  \centering
-  \includegraphics[width=\textwidth]{figures/worldBankGDP.png}
-\end{figure}
-
-\section{US Central Intelligence Agency World Factbook}
+\subsection{US Central Intelligence Agency World Factbook}
 \TODO{ import subsets of the data}
-\section{US Centers for Disease Control Causes of Death}
+\subsection{US Centers for Disease Control Causes of Death}
 \TODO{ generalize stacked area and tree vis}
-\section{W3Schools Browser Market Share}
+\subsection{W3Schools Browser Market Share}
 \TODO{ import this data completely}
-\section{Natural Earth}
+\subsection{Natural Earth}
 \begin{figure}[h]
   \caption{A screenshot of the Natural Earth geographic data Web site.}
   \centering
