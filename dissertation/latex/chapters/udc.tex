@@ -1,3 +1,10 @@
+Nearly all data sets of interest for analytics can be modeled as data cubes. There is immense potential value in data that is not being realized because it is difficult to combine data sets together from multiple sources and visualize the integrated structure. Our proposed data representation framework, called the Universal Data Cube (UDC), provides solutions for:
+\begin{itemize}
+\item modeling existing data sets as data cubes,
+\item integrating the data sets together, and
+\item querying the integrated data structure for interactive visualization.
+\end{itemize}
+\section{Terminology and Data Structures}
 A data cube is a multidimensional data structure that organizes data into \emph{dimensions} and \emph{measures}. Dimensions are sets of distinct entities that may be unordered, ordered, or hierarchical. Each distinct entity of a dimension is called a \emph{member}. Measures are aggregated quantitative values that can be assigned to combinations of dimension members called \emph{cells}. An \emph{observation} links a cell with concrete values for one or more measures. A \emph{data cube}, also referred to as simply a \emph{cube}, is a set of observations that draw from a common set of dimensions and measures. The table below provides examples for each of the terms introduced.
 
 \begin{center}
@@ -111,6 +118,9 @@ Data tables can contain data that can be modeled as either a cube or a concordan
 \End
 \li   $ ]$
 \end{codebox}
+
+\TODO{ Explain the above examples. }
+\TODO{ Add the following sections: }
 
 Loading Concordances
 

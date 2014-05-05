@@ -14,7 +14,7 @@
 
 \title{Doctoral Dissertation}
 \author{Curran Kelleher}
-\date{5/2/2014}
+\date{5/5/2014}
 \begin{document}
 \maketitle 
 
@@ -45,6 +45,7 @@ There is immense potential value in data that is not being realized. While many 
 
 \pagebreak
 \chapter{Visualizations}
+Data cubes can be effectively explored and presented using interactive visualizations. The data cube model lends itself well to existing visualization theory. This makes it straightforward to match up existing visualization techniques with classes of data cubes based on their structure (e.g. the number of dimensions and measures present). In this chapter we discuss the relationship between data cubes and information visualization.
 \section{Data Cubes and Visualization Theory}
 Data cubes can contain the following kinds of data:
 \begin{itemize}
@@ -54,8 +55,23 @@ Data cubes can contain the following kinds of data:
 \item \emph{quantitative} - continuously varying numeric values
 \end{itemize}
 Data cube dimensions can be nominal, ordinal or hierarchical. Data cube measures are always quantitative. This mapping relates data cubes to data types that have been well studied in the literature on visualization theory \cite{bertin1983semiology, mackinlay1986automating, graham2010survey}.
-\TODO{ include pseudocode for each visualization}
+\TODO{ include pseudocode, data flow diagram, and explanatory text for each visualization}
 \section{Bar Chart}
+\begin{figure}[h]
+  \caption{The data dependency graph for a dynamic bar chart.}
+  \centering
+  \includegraphics[width=\textwidth]{figures/barChartFlow.png}
+\end{figure}
+\begin{figure}[h]
+  \caption{The appearance of a dynamic bar chart.}
+  \centering
+  \includegraphics[width=\textwidth]{figures/barChart.png}
+\end{figure}
+\begin{figure}[h]
+  \caption{An example of multiple linked views using functional reactive models. Brushing in the scatter plot causes the selected data to be aggregated and plotted in the bar chart. Data shown is Fisher's Iris data \cite{fisher1936use}. }
+  \centering
+  \includegraphics[width=\textwidth]{figures/linkedViews.png}
+\end{figure}
 \section{Scatter Plot}
 \section{Line Chart}
 \section{Choropleth Map}
