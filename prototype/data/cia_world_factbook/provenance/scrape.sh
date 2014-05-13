@@ -3,7 +3,7 @@
 #
 # By Curran Kelleher 4/3/2014
 echo Fetching data
-wget https://www.cia.gov/library/publications/download/download-2014/fields.zip
+curl https://www.cia.gov/library/publications/download/download-2014/fields.zip -O
 
 echo Unzipping data
 unzip fields.zip
