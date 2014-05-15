@@ -23,6 +23,10 @@ Prior art: reusable D3 visualizations
  * [dimple](http://dimplejs.org/)
  * [raw](http://app.raw.densitydesign.org/)
 
+Prior art: interactive configuration
+ * [JSON-tree](https://github.com/krispo/json-tree)
+ * [Inlet](https://github.com/enjalot/Inlet)
+
 Related previous work:
 
  * [(2013) dashboardScaffold](https://github.com/curran/dashboardScaffold) (July 2013) - An open source visualization dashboard layout and dynamic configuration framework.
