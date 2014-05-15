@@ -16,6 +16,7 @@ Prior art: reusable D3 visualizations
  * [Towards Reusable Charts](http://bost.ocks.org/mike/chart/)
  * [D3 Examples](https://github.com/mbostock/d3/wiki/Gallery)
  * [NVD3](http://nvd3.org/)
+ * [Angular-nvD3](http://krispo.github.io/angular-nvd3/#/)
  * [DC.js](http://nickqizhu.github.io/dc.js/)
  * [Crossfilter.js](http://square.github.io/crossfilter/)
  * [reD3](http://bugzu.github.io/reD3/#/)
