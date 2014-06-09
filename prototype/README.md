@@ -22,6 +22,7 @@ Prior art: reusable D3 visualizations
  * [reD3](http://bugzu.github.io/reD3/#/)
  * [dimple](http://dimplejs.org/)
  * [raw](http://app.raw.densitydesign.org/)
+ * [forio contour](http://forio.com/contour/gallery.html)
 
 Prior art: interactive configuration
  * [JSON-tree](https://github.com/krispo/json-tree)
