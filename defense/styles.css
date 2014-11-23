@@ -118,11 +118,13 @@ a:hover {
 /* Style images to fit on the screen. */
 .img-container img {
   max-width: 100%;
-   max-height: 100%;
+  max-height: 100%;
   margin: auto;
   overflow: auto;
   vertical-align: middle;
+}
 
+img {
   /* Make the corners rounded. */
   border-radius: 10px;
 
@@ -131,3 +133,14 @@ a:hover {
   background-color: white;
 }
 
+/* Style single line concept slides. */
+.central-word {
+  padding-top: 300px;
+  text-align: center;
+  font-size: 2em;
+}
+
+.citation {
+  text-align: center;
+  font-size: 0.7em;
+}

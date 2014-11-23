@@ -2,7 +2,17 @@
   "title": "Visualizing the Universal Data Cube",
   "slides": [
     { "title": "Welcome", "name": "firstSlide" },
-    { "title": "Overview", "name": "overview" },
+    { "title": "The Akashic Record", "name": "akashic" },
+    { "title": "Big Data Reduction", "name": "big_data_reduction" },
+      { "title": "Binned Aggregation", "name": "binned_aggregation", "indent": true },
+      { "title": "Binned Aggregation 2D", "name": "binned_aggregation_2d", "indent": true },
+    { "title": "Population Data", "name": "population_data", "image": "UN_World_Population_Spreadsheet.png" },
+      { "title": "Population Timeline", "name": "un_population_timeline", "image": "unPopulationTimeline.png",
+        "link": "https://github.com/curran/visualizations/blob/gh-pages/population-simple/js/main.js", "indent": true },
+      { "title": "Timeline Breakdown", "name": "un_population_timeline_breakdown", "image": "unPopulationTimelineCountries.png",
+        "link": "https://github.com/curran/visualizations/blob/gh-pages/population-simple/js/main.js", "indent": true },
+      { "title": "Population Choropleth", "name": "un_population_choropleth", "image": "choropleth.png",
+        "link": "http://curran.github.io/model/examples/d3LinkedChoropleth/", "indent": true },
     
     { "title": "Related Work", "name": "relatedWork" },
       { "title": "Data Representation", "name": "dataRepresentation", "indent": true },
@@ -13,8 +23,6 @@
     { "title": "Data Cubes", "name": "cube_example", "image": "cubes.png",
         "link": "https://graphics.stanford.edu/papers/pan_zoom/paper.pdf" },
       { "title": "Data Cube Qualities", "name": "cube_qualities", "indent": true },
-      { "title": "SphereCube", "name": "sphere_cube", "image": "earthball.png",
-        "link": "http://outerra.blogspot.com/2012/11/view-frustum-culling-of-sphere-mapped.html", "indent": true },
 
     { "title": "Vision", "name": "vision", "image": "telescope.jpg",
       "link": "http://pixabay.com/en/telescope-by-looking-view-122960/" },
@@ -33,9 +41,6 @@
       { "title": "BLS State Bars", "name": "state_bars", "image": "blsTableauVisBarsByState.png", "indent": true },
       { "title": "BLS Cube", "name": "bls_cube", "image": "blsCubeConcept.png", "indent": true },
 
-      { "title": "Population Data", "name": "population_data", "image": "UN_World_Population_Spreadsheet.png", "indent": true },
-      { "title": "Population Timeline", "name": "un_population_timeline", "image": "unPopulationTimeline.png",
-        "link": "http://curran.github.io/visualizations/population-simple/", "indent": true },
 
       { "title": "Mortality Data", "name": "mortality_data", "image": "CDCMortalityUI.png", 
         "link": "http://205.207.175.93/HDI/TableViewer/tableView.aspx?ReportId=673", "indent": true },
