@@ -47,10 +47,10 @@
     { "title": "Contributions", "name": "contributions" },
 
     { "title": "Future Work", "name": "future" },
-      { "title": "Data Import Tools", "name": "raw_tree", "image": "cardiovascularDiseaseRawTree.png",
-        "link": "https://github.com/curran/data/tree/gh-pages/cdc/mortality/hierarchy", "indent": true },
       { "title": "Visualizations", "name": "visualizations", "image": "visualizations.png", "indent": true},
-      { "title": "Public Data Index", "name": "dataset_taxonomy", "image": "dataSetTaxonomy.png", "indent": true},
+      { "title": "Data Sets", "name": "dataset_taxonomy", "image": "dataSetTaxonomy.png", "indent": true},
+      { "title": "Configuration Interface", "name": "dashboardscaffold", "image": "dashboardScaffold.png",
+        "link": "http://curran.github.io/dashboardScaffoldExample/v0.1.0/index.html", "indent": true },
       { "title": "Model-Contrib", "name": "model_contrib", "image": "modelContrib.png",
           "link": "http://curran.github.io/model-contrib/#/", "indent": true  },
       { "title": "Visual Data Stories", "name": "stories", "image": "rwandanGenocide.png",
@@ -63,8 +63,8 @@
     { "title": "Data Representation", "name": "dataRepresentation", "indent": true },
     { "title": "Data Cube Qualities", "name": "cube_qualities", "indent": true },
 
-    { "title": "Dashboard Scaffold", "name": "dashboardscaffold", "image": "dashboardScaffold.png",
-      "link": "http://curran.github.io/dashboardScaffoldExample/v0.1.0/index.html", "indent": true },
+    { "title": "Data Import Tools", "name": "raw_tree", "image": "cardiovascularDiseaseRawTree.png",
+      "link": "https://github.com/curran/data/tree/gh-pages/cdc/mortality/hierarchy", "indent": true },
 
     { "title": "Rapid7 Dashboard", "name": "r7", "image": "mapDocs7.png",
       "link": "http://curran.github.io/portfolio/2013/UserInsightIngressDashboard.pdf", "indent": true },

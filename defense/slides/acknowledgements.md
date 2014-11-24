@@ -9,4 +9,4 @@
  * Dr. Peter Bak, University of Konstanz
  * Dr. Florian Mansmann, University of Konstanz
  * Sam Adams, Rapid7
- * Friends, family
+ * Family & Friends 
