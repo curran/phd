@@ -3,6 +3,8 @@
   "slides": [
     { "title": "Welcome", "name": "firstSlide" },
     { "title": "The Akashic Record", "name": "akashic" },
+    { "title": "Mirror Worlds", "name": "mirror", "image": "mirrorworlds.png",
+      "link": "http://www.amazon.com/Mirror-Worlds-Software-Universe-Shoebox/dp/019507906X"},
     { "title": "Big Data Reduction", "name": "big_data_reduction" },
     { "title": "Binned Aggregation", "name": "binned_aggregation" },
 
