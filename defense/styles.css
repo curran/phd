@@ -144,3 +144,16 @@ img {
   text-align: center;
   font-size: 0.7em;
 }
+
+/* Style the video. */
+.video-container {
+  text-align: center;
+}
+video {
+  /*
+  position:fixed;
+  bottom: 0px;
+  left: 0px;
+  */
+  border-radius:120px;
+}

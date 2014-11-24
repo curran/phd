@@ -32,5 +32,10 @@
 
 <div style="text-align: center; margin-top: 500px;"> (Place, Time, Gender, Age Group, Ethnicity, Population) </div>
 
-<div style="text-align: center; margin-top: 500px; margin-bottom: 500px;">Binned aggregation produces <a href="http://en.wikipedia.org/wiki/OLAP_cube">data cubes</a>.</div>
+<div style="text-align: center; margin-top: 500px; ">Binned aggregation produces <a href="http://en.wikipedia.org/wiki/OLAP_cube">data cubes</a>.</div>
 
+<div style="text-align: center; margin-top: 600px;margin-bottom: 500px;">
+  <a href="https://graphics.stanford.edu/papers/pan_zoom/paper.pdf">
+    <img width="800" src="images/cubes.png">
+  </a>
+</div>

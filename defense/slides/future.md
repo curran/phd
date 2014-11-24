@@ -1,13 +1,8 @@
 ## Future Work
 
+ * More visualizations
  * Handling "Big Data"
-   * Caching, tiling, dynamic computation
- * Dashboard construction user interface
-   * Visual data flow network
- * End-user programming
-   * User defined visualizations
-   * Extensions for interactions
+ * Linked view construction user interface
  * Collaboration
-   * Synchronous ([Firebase](https://www.firebase.com/)?)
-   * Asynchronous (view sharing)
+   * Integration with [OpenChorus](http://openchorus.org/)
  * Crowdsourcing data
