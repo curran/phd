@@ -1,9 +1,8 @@
 ## Data Integration
 
- * Authoritative book: ["Principles of Data Integration"](http://www.amazon.com/Principles-Data-Integration-AnHai-Doan/dp/0124160441/)
- * Schema mapping
-   * attributes, keys, scales
-   * Global as View
-   * Local As View
-   * Constraint based systems
- * RDF-based data integration
+Main issues
+
+ * schema matching
+ * data matching
+
+<div class="citation">from <a href="http://www.amazon.com/Principles-Data-Integration-AnHai-Doan/dp/0124160441/">Principles of Data Integration</a></div>

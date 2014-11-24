@@ -4,69 +4,77 @@
     { "title": "Welcome", "name": "firstSlide" },
     { "title": "The Akashic Record", "name": "akashic" },
     { "title": "Big Data Reduction", "name": "big_data_reduction" },
-      { "title": "Binned Aggregation", "name": "binned_aggregation", "indent": true },
-      { "title": "Binned Aggregation 2D", "name": "binned_aggregation_2d", "indent": true },
+    { "title": "Binned Aggregation", "name": "binned_aggregation" },
+    { "title": "Data Cubes", "name": "cube_example", "image": "cubes.png",
+        "link": "https://graphics.stanford.edu/papers/pan_zoom/paper.pdf" },
+
     { "title": "Population Data", "name": "population_data", "image": "UN_World_Population_Spreadsheet.png" },
       { "title": "Population Timeline", "name": "un_population_timeline", "image": "unPopulationTimeline.png",
         "link": "https://github.com/curran/visualizations/blob/gh-pages/population-simple/js/main.js", "indent": true },
-      { "title": "Timeline Breakdown", "name": "un_population_timeline_breakdown", "image": "unPopulationTimelineCountries.png",
-        "link": "https://github.com/curran/visualizations/blob/gh-pages/population-simple/js/main.js", "indent": true },
+      { "title": "Timeline Breakdown", "name": "un_population_timeline_breakdown", 
+        "image": "unPopulationTimelineCountries.png",
+        "link": "https://github.com/curran/visualizations/blob/gh-pages/population-simple/js/main.js",
+        "indent": true },
       { "title": "Population Choropleth", "name": "un_population_choropleth", "image": "choropleth.png",
         "link": "http://curran.github.io/model/examples/d3LinkedChoropleth/", "indent": true },
-    
-    { "title": "Related Work", "name": "relatedWork" },
-      { "title": "Data Representation", "name": "dataRepresentation", "indent": true },
-      { "title": "Data Integration", "name": "dataIntegration", "indent": true },
-      { "title": "Data Visualization", "name": "dataVisualization", "indent": true },
-      { "title": "Web Graphics", "name": "webGraphics", "indent": true },
 
-    { "title": "Data Cubes", "name": "cube_example", "image": "cubes.png",
-        "link": "https://graphics.stanford.edu/papers/pan_zoom/paper.pdf" },
-      { "title": "Data Cube Qualities", "name": "cube_qualities", "indent": true },
-
-    { "title": "Vision", "name": "vision", "image": "telescope.jpg",
-      "link": "http://pixabay.com/en/telescope-by-looking-view-122960/" },
-      { "title": "The Reality", "name": "reality", "image": "dots_reality.png", "indent": true },
-      { "title": "The Ideal", "name": "ideal", "image": "dots_ideal.png", "indent": true },
-      { "title": "Our Solution", "name": "solution", "image": "dots_solution.png", "indent": true },
-
-    { "title": "Expected Contributions", "name": "contributions" },
-      { "title": "Data Model", "name": "data_model", "image": "UDCModel.png", "indent": true },
-      { "title": "Visualization Taxonomy", "name": "taxonomy", "image": "visTaxonomy.png", "indent": true},
-      { "title": "Public Data Index", "name": "dataset_taxonomy", "image": "dataSetTaxonomy.png", "indent": true},
-
-    { "title": "Prototypes", "name": "prototypes" },
-
-      { "title": "BLS Industry Bars", "name": "industry_bars", "image": "blsTableauVisBarsByIndustry.png", "indent": true },
-      { "title": "BLS State Bars", "name": "state_bars", "image": "blsTableauVisBarsByState.png", "indent": true },
-      { "title": "BLS Cube", "name": "bls_cube", "image": "blsCubeConcept.png", "indent": true },
-
-
-      { "title": "Mortality Data", "name": "mortality_data", "image": "CDCMortalityUI.png", 
-        "link": "http://205.207.175.93/HDI/TableViewer/tableView.aspx?ReportId=673", "indent": true },
-      { "title": "Raw Tree Data", "name": "raw_tree", "image": "cardiovascularDiseaseRawTree.png",
-        "link": "https://github.com/curran/data/tree/gh-pages/cdc/mortality/hierarchy", "indent": true },
+    { "title": "Mortality Data", "name": "mortality_data", "image": "CDCMortalityUI.png", 
+      "link": "http://205.207.175.93/HDI/TableViewer/tableView.aspx?ReportId=673" },
       { "title": "Tree Visualization", "name": "mortality_tree", "image": "mortalityVisTree.png",
         "link": "https://github.com/curran/visualizations/blob/gh-pages/mortality/v3/main.js", "indent": true },
       { "title": "Stacked Areas", "name": "mortality_stack", "image": "mortalityVisV3.png", "indent": true },
       { "title": "Linked Views", "name": "mortality_linked", "image": "mortalityVisV4.png",
         "link": "http://curran.github.io/visualizations/mortality/v4/", "indent": true },
 
-      { "title": "Dashboard Scaffold", "name": "dashboardscaffold", "image": "dashboardScaffold.png",
-        "link": "http://curran.github.io/dashboardScaffoldExample/v0.1.0/index.html", "indent": true },
-      { "title": "Rapid7 Dashboard", "name": "r7", "image": "mapDocs7.png",
-        "link": "http://curran.github.io/portfolio/2013/UserInsightIngressDashboard.pdf", "indent": true },
+    { "title": "Vision", "name": "vision" },
+
+    { "title": "Universal Data Cube", "name": "udc_idea" },
+      { "title": "Data Integration", "name": "dataIntegration", "indent": true },
+      { "title": "UDC Concepts", "name": "udc_concept_examples", "image": "conceptExamples.png", "indent": true },
+      { "title": "UDC Data Representation", "name": "udc_example_data", "indent": true },
+      { "title": "Integration Algorithm", "name": "udc_integration", "image": "integrationAlgorithm.png", "indent": true },
+
+    { "title": "Reactive Data Visualizations", "name": "reactive" },
+      { "title": "Related Work", "name": "dataVisualization", "indent": true },
+      { "title": "Reactive Bar Chart", "name": "barchart", "image": "barChartFlow.png",
+          "link": "http://curran.github.io/model-contrib/#/examples/barChart", "indent": true  },
+      { "title": "Reusable Reactive Flows", "name": "reactivis", "image": "reactivis.png",
+          "link": "http://curran.github.io/model-contrib/#/modules/reactivis", "indent": true  },
+      { "title": "Linked Views", "name": "linked_views", "indent": true  },
+      
+
+    { "title": "Contributions", "name": "contributions" },
 
     { "title": "Future Work", "name": "future" },
+      { "title": "Data Import Tools", "name": "raw_tree", "image": "cardiovascularDiseaseRawTree.png",
+        "link": "https://github.com/curran/data/tree/gh-pages/cdc/mortality/hierarchy", "indent": true },
+      { "title": "Visualization Taxonomy", "name": "taxonomy", "image": "visTaxonomy.png", "indent": true},
+      { "title": "Public Data Index", "name": "dataset_taxonomy", "image": "dataSetTaxonomy.png", "indent": true},
+      { "title": "Model-Contrib", "name": "model_contrib", "image": "modelContrib.png",
+          "link": "http://curran.github.io/model-contrib/#/", "indent": true  },
+      { "title": "Visual Data Stories", "name": "stories", "image": "rwandanGenocide.png",
+          "link": "http://en.wikipedia.org/wiki/Rwandan_Genocide", "indent": true },
+
     { "title": "Acknowledgements", "name": "acknowledgements" },
     { "title": "The End", "name": "lastSlide" }
   ],
   "unusedSlides": [
+    { "title": "Data Representation", "name": "dataRepresentation", "indent": true },
+    { "title": "Data Cube Qualities", "name": "cube_qualities", "indent": true },
+
+    { "title": "Dashboard Scaffold", "name": "dashboardscaffold", "image": "dashboardScaffold.png",
+      "link": "http://curran.github.io/dashboardScaffoldExample/v0.1.0/index.html", "indent": true },
+
+    { "title": "Rapid7 Dashboard", "name": "r7", "image": "mapDocs7.png",
+      "link": "http://curran.github.io/portfolio/2013/UserInsightIngressDashboard.pdf", "indent": true },
     { "title": "Wage Visualization", "name": "blsTableauVis", "image": "blsTableauVis.png" },
+    { "title": "Web Graphics", "name": "webGraphics", "indent": true },
     { "title": "Tableau Visualizations", "name": "blsTableau" },
     { "title": "Pay by Industry", "name": "blsTableauVisBarsByIndustry", "image": "blsTableauVisBarsByIndustry.png" },
     { "title": "Pay by State", "name": "blsTableauVisBarsByState", "image": "blsTableauVisBarsByState.png" },
     { "title": "Data Cube with Time", "name": "blsCubeConcept", "image": "blsCubeConcept.png" },
-    { "title": "4D Data Cube", "name": "blsCubeConcept2", "image": "blsCubeConcept2.png" }
+    { "title": "4D Data Cube", "name": "blsCubeConcept2", "image": "blsCubeConcept2.png" },
+    { "title": "Vision", "name": "vision", "image": "telescope.jpg",
+      "link": "http://pixabay.com/en/telescope-by-looking-view-122960/" }
   ]
 }
