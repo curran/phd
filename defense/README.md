@@ -1,6 +1,6 @@
 # Visualizing the Universal Data Cube
 
- * [View Presentation](http://curran.github.io/phd/defense/).
+ * [View Presentation](http://curran.github.io/phd/defense/)
  * [View YouTube Video](https://www.youtube.com/watch?v=XVHyygdD1Kg&feature=youtu.be&a)
 
 ## Presentation Framework
