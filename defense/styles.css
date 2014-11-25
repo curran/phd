@@ -150,10 +150,8 @@ img {
   text-align: center;
 }
 video {
-  /*
   position:fixed;
   bottom: 0px;
-  left: 0px;
-  */
+  right: 0px;
   border-radius:120px;
 }
