@@ -58,6 +58,8 @@ app.run(function($rootScope, $document, $location, presentation){
 
 // Display video from the camera on the video element.
 // Example code from http://www.html5rocks.com/en/tutorials/getusermedia/intro/
+
+/* Commented out for public viewing.
 navigator.getUserMedia  = navigator.getUserMedia ||
                           navigator.webkitGetUserMedia ||
                           navigator.mozGetUserMedia ||
@@ -69,3 +71,4 @@ navigator.getUserMedia({ video: true }, function (localMediaStream) {
 }, function (e) {
   console.log("Error " + e);
 });
+*/
