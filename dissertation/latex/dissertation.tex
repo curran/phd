@@ -1,0 +1,161 @@
+\documentclass{umthesis}          % for Ph.D. dissertation or proposal
+
+% CLRSCode is for pseudocode
+% See http://www.cs.dartmouth.edu/~thc/clrscode/
+\usepackage{clrscode3e}
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{url}
+\usepackage{lscape}
+
+% This width is used for many figures  -- Curran August 2014
+\newcommand{\figureWidth}{6in}
+
+\begin{document}
+\title{Visualizing the\\Universal Data Cube}
+\author{Curran Kelleher}
+\date{September 2014}
+\copyrightyear{2014}
+\bachelors{B.Sc.}{University of Massachusetts Lowell}
+\masters{M.Sc.}{University of Massachusetts Lowell}
+
+\committeechair{Dr. Haim Levkowitz}
+\firstreader{Dr. Jesse Heines}
+\secondreader{Dr. Rosane Minghim}
+\departmentchair{Dr. Jie Wang}
+\departmentname{Computer Science}
+
+\degree{Doctor of Philosophy}{Ph.D.}
+%% These lines produce the title, copyright, and signature pages.
+%% They are Mandatory; except that you could leave out the copyright page
+%% if you were preparing an M.S. thesis instead of a PhD dissertation.
+\frontmatter
+\maketitle
+\copyrightpage     %% not required for an M.S. thesis
+\signaturepage
+
+%%
+%% Dedication is optional -- but this is how you create it
+%% \begin{dedication}              % Dedication page
+%%   \begin{center}
+%%     \emph{To Nita.}
+%%   \end{center}
+%% \end{dedication}
+
+%%
+%% Epigraph goes here...(aka frontispiece)
+%% \chapter{Epigraph}?????
+
+%%
+%% Acknowledgements are optional...yeah, right.
+\chapter{Acknowledgments}             % Acknowledgements page
+I would like to thank my parents Daniel and Marcella Kelleher and my brother Sean for supporting me throughout my education. I am grateful to my committee members Dr. Haim Levkowitz, Dr. Rosane Minghim, and Dr. Jesse Heines for their support and feedback throughout the dissertation process. I would also like to acknowledge Dr. Georges Grinstein and Dr. Daniel Keim for their mentorship and support of my work in its early stages.
+
+\begin{abstract}
+The field of data visualization is lacking open tools that support easily developing and using production quality interactive visualizations. Particularly, there is a need for reusable solutions for (1) well known visualization and interaction techniques (2) authoring and sharing visualizations with multiple linked views, and (3) describing existing data such that many data sets can be easily integrated and visualized. This dissertation introduces novel data structures and algorithms for interactive visualizations of data from many sources, addressing these three issues.
+\end{abstract}
+
+%%
+%% Preface goes here...would be just like Acknowledgements -- optional
+%% \chapter{Preface} 
+%% ...
+
+
+%%
+%% Table of contents is mandatory, lists of tables and figures are 
+%% mandatory if you have any tables or figures; must be in this order.
+\tableofcontents                % Table of contents
+\listoftables                   % List of Tables
+\listoffigures                  % List of Figures
+
+%%
+%% We don't handle List of Abbreviations
+%% We don't handle Glossary
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Time for the body of the dissertation
+\mainmatter   %% <-- This line is mandatory
+
+%\unnumberedchapter{Introduction}
+\chapter{Introduction}
+\input{chapters/introduction.tex}
+
+\chapter{Reactive Visualizations}
+\input{chapters/reactiveVisualizations.tex}
+
+\chapter{Collaborative Visual Data Exploration}
+\input{chapters/overseer.tex}
+
+\chapter{The Universal Data Cube}
+\input{chapters/universalDataCube.tex}
+
+\chapter{Conclusion}
+\input{chapters/conclusion.tex}
+
+\appendix
+
+\chapter{Pseudocode Conventions}
+\input{chapters/pseudocode.tex}
+
+\chapter{Open Source Projects}
+
+\section{Ph. D.}
+\verb`https://github.com/curran/phd`
+
+This repository contains the LaTeX source code for the proposal and dissertation documents. This repository also contains source code for an early stage prototype of the end-to-end system, including reactive models, nested box layout, several visualizations and a configuration state runtime engine. These first prototypes were re-written and evolved to form the ModelJS and Model-Contrib projects.
+
+\section{ModelJS}
+\verb`https://github.com/curran/model`
+
+ModelJS was created in April 2014 as a simple proof of concept implementation of reactive models. The project arose out of a recurring pattern in my data visualization work at Rapid7 based on D3 and BackboneJS. ModelJS provides simple models akin to JavaScript objects that expose a \verb`when` method that implements eventual resolution of reactive data flow graphs. The data flow graphs initiate an asynchronous breadth-first graph traversal algorithm when model values are changed. The JavaScript event loop is utilized as the queue in the breadth-first traversal. Multiple model changes that occur within the span of a single tick of the JavaScript event loop are batched together into a single invocation of dependent callback functions passed into the \verb`when` method.
+\section{Model-Contrib}
+\verb`https://github.com/curran/model-contrib`
+
+\begin{figure}
+  \centering
+  \includegraphics[width=\figureWidth]{figs/model-contrib.png}
+  \caption [Model-Contrib Home Page]{The model-contrib project home page, showing a listing of reusable modules on the left and a gallery of examples with screenshots for each on the right.}
+  \label{fig:lds}
+\end{figure}
+
+The Model-Contrib project is a playground for creating visualizations and reusable components using ModelJS. ModelJS contains the essence of reactive models, and all other contributions related to ModelJS belong in Model-Contrib. This includes example visualizations, visualizations with linked views, reusable visualization components. Other components such as Crossfilter integration and arbitrary SQL transformations are in Model-Contrib.
+
+Model-Contrib includes an example viewer framework. This framework is responsible for displaying example screenshot thumbnails on the main model-contrib page, found at \verb`http://curran.github.io/model-contrib/#/`, and also for rendering the example detail pages. The example detail pages run the example inside the page using an iFrame, render the README Markdown to HTML, and display the syntax-highlighted code for each source file using CodeMirror. AngularJS is used to implement the example viewer client. PhantomJS and GraphicsMagick are used for generating the thumbnail images.
+
+\section{Reactivis}
+\verb`https://github.com/curran/reactivis`
+
+The Reactivis project contains reusable reactive graphs that can be composed together to create reusable visualization components. In this project, there is also an implementation of reactive data flow graph computation and visualization.
+
+\section{Overseer}
+\verb`https://github.com/curran/overseer`
+
+The Overseer project implements the runtime engine for dynamic configuration of visualizations. This project contains an implementation of the algorithm that computes the difference between two consecutive configuration states.
+
+\section{UDC}
+\verb`https://github.com/curran/udc`
+
+The UDC repository contains a JavaScript implementation of the Universal Data Cube API. This API is capable of loading, integrating and querying data sets represented in the UDC format. In the UDC format, each data sets consists of a data table (CSV file) and a metadata (JSON file).
+
+\section{UDC-Data}
+\verb`https://github.com/curran/udc-data`
+
+This repository contains example data sets represented using the UDC format. These data sets include the United Nations population data set, and the World Bank GDP data set.
+
+% % %% Beginning of back matter
+\backmatter  %% <--- mandatory
+
+%%
+%% We don't support endnotes
+
+%%
+%% A bibliography is required.
+\interlinepenalty=10000  % prevent split bibliography entries
+\bibliographystyle{umthesis}
+\bibliography{dissertation}
+\end{document}
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: t
+%%% End: 

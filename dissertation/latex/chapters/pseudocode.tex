@@ -1,0 +1,98 @@
+Throughout this document, pseudocode is used to express data structures and algorithms. The pseudocode used is similar to that found in the book ``Introduction to Algorithms'' \cite{cormen2009introduction}, but differs significantly in that it uses a functional style. Primitive types in our pseudocode include numbers, strings, booleans, arrays, objects and functions. The following examples demonstrate the features of this pseudocode language.
+
+\begin{codebox}
+\li $x \gets 5$
+\end{codebox}
+
+Line numbers appear to the left of each line of pseudocode. Variables can have any name comprised of characters without spaces, and can be assigned a value with the $=$ symbol. Variables need not be explicitly declared. The scope of a variable is determined by where it is first assigned. Our pseudocode uses block scope, meaning that every indentation level introduces a new nested scope. On line 1 of the above pseudocode example, the variable $x$ is defined and assigned the value of $5$, a numeric literal.
+
+The following pseudocode demonstrates numbers, strings and booleans.
+
+\begin{codebox}
+\li $myNumber \gets 5$
+\li $myString \gets $ \verb1'test'1
+\li $myBoolean \gets \const{true} $
+\li $myOtherBoolean \gets \const{false} $
+\end{codebox}
+
+All numbers are treated as double precision floating point. Numeric literals in pseucode become numbers (see line 1). String literals are denoted by single quotes and a monospace font (see line 2). Booleans can be either true or false. True and false are builtin constant boolean values denoted by all capitalized words (see lines 3 and 4). Camel case names starting with a lower case letter are used for most variables in our pseudocode.
+
+\begin{codebox}
+\li $add \gets \lambda(a, b)$
+\Do
+\li \Return $ a + b $
+\End
+\li $result = add(4, 6)$ \Comment $result$ is assigned the value $10$
+\li $triple \gets \lambda(x)$ \Return $ x * 3 $
+\li $triple(3)$ \Comment evaluates to $9$
+\end{codebox}
+
+The above pseudocode demonstrates how a function is defined and invoked, and also introduces comments. This example defines a function called $add$ (on lines 1 and 2) that adds two numbers together. The $\lambda$ (lambda) symbol defines a new anonymus function. Variables can be assigned functions as values using $=$. The comma separated names in parentheses directly following the $\lambda$ are the arguments to the function. The pseudocode on lines following the $\lambda$ that is indented one level constitutes the function body (also called the function closure). The function arguments are only visible inside the function closure.
+
+Functions can be invoked using parentheses. The argument values are passed to the function in a comma separated list within parentheses. On line 3, the $add$ function is invoked, passing the value $4$ as argument $a$ and $6$ as argument $b$. The value returned by the function is assigned to the variable $result$. The function invocation causes the function body to execute, which adds the two numbers together and returns the resulting number using the ``return'' keyword on line 2. Lines 4 and 5 demonstrate that a simple anonymous function can be defined in a single line. Text following the $//$ symbol is a comment, and is not executed.
+
+\begin{codebox}
+\li $myArray \gets [\,]$ \label{emptyArrLiteral}
+\li $myArray.push(5)$ \Comment $myArray$ now contains $[5]$ \label{beginArrPush}
+\li $myArray.push(7)$ \Comment $myArray$ now contains $[5, 7]$
+\li $myArray.push(9)$ \Comment $myArray$ now contains $[5, 7, 9]$ \label{endArrPush}
+\li $myArray[0]$ \Comment evaluates to $5$
+\li $myArray[2]$ \Comment evaluates to $9$
+\li $myArray[1] = 3$ \Comment $myArray$ now contains $[5, 3, 9]$
+\li $myBooleanArray \gets [\const{true}, \const{false}, \const{true}, \const{true}]$ \label{arrLiteral1}
+\li $myStringArray \gets [$\verb1'foo'1$,$\verb1'bar'1$]$ \label{arrLiteral2}
+\li $numberOfBooleans \gets myBooleanArray.length$ \Comment evaluates to 4 \label{arrLenBegin}
+\li $numberOfStrings \gets myStringArray.length$ \Comment evaluates to 2 \label{arrLenEnd}
+\li \For $str \in myStringArray$ \label{forLoop1}
+\Do
+\li   $log(str)$ \Comment prints \verb1'foo'1 then \verb1'bar'1 \label{forLoop2}
+\End
+\li $myArray.map(triple)$ \Comment evaluates to $[15, 21, 27]$ \label{arrMap}
+\end{codebox}
+
+The above pseudocode demonstrates arrays. Arrays are ordered lists of elements. Arrays can contain elements of any type. Array literals are denoted by square brackets and can be empty (as in line \ref{emptyArrLiteral}) or populated (as in lines \ref{arrLiteral1} and \ref{arrLiteral2}). Arrays have a built-in function attached to them called $push$, which appends a new element to the end of the array. Lines \ref{beginArrPush}-\ref{endArrPush} demonstrate how $push$ can be used to append items to an array. The dot notation seen on lines \ref{beginArrPush}-\ref{endArrPush}, \ref{arrLenBegin}-\ref{arrLenEnd} and \ref{arrMap} is used on arrays only to access the following built-in array functions and properties.
+
+\begin{itemize}
+\item $length$ the number of items in the array
+\item $push(item)$ appends an item to the end of an array
+\item $map(callback)$ calls $callback(item)$ for each $item$ in the array
+\end{itemize}
+
+Square brackets denote access of array elements by index when placed directly after the array variable. Lines 5 and 6 demonstrate how square bracket notation can be used to access values in an array based on their index. Line 7 demonstrates that square bracket notation can also be used to assign to values in an array. Lines 10 and 11 demonstrate the built-in property $length$, the number of elements in the array. Array indices start at zero. 
+
+Line \ref{forLoop1} introduces the for loop construct. A for loop iterates over each element in the array. The indented code block following the for loop construct is executed once for each item in the array. In this example, each item is bound to the variable $str$, which is only visible within the for loop body. Line \ref{forLoop2} invokes the built-in function $log(message)$, which prints out the message passed into it to.
+
+Line \ref{arrMap} introduces the map construct. The built-in $map(iterator)$ function applies the given $iterator(item)$ function to each item in the array, and returns a new array populated with the returned values from $iterator$. In this example, the function $triple$ defined earlier is applied to each element in the $myArray$ array, yielding a new array with all values tripled.
+
+\label{objects}
+
+\begin{codebox}
+\li $myObject \gets \{\,\}$ \label{emptyObject}
+\li $myObject.first = $\verb1'John'1 \Comment $myObject$ now contains $\{first:$\verb1'John'1$\} $ \label{dotAssignment}
+\li $myObject[$\verb1'last'1$] = $\verb1'Doe'1 \Comment now $\{first:$\verb1'John'1$, last:$\verb1'Doe'1$\}$ \label{bracketAssignment}
+\li $myOtherObject = \{first:$\verb1'Jane'1$, last:$\verb1'Doe'1$\}$ \label{singleLineObjectLiteral}
+\li $box = $ \label{beginMultiLineOblectLiteral}
+\Do
+\li   $x: 50$
+\li   $y: 60$
+\li   $width: 100$
+\li   $height: 150$ \label{endMultiLineObjectLiteral}
+\End
+\li $keys = keys(box)$ \Comment evaluates to $[$\verb1x1$,$\verb1y1$,$\verb1width1$,$\verb1height1$]$ \label{objectKeys}
+\li $values = keys.map(\lambda(property) \; \Return \; box[property])$ \label{extractProperties}
+\li \Comment $values$ is assigned $[50, 60, 100, 150]$
+\li $box[$\verb1'nonexistentProperty'1$]$ \Comment evaluates to \const{nil} \label{nil}
+\end{codebox}
+
+The above pseudocode introduces objects. Objects are key-value mappings (sometimes called \emph{maps} or \emph{dictionaries}). Curly braces denote single-line object literals. Line \ref{emptyObject} assigns the variable $myObject$ to an empty object. Object properties can be assigned using dot notation, as in line \ref{dotAssignment}, or square bracket notation, as in line \ref{bracketAssignment}. Bracket notation is useful when the property name is stored as a string in a variable. Object literals can contain key-value pairs denoted by $key: value$ as in line \ref{singleLineObjectLiteral}. When an object literal spans multiple lines, the curly braces are omitted and the key-value pairs are indented, as in lines \ref{beginMultiLineOblectLiteral}-\ref{endMultiLineObjectLiteral}. Line \ref{objectKeys} introduces the built-in function $keys$, which evaluates the keys of an object into an array. Line \ref{extractProperties} demonstrates how the values of an object can be extracted into an array using the array $map$ construct. A special value \const{nil} is returned when attempting to access nonexistent object properties, as in line \ref{nil}.
+
+\label{run}
+Our pseudocode assumes a single threaded execution environment with a built-in event loop, which may be implemented using the reactor pattern \cite{schmidt1995reactor}. The event loop can be used to queue functions to be executed in the future. In our pseudocode, the $run$ built-in function provides access to the event loop. Calling $run$ and passing a function queues that function to be invoked in the future, after the current codepath terminates and all previously queued functions finish executing.
+
+\begin{codebox}
+\li $run(\lambda()\,log($\verb1'b'1$))$ \label{runExample}
+\li $log($\verb1'a'1$)$ \label{nonQueuedLog}
+\li \Comment Prints \verb1a1, then \verb1b1
+\end{codebox}
+
+In the above pseudocode, line \ref{runExample} queues an anonymous function that prints \verb1'b'1 to run later, after the current codepath completes. While still inside the codepath which queued the function, line \ref{nonQueuedLog} prints \verb1'a'1. After line \ref{nonQueuedLog} executes, the current codepath terminates, causing the system to invoke queued function that prints \verb1b1.
