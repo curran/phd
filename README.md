@@ -1,5 +1,5 @@
-Ph. D.
-======
+Visualizing the Universal Data Cube
+===================================
 
 Curran Kelleher's Ph. D. work.
 
